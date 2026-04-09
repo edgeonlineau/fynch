@@ -15,7 +15,7 @@ interface JQueryStatic {
 }
 
 interface JQuery {
-  on(event: string, handler: (...args: any[]) => void): JQuery;
+  on(event: string, handler: (...args: unknown[]) => void): JQuery;
   find(selector: string): JQuery;
   text(): string;
   length: number;
