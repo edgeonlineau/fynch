@@ -1,11 +1,10 @@
 import { sendFynchEvent } from '../../utilities/send-fynch-event';
-import { FORM_LEAD_EVENT } from '../../utilities/constants';
-import { isNinjaFormsResponse } from '../../types/type-guards';
+import { FORM_LEAD } from '../../utilities/constants';
 
-if (typeof jQuery === 'function') {
-  jQuery(document).on('nfFormSubmitResponse', function (_event: unknown, response: unknown) {
-    if (isNinjaFormsResponse(response)) {
-      sendFynchEvent(FORM_LEAD_EVENT, `Ninja Forms ID: ${response.id}`);
+export function register($: JQueryStatic): void {
+  $(document).on('nfFormSubmitResponse', (_event: unknown, response: unknown) => {
+    if (typeof response === 'object' && response !== null && 'id' in response) {
+      sendFynchEvent(FORM_LEAD, `Ninja Forms ID: ${(response as { id?: string }).id}`);
     }
   });
 }

@@ -1,11 +1,10 @@
 import { sendFynchEvent } from '../../utilities/send-fynch-event';
-import { CLICK_EMAIL_EVENT, CLICK_PHONE_EVENT, CLICK_SMS_EVENT } from '../../utilities/constants';
-import { isAnchorElement } from '../../types/type-guards';
+import { CLICK_EMAIL, CLICK_PHONE, CLICK_SMS } from '../../utilities/constants';
 
 function findAnchorFromTarget(target: EventTarget | null): HTMLAnchorElement | null {
   let current = target;
   while (current instanceof HTMLElement) {
-    if (isAnchorElement(current)) return current;
+    if (current instanceof HTMLAnchorElement) return current;
     current = current.parentElement;
   }
   return null;
@@ -18,14 +17,14 @@ function handleClick(event: MouseEvent): void {
   const url = new URL(anchor.href);
   switch (url.protocol) {
     case 'mailto:':
-      sendFynchEvent(CLICK_EMAIL_EVENT, url.pathname);
+      sendFynchEvent(CLICK_EMAIL, url.pathname);
       break;
     case 'tel:':
     case 'callto:':
-      sendFynchEvent(CLICK_PHONE_EVENT, url.pathname);
+      sendFynchEvent(CLICK_PHONE, url.pathname);
       break;
     case 'sms:':
-      sendFynchEvent(CLICK_SMS_EVENT, url.pathname);
+      sendFynchEvent(CLICK_SMS, url.pathname);
       break;
   }
 }

@@ -1,8 +1,10 @@
 import { sendFynchEvent } from '../../utilities/send-fynch-event';
-import { FORM_LEAD_EVENT } from '../../utilities/constants';
+import { FORM_LEAD } from '../../utilities/constants';
 
-if (typeof dmAPI !== 'undefined') {
-  dmAPI.subscribeEvent(dmAPI.EVENTS.FORM_SUBMISSION, function () {
-    sendFynchEvent(FORM_LEAD_EVENT, `Duda Form`);
-  });
+export function register(): void {
+  if (typeof dmAPI !== 'undefined') {
+    dmAPI.subscribeEvent(dmAPI.EVENTS.FORM_SUBMISSION, () => {
+      sendFynchEvent(FORM_LEAD, 'Duda Form');
+    });
+  }
 }
