@@ -11,7 +11,7 @@ describe('click-listeners', () => {
   }
 
   it('tracks mailto link clicks as email_clicked', async () => {
-    await import('../listeners/click-listeners');
+    await import('../../../src/listeners/clicks/click-listeners');
 
     const link = document.createElement('a');
     link.href = 'mailto:hello@example.com';
@@ -28,7 +28,7 @@ describe('click-listeners', () => {
   });
 
   it('tracks tel link clicks as phone_clicked', async () => {
-    await import('../listeners/click-listeners');
+    await import('../../../src/listeners/clicks/click-listeners');
 
     const link = document.createElement('a');
     link.href = 'tel:+1234567890';
@@ -45,7 +45,7 @@ describe('click-listeners', () => {
   });
 
   it('tracks sms link clicks as sms_clicked', async () => {
-    await import('../listeners/click-listeners');
+    await import('../../../src/listeners/clicks/click-listeners');
 
     const link = document.createElement('a');
     link.href = 'sms:+1234567890';
@@ -62,7 +62,7 @@ describe('click-listeners', () => {
   });
 
   it('tracks clicks on nested elements within anchor tags', async () => {
-    await import('../listeners/click-listeners');
+    await import('../../../src/listeners/clicks/click-listeners');
 
     const link = document.createElement('a');
     link.href = 'mailto:nested@example.com';
@@ -82,7 +82,7 @@ describe('click-listeners', () => {
   });
 
   it('does not track clicks on regular http links', async () => {
-    await import('../listeners/click-listeners');
+    await import('../../../src/listeners/clicks/click-listeners');
 
     const link = document.createElement('a');
     link.href = 'https://example.com';
@@ -95,7 +95,7 @@ describe('click-listeners', () => {
   });
 
   it('does not track clicks on non-anchor elements', async () => {
-    await import('../listeners/click-listeners');
+    await import('../../../src/listeners/clicks/click-listeners');
 
     const div = document.createElement('div');
     div.textContent = 'Not a link';
@@ -108,7 +108,7 @@ describe('click-listeners', () => {
   });
 
   it('tracks callto protocol as phone_clicked', async () => {
-    await import('../listeners/click-listeners');
+    await import('../../../src/listeners/clicks/click-listeners');
 
     const link = document.createElement('a');
     link.href = 'callto:+1234567890';

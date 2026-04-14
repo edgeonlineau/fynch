@@ -1,0 +1,12 @@
+import './contact-form-7';
+import './divi';
+import './duda';
+import './elementor';
+import './fluent-forms';
+import './formidable';
+import './forminator';
+import './hubspot-v3';
+import './hubspot-v4';
+import './ninja-forms';
+import './wp-forms';
+import './ws-form';

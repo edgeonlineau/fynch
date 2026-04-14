@@ -38,4 +38,4 @@ interface HubspotFormsV4Interface {
   getFormFromEvent(event: Event): HsForm | null;
 }
 
-declare const HubspotFormsV4: HubspotFormsV4Interface;
+declare const HubspotFormsV4: HubspotFormsV4Interface | undefined;

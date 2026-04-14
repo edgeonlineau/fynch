@@ -57,7 +57,7 @@ describe('form-listeners (jQuery-dependent)', () => {
   });
 
   it('tracks Elementor form submissions', async () => {
-    await import('../listeners/form-listeners');
+    await import('../../../src/listeners/forms/index');
 
     const mockEvent = { target: { name: 'contact-form' } };
     triggerJQueryEvent(jQueryMock._handlers, 'submit_success', mockEvent);
@@ -72,7 +72,7 @@ describe('form-listeners (jQuery-dependent)', () => {
   });
 
   it('tracks FluentForms submissions when originalEvent is undefined', async () => {
-    await import('../listeners/form-listeners');
+    await import('../../../src/listeners/forms/index');
 
     const mockEvent = {};
     const mockData = { config: { id: 'ff-42' } };
@@ -88,7 +88,7 @@ describe('form-listeners (jQuery-dependent)', () => {
   });
 
   it('does not track FluentForms when originalEvent is present', async () => {
-    await import('../listeners/form-listeners');
+    await import('../../../src/listeners/forms/index');
 
     const mockEvent = { originalEvent: new Event('submit') };
     const mockData = { config: { id: 'ff-42' } };
@@ -101,7 +101,7 @@ describe('form-listeners (jQuery-dependent)', () => {
   });
 
   it('tracks Formidable Forms submissions', async () => {
-    await import('../listeners/form-listeners');
+    await import('../../../src/listeners/forms/index');
 
     const mockForm = document.createElement('div');
     triggerJQueryEvent(jQueryMock._handlers, 'frmFormComplete', {}, mockForm);
@@ -116,7 +116,7 @@ describe('form-listeners (jQuery-dependent)', () => {
   });
 
   it('tracks Forminator Forms submissions', async () => {
-    await import('../listeners/form-listeners');
+    await import('../../../src/listeners/forms/index');
 
     const mockTarget = document.createElement('form');
     mockTarget.setAttribute('data-form-id', 'forminator-99');
@@ -133,7 +133,7 @@ describe('form-listeners (jQuery-dependent)', () => {
   });
 
   it('tracks Ninja Forms submissions', async () => {
-    await import('../listeners/form-listeners');
+    await import('../../../src/listeners/forms/index');
 
     const mockResponse = { id: 'ninja-7' };
     triggerJQueryEvent(jQueryMock._handlers, 'nfFormSubmitResponse', {}, mockResponse);
@@ -148,7 +148,7 @@ describe('form-listeners (jQuery-dependent)', () => {
   });
 
   it('tracks WP Forms submissions', async () => {
-    await import('../listeners/form-listeners');
+    await import('../../../src/listeners/forms/index');
 
     const mockTarget = document.createElement('form');
     mockTarget.setAttribute('data-formid', 'wp-55');
@@ -165,7 +165,7 @@ describe('form-listeners (jQuery-dependent)', () => {
   });
 
   it('tracks WS Form submissions', async () => {
-    await import('../listeners/form-listeners');
+    await import('../../../src/listeners/forms/index');
 
     triggerJQueryEvent(jQueryMock._handlers, 'wsf-submit-success', {}, {}, 'ws-form-12');
 
@@ -182,7 +182,7 @@ describe('form-listeners (jQuery-dependent)', () => {
     // Mock window.location.href
     const originalHref = window.location.href;
 
-    await import('../listeners/form-listeners');
+    await import('../../../src/listeners/forms/index');
 
     const mockXhr = { status: 200 };
     const mockReq = {

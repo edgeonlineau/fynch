@@ -7,7 +7,7 @@ describe('form-listeners', () => {
   });
 
   it('tracks Contact Form 7 submissions', async () => {
-    await import('../listeners/form-listeners');
+    await import('../../../src/listeners/forms/index');
 
     const event = new CustomEvent('wpcf7mailsent', {
       detail: { contactFormId: '123' },
@@ -24,7 +24,7 @@ describe('form-listeners', () => {
   });
 
   it('tracks HubSpot Forms v3 submissions via postMessage', async () => {
-    await import('../listeners/form-listeners');
+    await import('../../../src/listeners/forms/index');
 
     const event = new MessageEvent('message', {
       data: {
@@ -45,7 +45,7 @@ describe('form-listeners', () => {
   });
 
   it('ignores non-HubSpot postMessage events', async () => {
-    await import('../listeners/form-listeners');
+    await import('../../../src/listeners/forms/index');
 
     const event = new MessageEvent('message', {
       data: { type: 'otherCallback', eventName: 'something' },
@@ -66,7 +66,7 @@ describe('form-listeners', () => {
       getFormFromEvent: mockGetFormFromEvent,
     };
 
-    await import('../listeners/form-listeners');
+    await import('../../../src/listeners/forms/index');
 
     const event = new Event('hs-form-event:on-submission:success');
     window.dispatchEvent(event);
@@ -87,7 +87,7 @@ describe('form-listeners', () => {
       getFormFromEvent: mockGetFormFromEvent,
     };
 
-    await import('../listeners/form-listeners');
+    await import('../../../src/listeners/forms/index');
 
     const event = new Event('hs-form-event:on-submission:success');
     window.dispatchEvent(event);
@@ -108,7 +108,7 @@ describe('form-listeners', () => {
       },
     };
 
-    await import('../listeners/form-listeners');
+    await import('../../../src/listeners/forms/index');
 
     capturedCallback?.();
 

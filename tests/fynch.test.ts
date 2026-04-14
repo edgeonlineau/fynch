@@ -16,14 +16,14 @@ describe('fynch entry point', () => {
       );
     });
 
-    await import('../fynch');
+    await import('../src/fynch');
 
     document.body.click();
     await clickListenerSpy;
   });
 
   it('has dataLayer available after import', async () => {
-    await import('../fynch');
+    await import('../src/fynch');
     expect(Array.isArray(window.dataLayer)).toBe(true);
   });
 });

@@ -1,2 +1,2 @@
-import './listeners/click-listeners';
-import './listeners/form-listeners';
+import './listeners/clicks/click-listeners';
+import './listeners/forms';
