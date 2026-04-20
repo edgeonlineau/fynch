@@ -2,6 +2,13 @@ interface DataLayerEvent {
   event: string;
   action: string;
   specifics: string;
+  page_url: string;
+  page_title: string;
+  page_path: string;
+  referrer: string;
+  timestamp: string;
+  form_platform?: string;
+  form_name?: string;
 }
 
 interface Window {

@@ -6,7 +6,7 @@ describe('form-listeners', () => {
     vi.resetModules();
   });
 
-  it('tracks Contact Form 7 submissions', async () => {
+  it('tracks Contact Form 7 submissions with form metadata', async () => {
     await import('../../../src/listeners/forms/index');
 
     const event = new CustomEvent('wpcf7mailsent', {
@@ -19,6 +19,8 @@ describe('form-listeners', () => {
         event: 'fynch.event',
         action: 'form_lead',
         specifics: 'Contact Form 7 ID: 123',
+        form_platform: 'contact-form-7',
+        form_name: '123',
       }),
     );
   });
@@ -40,6 +42,8 @@ describe('form-listeners', () => {
         event: 'fynch.event',
         action: 'form_lead',
         specifics: 'HubSpot Form ID: hs-form-456',
+        form_platform: 'hubspot-v3',
+        form_name: 'hs-form-456',
       }),
     );
   });
@@ -76,6 +80,8 @@ describe('form-listeners', () => {
         event: 'fynch.event',
         action: 'form_lead',
         specifics: 'HubSpot Form ID: hs-v4-789',
+        form_platform: 'hubspot-v4',
+        form_name: 'hs-v4-789',
       }),
     );
   });
@@ -117,7 +123,64 @@ describe('form-listeners', () => {
         event: 'fynch.event',
         action: 'form_lead',
         specifics: 'Duda Form',
+        form_platform: 'duda',
+        form_name: 'Duda Form',
       }),
     );
+  });
+
+  it('tracks Typeform submissions via postMessage', async () => {
+    await import('../../../src/listeners/forms/index');
+
+    const event = new MessageEvent('message', {
+      data: {
+        type: 'form-submit',
+        formId: 'tf-abc123',
+      },
+    });
+    window.dispatchEvent(event);
+
+    expect(window.dataLayer).toContainEqual(
+      expect.objectContaining({
+        event: 'fynch.event',
+        action: 'form_lead',
+        specifics: 'Typeform ID: tf-abc123',
+        form_platform: 'typeform',
+        form_name: 'tf-abc123',
+      }),
+    );
+  });
+
+  it('tracks generic form submissions', async () => {
+    await import('../../../src/listeners/forms/index');
+
+    const form = document.createElement('form');
+    form.setAttribute('name', 'contact-us');
+    document.body.appendChild(form);
+
+    form.dispatchEvent(new SubmitEvent('submit', { bubbles: true, cancelable: true }));
+
+    expect(window.dataLayer).toContainEqual(
+      expect.objectContaining({
+        event: 'fynch.event',
+        action: 'form_lead',
+        specifics: 'Generic Form: contact-us',
+        form_platform: 'generic',
+        form_name: 'contact-us',
+      }),
+    );
+  });
+
+  it('does not track known form platforms as generic', async () => {
+    await import('../../../src/listeners/forms/index');
+
+    const form = document.createElement('form');
+    form.classList.add('wpcf7-form');
+    document.body.appendChild(form);
+
+    form.dispatchEvent(new SubmitEvent('submit', { bubbles: true, cancelable: true }));
+
+    const genericEvents = window.dataLayer.filter((e) => e.form_platform === 'generic');
+    expect(genericEvents).toHaveLength(0);
   });
 });

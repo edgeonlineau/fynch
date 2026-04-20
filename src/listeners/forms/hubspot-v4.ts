@@ -6,7 +6,11 @@ export function register(): void {
     if (typeof HubspotFormsV4 === 'undefined') return;
     const hsform = HubspotFormsV4.getFormFromEvent(event);
     if (hsform) {
-      sendFynchEvent(FORM_LEAD, `HubSpot Form ID: ${hsform.getFormId()}`);
+      const formId = hsform.getFormId();
+      sendFynchEvent(FORM_LEAD, `HubSpot Form ID: ${formId}`, {
+        form_platform: 'hubspot-v4',
+        form_name: formId,
+      });
     }
   });
 }

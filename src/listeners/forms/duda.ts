@@ -4,7 +4,10 @@ import { FORM_LEAD } from '../../utilities/constants';
 export function register(): void {
   if (typeof dmAPI !== 'undefined') {
     dmAPI.subscribeEvent(dmAPI.EVENTS.FORM_SUBMISSION, () => {
-      sendFynchEvent(FORM_LEAD, 'Duda Form');
+      sendFynchEvent(FORM_LEAD, 'Duda Form', {
+        form_platform: 'duda',
+        form_name: 'Duda Form',
+      });
     });
   }
 }

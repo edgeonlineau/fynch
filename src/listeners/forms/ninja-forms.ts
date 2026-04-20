@@ -4,7 +4,11 @@ import { FORM_LEAD } from '../../utilities/constants';
 export function register($: JQueryStatic): void {
   $(document).on('nfFormSubmitResponse', (_event: unknown, response: unknown) => {
     if (typeof response === 'object' && response !== null && 'id' in response) {
-      sendFynchEvent(FORM_LEAD, `Ninja Forms ID: ${(response as { id?: string }).id}`);
+      const formId = String((response as { id?: string }).id ?? '');
+      sendFynchEvent(FORM_LEAD, `Ninja Forms ID: ${formId}`, {
+        form_platform: 'ninja-forms',
+        form_name: formId,
+      });
     }
   });
 }

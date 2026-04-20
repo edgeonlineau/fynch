@@ -4,7 +4,11 @@ import { FORM_LEAD } from '../../utilities/constants';
 export function register(): void {
   window.addEventListener('message', (event: MessageEvent) => {
     if (event.data.type === 'hsFormCallback' && event.data.eventName === 'onFormSubmitted') {
-      sendFynchEvent(FORM_LEAD, `HubSpot Form ID: ${event.data?.id}`);
+      const formId = String(event.data?.id ?? '');
+      sendFynchEvent(FORM_LEAD, `HubSpot Form ID: ${formId}`, {
+        form_platform: 'hubspot-v3',
+        form_name: formId,
+      });
     }
   });
 }
