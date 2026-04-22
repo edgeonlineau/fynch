@@ -7,7 +7,7 @@ export function register($: JQueryStatic): void {
       .find('.frm_screen_reader')
       ?.text();
     sendFynchEvent(FORM_LEAD, `Formidable Forms: ${label}`, {
-      form_platform: 'formidable',
+      platform: 'formidable',
       form_name: label,
     });
   });

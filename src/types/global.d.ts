@@ -7,7 +7,7 @@ interface DataLayerEvent {
   page_path: string;
   referrer: string;
   timestamp: string;
-  form_platform?: string;
+  platform?: string;
   form_name?: string;
 }
 
@@ -46,3 +46,24 @@ interface HubspotFormsV4Interface {
 }
 
 declare const HubspotFormsV4: HubspotFormsV4Interface | undefined;
+
+interface BeaconAPI {
+  (method: string, event: string, callback: () => void): void;
+}
+
+interface TawkAPI {
+  onChatStarted?: () => void;
+}
+
+interface CrmForm {
+  callback?: (leadId: string) => void;
+}
+
+type PodiumEventsCallback = (event: string, properties: Record<string, string>) => void;
+
+interface Window {
+  Beacon?: BeaconAPI;
+  Tawk_API?: TawkAPI;
+  crmForm?: CrmForm;
+  PodiumEventsCallback?: PodiumEventsCallback;
+}

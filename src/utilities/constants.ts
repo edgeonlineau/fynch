@@ -6,6 +6,8 @@ export const CLICK_DOWNLOAD = 'file_downloaded' as const;
 export const CLICK_CTA = 'cta_clicked' as const;
 export const FORM_LEAD = 'form_lead' as const;
 export const SCROLL_MILESTONE = 'scroll_milestone' as const;
+export const CHAT_STARTED = 'chat_started' as const;
+export const BOOKING_SCHEDULED = 'booking_scheduled' as const;
 
 export type FynchEventAction =
   | typeof CLICK_EMAIL
@@ -15,7 +17,9 @@ export type FynchEventAction =
   | typeof CLICK_DOWNLOAD
   | typeof CLICK_CTA
   | typeof FORM_LEAD
-  | typeof SCROLL_MILESTONE;
+  | typeof SCROLL_MILESTONE
+  | typeof CHAT_STARTED
+  | typeof BOOKING_SCHEDULED;
 
 export const DOWNLOAD_EXTENSIONS = [
   '.pdf',

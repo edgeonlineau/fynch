@@ -190,9 +190,7 @@ describe('click-listeners', () => {
 
     clickElement(link);
 
-    const actions = window.dataLayer
-      .filter((e) => e.event === 'fynch.event')
-      .map((e) => e.action);
+    const actions = window.dataLayer.filter((e) => e.event === 'fynch.event').map((e) => e.action);
     expect(actions).toContain('file_downloaded');
     expect(actions).not.toContain('outbound_link_clicked');
   });

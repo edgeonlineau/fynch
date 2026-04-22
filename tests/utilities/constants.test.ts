@@ -8,6 +8,8 @@ import {
   CLICK_CTA,
   FORM_LEAD,
   SCROLL_MILESTONE,
+  CHAT_STARTED,
+  BOOKING_SCHEDULED,
   DOWNLOAD_EXTENSIONS,
 } from '../../src/utilities/constants';
 
@@ -21,6 +23,8 @@ describe('constants', () => {
     expect(CLICK_CTA).toBe('cta_clicked');
     expect(FORM_LEAD).toBe('form_lead');
     expect(SCROLL_MILESTONE).toBe('scroll_milestone');
+    expect(CHAT_STARTED).toBe('chat_started');
+    expect(BOOKING_SCHEDULED).toBe('booking_scheduled');
   });
 
   it('exports download extensions array', () => {

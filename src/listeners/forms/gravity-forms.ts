@@ -5,7 +5,7 @@ export function register($: JQueryStatic): void {
   $(document).on('gform_confirmation_loaded', (_event: unknown, formId: unknown) => {
     const id = String(formId);
     sendFynchEvent(FORM_LEAD, `Gravity Forms ID: ${id}`, {
-      form_platform: 'gravity-forms',
+      platform: 'gravity-forms',
       form_name: id,
     });
   });

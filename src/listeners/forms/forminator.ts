@@ -8,7 +8,7 @@ export function register($: JQueryStatic): void {
     if (target instanceof Element) {
       const formId = target.getAttribute('data-form-id') ?? '';
       sendFynchEvent(FORM_LEAD, `Forminator Forms ID: ${formId}`, {
-        form_platform: 'forminator',
+        platform: 'forminator',
         form_name: formId,
       });
     }

@@ -30,7 +30,7 @@ export function register(): void {
 
       const formName = form.getAttribute('name') || form.getAttribute('id') || 'unknown';
       sendFynchEvent(FORM_LEAD, `Generic Form: ${formName}`, {
-        form_platform: 'generic',
+        platform: 'generic',
         form_name: formName,
       });
     },

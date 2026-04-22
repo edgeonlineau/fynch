@@ -19,7 +19,7 @@ describe('form-listeners', () => {
         event: 'fynch.event',
         action: 'form_lead',
         specifics: 'Contact Form 7 ID: 123',
-        form_platform: 'contact-form-7',
+        platform: 'contact-form-7',
         form_name: '123',
       }),
     );
@@ -42,7 +42,7 @@ describe('form-listeners', () => {
         event: 'fynch.event',
         action: 'form_lead',
         specifics: 'HubSpot Form ID: hs-form-456',
-        form_platform: 'hubspot-v3',
+        platform: 'hubspot-v3',
         form_name: 'hs-form-456',
       }),
     );
@@ -80,7 +80,7 @@ describe('form-listeners', () => {
         event: 'fynch.event',
         action: 'form_lead',
         specifics: 'HubSpot Form ID: hs-v4-789',
-        form_platform: 'hubspot-v4',
+        platform: 'hubspot-v4',
         form_name: 'hs-v4-789',
       }),
     );
@@ -123,7 +123,7 @@ describe('form-listeners', () => {
         event: 'fynch.event',
         action: 'form_lead',
         specifics: 'Duda Form',
-        form_platform: 'duda',
+        platform: 'duda',
         form_name: 'Duda Form',
       }),
     );
@@ -145,7 +145,7 @@ describe('form-listeners', () => {
         event: 'fynch.event',
         action: 'form_lead',
         specifics: 'Typeform ID: tf-abc123',
-        form_platform: 'typeform',
+        platform: 'typeform',
         form_name: 'tf-abc123',
       }),
     );
@@ -165,7 +165,7 @@ describe('form-listeners', () => {
         event: 'fynch.event',
         action: 'form_lead',
         specifics: 'Generic Form: contact-us',
-        form_platform: 'generic',
+        platform: 'generic',
         form_name: 'contact-us',
       }),
     );
@@ -180,7 +180,7 @@ describe('form-listeners', () => {
 
     form.dispatchEvent(new SubmitEvent('submit', { bubbles: true, cancelable: true }));
 
-    const genericEvents = window.dataLayer.filter((e) => e.form_platform === 'generic');
+    const genericEvents = window.dataLayer.filter((e) => e.platform === 'generic');
     expect(genericEvents).toHaveLength(0);
   });
 });

@@ -1,0 +1,7 @@
+import { register as beacon } from './beacon';
+import { register as podium } from './podium';
+import { register as tawk } from './tawk';
+
+beacon();
+podium();
+tawk();

@@ -62,24 +62,35 @@ describe('sendFynchEvent', () => {
     expect(window.dataLayer[0].event).toBe('existing');
   });
 
-  it('includes form metadata when provided', async () => {
+  it('includes event metadata when provided', async () => {
     const sendFynchEvent = await loadSendFynchEvent();
     sendFynchEvent('form_lead', 'Contact Form 7 ID: 123', {
-      form_platform: 'contact-form-7',
+      platform: 'contact-form-7',
       form_name: '123',
     });
 
     const event = window.dataLayer[0];
-    expect(event.form_platform).toBe('contact-form-7');
+    expect(event.platform).toBe('contact-form-7');
     expect(event.form_name).toBe('123');
   });
 
-  it('does not include form metadata when not provided', async () => {
+  it('does not include event metadata when not provided', async () => {
     const sendFynchEvent = await loadSendFynchEvent();
     sendFynchEvent('email_clicked', 'test@example.com');
 
     const event = window.dataLayer[0];
-    expect(event.form_platform).toBeUndefined();
+    expect(event.platform).toBeUndefined();
+    expect(event.form_name).toBeUndefined();
+  });
+
+  it('omits form_name when not provided in metadata', async () => {
+    const sendFynchEvent = await loadSendFynchEvent();
+    sendFynchEvent('chat_started', 'Beacon Chat', {
+      platform: 'beacon',
+    });
+
+    const event = window.dataLayer[0];
+    expect(event.platform).toBe('beacon');
     expect(event.form_name).toBeUndefined();
   });
 

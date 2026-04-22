@@ -7,7 +7,7 @@ export function register($: JQueryStatic): void {
     const target = (event as JQueryEvent).target as HTMLFormElement | null;
     const formName = target?.name ?? '';
     sendFynchEvent(FORM_LEAD, `Elementor Form: ${formName}`, {
-      form_platform: 'elementor',
+      platform: 'elementor',
       form_name: formName,
     });
   });

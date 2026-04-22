@@ -2,9 +2,9 @@ import type { FynchEventAction } from './constants';
 
 window.dataLayer = window.dataLayer || [];
 
-export interface FormMetadata {
-  readonly form_platform: string;
-  readonly form_name: string;
+export interface EventMetadata {
+  readonly platform: string;
+  readonly form_name?: string;
 }
 
 const DEDUP_WINDOW_MS = 500;
@@ -38,7 +38,7 @@ function buildPageContext(): Pick<
 export function sendFynchEvent(
   action: FynchEventAction,
   specifics: string,
-  formMetadata?: FormMetadata,
+  metadata?: EventMetadata,
 ): void {
   if (isDuplicate(action, specifics)) return;
 
@@ -47,9 +47,9 @@ export function sendFynchEvent(
     action,
     specifics,
     ...buildPageContext(),
-    ...(formMetadata && {
-      form_platform: formMetadata.form_platform,
-      form_name: formMetadata.form_name,
+    ...(metadata && {
+      platform: metadata.platform,
+      ...(metadata.form_name !== undefined && { form_name: metadata.form_name }),
     }),
   };
 
