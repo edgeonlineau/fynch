@@ -2,9 +2,17 @@ import type { FynchEventAction } from './constants';
 
 window.dataLayer = window.dataLayer || [];
 
-export interface EventMetadata {
-  readonly platform: string;
+export interface EventParams {
+  readonly service_provider?: string;
+  readonly form_id?: string;
   readonly form_name?: string;
+  readonly link_url?: string;
+  readonly link_text?: string;
+  readonly link_id?: string;
+  readonly link_classes?: string;
+  readonly link_domain?: string;
+  readonly file_name?: string;
+  readonly file_extension?: string;
 }
 
 const DEDUP_WINDOW_MS = 500;
@@ -38,7 +46,7 @@ function buildPageContext(): Pick<
 export function sendFynchEvent(
   action: FynchEventAction,
   specifics: string,
-  metadata?: EventMetadata,
+  params?: EventParams,
 ): void {
   if (isDuplicate(action, specifics)) return;
 
@@ -47,10 +55,7 @@ export function sendFynchEvent(
     action,
     specifics,
     ...buildPageContext(),
-    ...(metadata && {
-      platform: metadata.platform,
-      ...(metadata.form_name !== undefined && { form_name: metadata.form_name }),
-    }),
+    ...params,
   };
 
   dataLayer.push(event);

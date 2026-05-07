@@ -18,7 +18,7 @@ export function register(): void {
       data.event?.event_action === 'Booking Confirmed'
     ) {
       sendFynchEvent(BOOKING_SCHEDULED, 'NowBookIt Booking', {
-        platform: 'nowbookit',
+        service_provider: 'nowbookit',
       });
     }
   });

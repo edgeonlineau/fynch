@@ -9,7 +9,7 @@ export function register(): void {
     }
     if (event === 'Conversation Started') {
       sendFynchEvent(CHAT_STARTED, 'Podium Chat', {
-        platform: 'podium',
+        service_provider: 'podium',
       });
     }
   };

@@ -8,8 +8,8 @@ export function register($: JQueryStatic): void {
     if (target instanceof Element) {
       const formId = target.getAttribute('data-formid') ?? '';
       sendFynchEvent(FORM_LEAD, `WP Forms ID: ${formId}`, {
-        platform: 'wp-forms',
-        form_name: formId,
+        service_provider: 'wp-forms',
+        form_id: formId,
       });
     }
   });

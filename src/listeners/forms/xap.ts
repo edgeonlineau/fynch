@@ -15,7 +15,7 @@ export function register(): void {
     if (data?.type === 'IFRAME_DATA_LAYER_EVENT' && data.event === 'iframe_form_submission') {
       const location = data.selected_location ?? 'XAP Form';
       sendFynchEvent(FORM_LEAD, `XAP Form: ${location}`, {
-        platform: 'xap',
+        service_provider: 'xap',
         form_name: location,
       });
     }

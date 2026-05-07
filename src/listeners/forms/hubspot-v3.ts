@@ -6,8 +6,8 @@ export function register(): void {
     if (event.data.type === 'hsFormCallback' && event.data.eventName === 'onFormSubmitted') {
       const formId = String(event.data?.id ?? '');
       sendFynchEvent(FORM_LEAD, `HubSpot Form ID: ${formId}`, {
-        platform: 'hubspot-v3',
-        form_name: formId,
+        service_provider: 'hubspot-v3',
+        form_id: formId,
       });
     }
   });

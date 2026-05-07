@@ -8,8 +8,8 @@ export function register(): void {
     if (hsform) {
       const formId = hsform.getFormId();
       sendFynchEvent(FORM_LEAD, `HubSpot Form ID: ${formId}`, {
-        platform: 'hubspot-v4',
-        form_name: formId,
+        service_provider: 'hubspot-v4',
+        form_id: formId,
       });
     }
   });

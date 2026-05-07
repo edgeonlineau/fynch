@@ -12,8 +12,8 @@ export function register(): void {
     ) {
       const formId = String(event.data.formId);
       sendFynchEvent(FORM_LEAD, `Typeform ID: ${formId}`, {
-        platform: 'typeform',
-        form_name: formId,
+        service_provider: 'typeform',
+        form_id: formId,
       });
     }
   });

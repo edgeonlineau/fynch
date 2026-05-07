@@ -62,36 +62,67 @@ describe('sendFynchEvent', () => {
     expect(window.dataLayer[0].event).toBe('existing');
   });
 
-  it('includes event metadata when provided', async () => {
+  it('includes event params when provided', async () => {
     const sendFynchEvent = await loadSendFynchEvent();
     sendFynchEvent('form_lead', 'Contact Form 7 ID: 123', {
-      platform: 'contact-form-7',
-      form_name: '123',
+      service_provider: 'contact-form-7',
+      form_id: '123',
     });
 
     const event = window.dataLayer[0];
-    expect(event.platform).toBe('contact-form-7');
-    expect(event.form_name).toBe('123');
+    expect(event.service_provider).toBe('contact-form-7');
+    expect(event.form_id).toBe('123');
   });
 
-  it('does not include event metadata when not provided', async () => {
+  it('does not include event params when not provided', async () => {
     const sendFynchEvent = await loadSendFynchEvent();
     sendFynchEvent('email_clicked', 'test@example.com');
 
     const event = window.dataLayer[0];
-    expect(event.platform).toBeUndefined();
+    expect(event.service_provider).toBeUndefined();
     expect(event.form_name).toBeUndefined();
   });
 
-  it('omits form_name when not provided in metadata', async () => {
+  it('omits form_name when not provided in params', async () => {
     const sendFynchEvent = await loadSendFynchEvent();
     sendFynchEvent('chat_started', 'Beacon Chat', {
-      platform: 'beacon',
+      service_provider: 'beacon',
     });
 
     const event = window.dataLayer[0];
-    expect(event.platform).toBe('beacon');
+    expect(event.service_provider).toBe('beacon');
     expect(event.form_name).toBeUndefined();
+  });
+
+  it('includes click params when provided', async () => {
+    const sendFynchEvent = await loadSendFynchEvent();
+    sendFynchEvent('email_clicked', 'click-test@example.com', {
+      link_url: 'mailto:click-test@example.com',
+      link_text: 'Email Us',
+      link_id: 'contact-cta',
+      link_classes: 'btn',
+    });
+
+    const event = window.dataLayer[0];
+    expect(event.link_url).toBe('mailto:click-test@example.com');
+    expect(event.link_text).toBe('Email Us');
+    expect(event.link_id).toBe('contact-cta');
+    expect(event.link_classes).toBe('btn');
+  });
+
+  it('omits undefined params fields', async () => {
+    const sendFynchEvent = await loadSendFynchEvent();
+    sendFynchEvent('outbound_link_clicked', 'https://example.com', {
+      link_url: 'https://example.com',
+      link_domain: 'example.com',
+    });
+
+    const event = window.dataLayer[0];
+    expect(event.link_url).toBe('https://example.com');
+    expect(event.link_domain).toBe('example.com');
+    expect(event.link_text).toBeUndefined();
+    expect(event.link_id).toBeUndefined();
+    expect(event.file_name).toBeUndefined();
   });
 
   it('deduplicates identical events within 500ms', async () => {

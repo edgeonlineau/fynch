@@ -5,7 +5,7 @@ export function register(): void {
   if (typeof window.Beacon === 'function') {
     window.Beacon('once', 'ai-answers-response', () => {
       sendFynchEvent(CHAT_STARTED, 'Beacon Chat', {
-        platform: 'beacon',
+        service_provider: 'beacon',
       });
     });
   }

@@ -6,8 +6,8 @@ export function register($: JQueryStatic): void {
     if (typeof response === 'object' && response !== null && 'id' in response) {
       const formId = String((response as { id?: string }).id ?? '');
       sendFynchEvent(FORM_LEAD, `Ninja Forms ID: ${formId}`, {
-        platform: 'ninja-forms',
-        form_name: formId,
+        service_provider: 'ninja-forms',
+        form_id: formId,
       });
     }
   });

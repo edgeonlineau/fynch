@@ -15,6 +15,7 @@ describe('click-listeners', () => {
 
     const link = document.createElement('a');
     link.href = 'mailto:hello@example.com';
+    link.textContent = 'Email Us';
     document.body.appendChild(link);
 
     clickElement(link);
@@ -23,6 +24,8 @@ describe('click-listeners', () => {
       expect.objectContaining({
         event: 'fynch.event',
         action: 'email_clicked',
+        link_url: 'mailto:hello@example.com',
+        link_text: 'Email Us',
       }),
     );
   });
@@ -111,11 +114,12 @@ describe('click-listeners', () => {
     );
   });
 
-  it('tracks outbound link clicks', async () => {
+  it('tracks outbound link clicks with link_domain', async () => {
     await import('../../../src/listeners/clicks/click-listeners');
 
     const link = document.createElement('a');
     link.href = 'https://external-site.com/page';
+    link.textContent = 'Visit Partner';
     document.body.appendChild(link);
 
     clickElement(link);
@@ -125,6 +129,9 @@ describe('click-listeners', () => {
         event: 'fynch.event',
         action: 'outbound_link_clicked',
         specifics: 'https://external-site.com/page',
+        link_url: 'https://external-site.com/page',
+        link_text: 'Visit Partner',
+        link_domain: 'external-site.com',
       }),
     );
   });
@@ -144,11 +151,12 @@ describe('click-listeners', () => {
     expect(outbound).toHaveLength(0);
   });
 
-  it('tracks file download clicks', async () => {
+  it('tracks file download clicks with file_name and file_extension', async () => {
     await import('../../../src/listeners/clicks/click-listeners');
 
     const link = document.createElement('a');
     link.href = `${window.location.origin}/docs/report.pdf`;
+    link.textContent = 'Download Report';
     document.body.appendChild(link);
 
     clickElement(link);
@@ -158,6 +166,10 @@ describe('click-listeners', () => {
         event: 'fynch.event',
         action: 'file_downloaded',
         specifics: '/docs/report.pdf',
+        link_url: `${window.location.origin}/docs/report.pdf`,
+        link_text: 'Download Report',
+        file_name: 'report.pdf',
+        file_extension: 'pdf',
       }),
     );
   });
@@ -179,6 +191,55 @@ describe('click-listeners', () => {
         }),
       );
     }
+  });
+
+  it('includes link_id and link_classes when present', async () => {
+    await import('../../../src/listeners/clicks/click-listeners');
+
+    const link = document.createElement('a');
+    link.href = 'mailto:test@example.com';
+    link.id = 'contact-link';
+    link.className = 'btn btn-primary';
+    link.textContent = 'Contact';
+    document.body.appendChild(link);
+
+    clickElement(link);
+
+    expect(window.dataLayer).toContainEqual(
+      expect.objectContaining({
+        action: 'email_clicked',
+        link_id: 'contact-link',
+        link_classes: 'btn btn-primary',
+      }),
+    );
+  });
+
+  it('omits link_id and link_classes when absent', async () => {
+    await import('../../../src/listeners/clicks/click-listeners');
+
+    const link = document.createElement('a');
+    link.href = 'mailto:test@example.com';
+    document.body.appendChild(link);
+
+    clickElement(link);
+
+    const event = window.dataLayer.find((e) => e.action === 'email_clicked');
+    expect(event?.link_id).toBeUndefined();
+    expect(event?.link_classes).toBeUndefined();
+  });
+
+  it('truncates link_text to 100 characters', async () => {
+    await import('../../../src/listeners/clicks/click-listeners');
+
+    const link = document.createElement('a');
+    link.href = 'mailto:longtext@example.com';
+    link.textContent = 'A'.repeat(150);
+    document.body.appendChild(link);
+
+    clickElement(link);
+
+    const event = window.dataLayer.find((e) => e.specifics === 'longtext@example.com');
+    expect(event?.link_text).toHaveLength(100);
   });
 
   it('prioritises download over outbound for external download links', async () => {

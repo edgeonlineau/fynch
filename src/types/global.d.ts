@@ -7,8 +7,16 @@ interface DataLayerEvent {
   page_path: string;
   referrer: string;
   timestamp: string;
-  platform?: string;
+  service_provider?: string;
+  form_id?: string;
   form_name?: string;
+  link_url?: string;
+  link_text?: string;
+  link_id?: string;
+  link_classes?: string;
+  link_domain?: string;
+  file_name?: string;
+  file_extension?: string;
 }
 
 interface Window {

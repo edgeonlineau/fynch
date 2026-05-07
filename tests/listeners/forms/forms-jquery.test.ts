@@ -67,7 +67,7 @@ describe('form-listeners (jQuery-dependent)', () => {
         event: 'fynch.event',
         action: 'form_lead',
         specifics: 'Elementor Form: contact-form',
-        platform: 'elementor',
+        service_provider: 'elementor',
         form_name: 'contact-form',
       }),
     );
@@ -85,8 +85,8 @@ describe('form-listeners (jQuery-dependent)', () => {
         event: 'fynch.event',
         action: 'form_lead',
         specifics: 'Fluent Forms ID: ff-42',
-        platform: 'fluent-forms',
-        form_name: 'ff-42',
+        service_provider: 'fluent-forms',
+        form_id: 'ff-42',
       }),
     );
   });
@@ -115,7 +115,7 @@ describe('form-listeners (jQuery-dependent)', () => {
         event: 'fynch.event',
         action: 'form_lead',
         specifics: 'Formidable Forms: Test Form',
-        platform: 'formidable',
+        service_provider: 'formidable',
         form_name: 'Test Form',
       }),
     );
@@ -134,8 +134,8 @@ describe('form-listeners (jQuery-dependent)', () => {
         event: 'fynch.event',
         action: 'form_lead',
         specifics: 'Forminator Forms ID: forminator-99',
-        platform: 'forminator',
-        form_name: 'forminator-99',
+        service_provider: 'forminator',
+        form_id: 'forminator-99',
       }),
     );
   });
@@ -151,8 +151,8 @@ describe('form-listeners (jQuery-dependent)', () => {
         event: 'fynch.event',
         action: 'form_lead',
         specifics: 'Ninja Forms ID: ninja-7',
-        platform: 'ninja-forms',
-        form_name: 'ninja-7',
+        service_provider: 'ninja-forms',
+        form_id: 'ninja-7',
       }),
     );
   });
@@ -170,8 +170,8 @@ describe('form-listeners (jQuery-dependent)', () => {
         event: 'fynch.event',
         action: 'form_lead',
         specifics: 'WP Forms ID: wp-55',
-        platform: 'wp-forms',
-        form_name: 'wp-55',
+        service_provider: 'wp-forms',
+        form_id: 'wp-55',
       }),
     );
   });
@@ -186,8 +186,8 @@ describe('form-listeners (jQuery-dependent)', () => {
         event: 'fynch.event',
         action: 'form_lead',
         specifics: 'WS Form ID: ws-form-12',
-        platform: 'ws-form',
-        form_name: 'ws-form-12',
+        service_provider: 'ws-form',
+        form_id: 'ws-form-12',
       }),
     );
   });
@@ -212,8 +212,7 @@ describe('form-listeners (jQuery-dependent)', () => {
         event: 'fynch.event',
         action: 'form_lead',
         specifics: 'Divi Form',
-        platform: 'divi',
-        form_name: 'Divi Form',
+        service_provider: 'divi',
       }),
     );
   });
@@ -228,8 +227,8 @@ describe('form-listeners (jQuery-dependent)', () => {
         event: 'fynch.event',
         action: 'form_lead',
         specifics: 'Gravity Forms ID: gf-33',
-        platform: 'gravity-forms',
-        form_name: 'gf-33',
+        service_provider: 'gravity-forms',
+        form_id: 'gf-33',
       }),
     );
   });

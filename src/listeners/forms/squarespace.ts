@@ -31,8 +31,7 @@ export function register(): void {
     observer.disconnect();
 
     sendFynchEvent(FORM_LEAD, 'Squarespace Form', {
-      platform: 'squarespace',
-      form_name: 'Squarespace Form',
+      service_provider: 'squarespace',
     });
   });
 

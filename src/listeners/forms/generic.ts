@@ -28,10 +28,13 @@ export function register(): void {
       if (!(form instanceof HTMLFormElement)) return;
       if (isKnownForm(form)) return;
 
-      const formName = form.getAttribute('name') || form.getAttribute('id') || 'unknown';
-      sendFynchEvent(FORM_LEAD, `Generic Form: ${formName}`, {
-        platform: 'generic',
-        form_name: formName,
+      const formName = form.getAttribute('name') || undefined;
+      const formId = form.getAttribute('id') || undefined;
+      const label = formName || formId || 'unknown';
+      sendFynchEvent(FORM_LEAD, `Generic Form: ${label}`, {
+        service_provider: 'generic',
+        ...(formId && { form_id: formId }),
+        ...(formName && { form_name: formName }),
       });
     },
     { capture: true },

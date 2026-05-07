@@ -22,7 +22,7 @@ describe('booking-listeners', () => {
         event: 'fynch.event',
         action: 'booking_scheduled',
         specifics: 'Calendly Booking',
-        platform: 'calendly',
+        service_provider: 'calendly',
       }),
     );
   });
@@ -71,7 +71,7 @@ describe('booking-listeners', () => {
         event: 'fynch.event',
         action: 'booking_scheduled',
         specifics: 'NowBookIt Booking',
-        platform: 'nowbookit',
+        service_provider: 'nowbookit',
       }),
     );
   });
@@ -120,7 +120,7 @@ describe('booking-listeners', () => {
         event: 'fynch.event',
         action: 'booking_scheduled',
         specifics: 'OpenTable Reservation',
-        platform: 'opentable',
+        service_provider: 'opentable',
       }),
     );
   });
@@ -138,7 +138,7 @@ describe('booking-listeners', () => {
     expect(window.dataLayer).toContainEqual(
       expect.objectContaining({
         action: 'booking_scheduled',
-        platform: 'opentable',
+        service_provider: 'opentable',
       }),
     );
   });
@@ -169,7 +169,7 @@ describe('booking-listeners', () => {
         event: 'fynch.event',
         action: 'booking_scheduled',
         specifics: 'LineLeader Tour: lead-123',
-        platform: 'lineleader',
+        service_provider: 'lineleader',
       }),
     );
   });

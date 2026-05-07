@@ -31,7 +31,7 @@ describe('chat-listeners', () => {
         event: 'fynch.event',
         action: 'chat_started',
         specifics: 'Beacon Chat',
-        platform: 'beacon',
+        service_provider: 'beacon',
       }),
     );
   });
@@ -54,7 +54,7 @@ describe('chat-listeners', () => {
         event: 'fynch.event',
         action: 'chat_started',
         specifics: 'Tawk.to Chat',
-        platform: 'tawk',
+        service_provider: 'tawk',
       }),
     );
   });
@@ -84,7 +84,7 @@ describe('chat-listeners', () => {
         event: 'fynch.event',
         action: 'chat_started',
         specifics: 'Podium Chat',
-        platform: 'podium',
+        service_provider: 'podium',
       }),
     );
   });

@@ -19,8 +19,8 @@ describe('form-listeners', () => {
         event: 'fynch.event',
         action: 'form_lead',
         specifics: 'Contact Form 7 ID: 123',
-        platform: 'contact-form-7',
-        form_name: '123',
+        service_provider: 'contact-form-7',
+        form_id: '123',
       }),
     );
   });
@@ -42,8 +42,8 @@ describe('form-listeners', () => {
         event: 'fynch.event',
         action: 'form_lead',
         specifics: 'HubSpot Form ID: hs-form-456',
-        platform: 'hubspot-v3',
-        form_name: 'hs-form-456',
+        service_provider: 'hubspot-v3',
+        form_id: 'hs-form-456',
       }),
     );
   });
@@ -80,8 +80,8 @@ describe('form-listeners', () => {
         event: 'fynch.event',
         action: 'form_lead',
         specifics: 'HubSpot Form ID: hs-v4-789',
-        platform: 'hubspot-v4',
-        form_name: 'hs-v4-789',
+        service_provider: 'hubspot-v4',
+        form_id: 'hs-v4-789',
       }),
     );
   });
@@ -123,8 +123,7 @@ describe('form-listeners', () => {
         event: 'fynch.event',
         action: 'form_lead',
         specifics: 'Duda Form',
-        platform: 'duda',
-        form_name: 'Duda Form',
+        service_provider: 'duda',
       }),
     );
   });
@@ -145,8 +144,8 @@ describe('form-listeners', () => {
         event: 'fynch.event',
         action: 'form_lead',
         specifics: 'Typeform ID: tf-abc123',
-        platform: 'typeform',
-        form_name: 'tf-abc123',
+        service_provider: 'typeform',
+        form_id: 'tf-abc123',
       }),
     );
   });
@@ -165,7 +164,7 @@ describe('form-listeners', () => {
         event: 'fynch.event',
         action: 'form_lead',
         specifics: 'Generic Form: contact-us',
-        platform: 'generic',
+        service_provider: 'generic',
         form_name: 'contact-us',
       }),
     );
@@ -180,7 +179,7 @@ describe('form-listeners', () => {
 
     form.dispatchEvent(new SubmitEvent('submit', { bubbles: true, cancelable: true }));
 
-    const genericEvents = window.dataLayer.filter((e) => e.platform === 'generic');
+    const genericEvents = window.dataLayer.filter((e) => e.service_provider === 'generic');
     expect(genericEvents).toHaveLength(0);
   });
 });

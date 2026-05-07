@@ -6,8 +6,8 @@ export function register(): void {
     if (!(event instanceof CustomEvent)) return;
     const formId = String(event.detail?.contactFormId ?? '');
     sendFynchEvent(FORM_LEAD, `Contact Form 7 ID: ${formId}`, {
-      platform: 'contact-form-7',
-      form_name: formId,
+      service_provider: 'contact-form-7',
+      form_id: formId,
     });
   });
 }

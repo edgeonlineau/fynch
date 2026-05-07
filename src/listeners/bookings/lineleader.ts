@@ -10,7 +10,7 @@ export function register(): void {
       existingCallback(leadId);
     }
     sendFynchEvent(BOOKING_SCHEDULED, `LineLeader Tour: ${leadId}`, {
-      platform: 'lineleader',
+      service_provider: 'lineleader',
     });
   };
 }
