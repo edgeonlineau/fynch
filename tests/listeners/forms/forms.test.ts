@@ -144,36 +144,4 @@ describe('form-listeners', () => {
       }),
     );
   });
-
-  it('tracks generic form submissions', async () => {
-    await import('../../../src/listeners/forms/index');
-
-    const form = document.createElement('form');
-    form.setAttribute('name', 'contact-us');
-    document.body.appendChild(form);
-
-    form.dispatchEvent(new SubmitEvent('submit', { bubbles: true, cancelable: true }));
-
-    expect(window.dataLayer).toContainEqual(
-      expect.objectContaining({
-        event: 'fynch.event',
-        action: 'form_lead',
-        service_provider: 'generic',
-        form_name: 'contact-us',
-      }),
-    );
-  });
-
-  it('does not track known form platforms as generic', async () => {
-    await import('../../../src/listeners/forms/index');
-
-    const form = document.createElement('form');
-    form.classList.add('wpcf7-form');
-    document.body.appendChild(form);
-
-    form.dispatchEvent(new SubmitEvent('submit', { bubbles: true, cancelable: true }));
-
-    const genericEvents = window.dataLayer.filter((e) => e.service_provider === 'generic');
-    expect(genericEvents).toHaveLength(0);
-  });
 });

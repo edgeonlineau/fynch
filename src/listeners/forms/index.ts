@@ -4,7 +4,6 @@ import { register as hubspotV3 } from './hubspot-v3';
 import { register as hubspotV4 } from './hubspot-v4';
 import { register as typeform } from './typeform';
 import { register as squarespace } from './squarespace';
-import { register as generic } from './generic';
 import { register as divi } from './divi';
 import { register as elementor } from './elementor';
 import { register as fluentForms } from './fluent-forms';
@@ -21,7 +20,6 @@ hubspotV3();
 hubspotV4();
 typeform();
 squarespace();
-generic();
 
 if (typeof jQuery === 'function') {
   const $ = jQuery;
