@@ -6,7 +6,9 @@ export function register(): void {
     if (event.origin !== 'https://bookings.nowbookit.com') return;
     if (typeof event.data !== 'string') return;
 
-    let data: { type?: string; event?: { event_action?: string } } | undefined;
+    let data:
+      | { type?: string; event?: { event_action?: string }; data?: { bookingId?: string } }
+      | undefined;
     try {
       data = JSON.parse(event.data);
     } catch {
@@ -17,8 +19,10 @@ export function register(): void {
       data?.type === 'NBIWidget2GoogleAnalytics' &&
       data.event?.event_action === 'Booking Confirmed'
     ) {
+      const leadId = String(data?.data?.bookingId ?? '') || undefined;
       sendFynchEvent(BOOKING_SCHEDULED, {
         service_provider: 'nowbookit',
+        ...(leadId && { lead_id: leadId }),
       });
     }
   });

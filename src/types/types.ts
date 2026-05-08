@@ -15,8 +15,16 @@ export interface JQueryEvent {
 
 export interface FluentFormsData {
   config?: { id?: string };
+  response?: { data?: { entry_id?: string } };
 }
 
 export interface NinjaFormsResponse {
   id?: string;
+  response?: {
+    data?: {
+      actions?: { save?: { entry_id?: string } };
+      id?: string;
+      settings?: { title?: string };
+    };
+  };
 }

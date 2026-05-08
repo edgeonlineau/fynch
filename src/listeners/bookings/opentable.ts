@@ -14,8 +14,10 @@ export function register(): void {
       'type' in event.data &&
       event.data.type === 'reservation-made'
     ) {
+      const leadId = String(event.data.confirmation_number ?? '') || undefined;
       sendFynchEvent(BOOKING_SCHEDULED, {
         service_provider: 'opentable',
+        ...(leadId && { lead_id: leadId }),
       });
     }
   });

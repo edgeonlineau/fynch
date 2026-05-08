@@ -12,9 +12,18 @@ export function register($: JQueryStatic): void {
       'config' in data
     ) {
       const formId = String((data as FluentFormsData).config?.id ?? '');
+      const leadId = String((data as FluentFormsData).response?.data?.entry_id ?? '') || undefined;
+      const formName =
+        document
+          .getElementById(`fluentform_${formId}`)
+          ?.closest('.fluentform-wrapper')
+          ?.querySelector('.fluentform-title')
+          ?.textContent?.trim() ?? '';
       sendFynchEvent(FORM_LEAD, {
         service_provider: 'fluent-forms',
         form_id: formId,
+        ...(leadId && { lead_id: leadId }),
+        ...(formName && { form_name: formName }),
       });
     }
   });

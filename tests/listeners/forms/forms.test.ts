@@ -7,6 +7,11 @@ describe('form-listeners', () => {
   });
 
   it('tracks Contact Form 7 submissions with form metadata', async () => {
+    const wrapper = document.createElement('div');
+    wrapper.id = 'wpcf7-f123-p456-o1';
+    wrapper.setAttribute('data-name', 'Contact Us');
+    document.body.appendChild(wrapper);
+
     await import('../../../src/listeners/forms/index');
 
     const event = new CustomEvent('wpcf7mailsent', {
@@ -20,8 +25,11 @@ describe('form-listeners', () => {
         action: 'form_lead',
         service_provider: 'contact-form-7',
         form_id: '123',
+        form_name: 'Contact Us',
       }),
     );
+
+    wrapper.remove();
   });
 
   it('tracks HubSpot Forms v3 submissions via postMessage', async () => {
@@ -32,6 +40,7 @@ describe('form-listeners', () => {
         type: 'hsFormCallback',
         eventName: 'onFormSubmitted',
         id: 'hs-form-456',
+        data: { submissionGuid: 'guid-789' },
       },
     });
     window.dispatchEvent(event);
@@ -42,6 +51,7 @@ describe('form-listeners', () => {
         action: 'form_lead',
         service_provider: 'hubspot-v3',
         form_id: 'hs-form-456',
+        lead_id: 'guid-789',
       }),
     );
   });
@@ -70,7 +80,9 @@ describe('form-listeners', () => {
 
     await import('../../../src/listeners/forms/index');
 
-    const event = new Event('hs-form-event:on-submission:success');
+    const event = new CustomEvent('hs-form-event:on-submission:success', {
+      detail: { submissionGuid: 'v4-guid-001' },
+    });
     window.dispatchEvent(event);
 
     expect(window.dataLayer).toContainEqual(
@@ -79,6 +91,7 @@ describe('form-listeners', () => {
         action: 'form_lead',
         service_provider: 'hubspot-v4',
         form_id: 'hs-v4-789',
+        lead_id: 'v4-guid-001',
       }),
     );
   });
@@ -131,6 +144,7 @@ describe('form-listeners', () => {
       data: {
         type: 'form-submit',
         formId: 'tf-abc123',
+        responseId: 'resp-xyz',
       },
     });
     window.dispatchEvent(event);
@@ -141,6 +155,7 @@ describe('form-listeners', () => {
         action: 'form_lead',
         service_provider: 'typeform',
         form_id: 'tf-abc123',
+        lead_id: 'resp-xyz',
       }),
     );
   });

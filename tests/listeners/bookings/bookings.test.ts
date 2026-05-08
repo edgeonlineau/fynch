@@ -61,6 +61,7 @@ describe('booking-listeners', () => {
       data: JSON.stringify({
         type: 'NBIWidget2GoogleAnalytics',
         event: { event_action: 'Booking Confirmed' },
+        data: { bookingId: 'NBI-67890' },
       }),
     });
     window.dispatchEvent(event);
@@ -70,6 +71,7 @@ describe('booking-listeners', () => {
         event: 'fynch.event',
         action: 'booking_scheduled',
         service_provider: 'nowbookit',
+        lead_id: 'NBI-67890',
       }),
     );
   });
@@ -109,7 +111,7 @@ describe('booking-listeners', () => {
 
     const event = new MessageEvent('message', {
       origin: 'https://www.opentable.com.au',
-      data: { type: 'reservation-made' },
+      data: { type: 'reservation-made', confirmation_number: 'OT-12345' },
     });
     window.dispatchEvent(event);
 
@@ -118,6 +120,7 @@ describe('booking-listeners', () => {
         event: 'fynch.event',
         action: 'booking_scheduled',
         service_provider: 'opentable',
+        lead_id: 'OT-12345',
       }),
     );
   });
@@ -128,7 +131,7 @@ describe('booking-listeners', () => {
 
     const event = new MessageEvent('message', {
       origin: 'https://www.opentable.com',
-      data: { type: 'reservation-made' },
+      data: { type: 'reservation-made', confirmation_number: 'OT-99999' },
     });
     window.dispatchEvent(event);
 
@@ -136,6 +139,7 @@ describe('booking-listeners', () => {
       expect.objectContaining({
         action: 'booking_scheduled',
         service_provider: 'opentable',
+        lead_id: 'OT-99999',
       }),
     );
   });
