@@ -66,7 +66,6 @@ describe('form-listeners (jQuery-dependent)', () => {
       expect.objectContaining({
         event: 'fynch.event',
         action: 'form_lead',
-        specifics: 'Elementor Form: contact-form',
         service_provider: 'elementor',
         form_name: 'contact-form',
       }),
@@ -84,7 +83,6 @@ describe('form-listeners (jQuery-dependent)', () => {
       expect.objectContaining({
         event: 'fynch.event',
         action: 'form_lead',
-        specifics: 'Fluent Forms ID: ff-42',
         service_provider: 'fluent-forms',
         form_id: 'ff-42',
       }),
@@ -114,7 +112,6 @@ describe('form-listeners (jQuery-dependent)', () => {
       expect.objectContaining({
         event: 'fynch.event',
         action: 'form_lead',
-        specifics: 'Formidable Forms: Test Form',
         service_provider: 'formidable',
         form_name: 'Test Form',
       }),
@@ -133,7 +130,6 @@ describe('form-listeners (jQuery-dependent)', () => {
       expect.objectContaining({
         event: 'fynch.event',
         action: 'form_lead',
-        specifics: 'Forminator Forms ID: forminator-99',
         service_provider: 'forminator',
         form_id: 'forminator-99',
       }),
@@ -150,7 +146,6 @@ describe('form-listeners (jQuery-dependent)', () => {
       expect.objectContaining({
         event: 'fynch.event',
         action: 'form_lead',
-        specifics: 'Ninja Forms ID: ninja-7',
         service_provider: 'ninja-forms',
         form_id: 'ninja-7',
       }),
@@ -169,7 +164,6 @@ describe('form-listeners (jQuery-dependent)', () => {
       expect.objectContaining({
         event: 'fynch.event',
         action: 'form_lead',
-        specifics: 'WP Forms ID: wp-55',
         service_provider: 'wp-forms',
         form_id: 'wp-55',
       }),
@@ -185,7 +179,6 @@ describe('form-listeners (jQuery-dependent)', () => {
       expect.objectContaining({
         event: 'fynch.event',
         action: 'form_lead',
-        specifics: 'WS Form ID: ws-form-12',
         service_provider: 'ws-form',
         form_id: 'ws-form-12',
       }),
@@ -211,7 +204,6 @@ describe('form-listeners (jQuery-dependent)', () => {
       expect.objectContaining({
         event: 'fynch.event',
         action: 'form_lead',
-        specifics: 'Divi Form',
         service_provider: 'divi',
       }),
     );
@@ -226,7 +218,6 @@ describe('form-listeners (jQuery-dependent)', () => {
       expect.objectContaining({
         event: 'fynch.event',
         action: 'form_lead',
-        specifics: 'Gravity Forms ID: gf-33',
         service_provider: 'gravity-forms',
         form_id: 'gf-33',
       }),

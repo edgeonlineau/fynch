@@ -30,7 +30,6 @@ describe('chat-listeners', () => {
       expect.objectContaining({
         event: 'fynch.event',
         action: 'chat_started',
-        specifics: 'Beacon Chat',
         service_provider: 'beacon',
       }),
     );
@@ -53,7 +52,6 @@ describe('chat-listeners', () => {
       expect.objectContaining({
         event: 'fynch.event',
         action: 'chat_started',
-        specifics: 'Tawk.to Chat',
         service_provider: 'tawk',
       }),
     );
@@ -83,10 +81,39 @@ describe('chat-listeners', () => {
       expect.objectContaining({
         event: 'fynch.event',
         action: 'chat_started',
-        specifics: 'Podium Chat',
         service_provider: 'podium',
       }),
     );
+  });
+
+  it('includes lead_id from Podium properties when uid is present', async () => {
+    const { register } = await import('../../../src/listeners/chats/podium');
+    register();
+
+    window.PodiumEventsCallback?.('Conversation Started', {
+      uid: 'conv-abc-123',
+      'customer-name': 'Jane',
+    });
+
+    expect(window.dataLayer).toContainEqual(
+      expect.objectContaining({
+        action: 'chat_started',
+        service_provider: 'podium',
+        lead_id: 'conv-abc-123',
+      }),
+    );
+  });
+
+  it('omits lead_id when Podium properties have no uid', async () => {
+    const { register } = await import('../../../src/listeners/chats/podium');
+    register();
+
+    window.PodiumEventsCallback?.('Conversation Started', {
+      'customer-name': 'Jane',
+    });
+
+    const event = window.dataLayer.find((e) => e.service_provider === 'podium');
+    expect(event?.lead_id).toBeUndefined();
   });
 
   it('ignores non-conversation Podium events', async () => {

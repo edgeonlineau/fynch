@@ -5,7 +5,7 @@ export function register(): void {
   document.addEventListener('wpcf7mailsent', (event: Event) => {
     if (!(event instanceof CustomEvent)) return;
     const formId = String(event.detail?.contactFormId ?? '');
-    sendFynchEvent(FORM_LEAD, `Contact Form 7 ID: ${formId}`, {
+    sendFynchEvent(FORM_LEAD, {
       service_provider: 'contact-form-7',
       form_id: formId,
     });

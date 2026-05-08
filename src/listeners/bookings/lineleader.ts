@@ -9,8 +9,9 @@ export function register(): void {
     if (typeof existingCallback === 'function') {
       existingCallback(leadId);
     }
-    sendFynchEvent(BOOKING_SCHEDULED, `LineLeader Tour: ${leadId}`, {
+    sendFynchEvent(BOOKING_SCHEDULED, {
       service_provider: 'lineleader',
+      lead_id: leadId,
     });
   };
 }

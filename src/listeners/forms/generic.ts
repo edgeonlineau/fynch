@@ -30,8 +30,7 @@ export function register(): void {
 
       const formName = form.getAttribute('name') || undefined;
       const formId = form.getAttribute('id') || undefined;
-      const label = formName || formId || 'unknown';
-      sendFynchEvent(FORM_LEAD, `Generic Form: ${label}`, {
+      sendFynchEvent(FORM_LEAD, {
         service_provider: 'generic',
         ...(formId && { form_id: formId }),
         ...(formName && { form_name: formName }),

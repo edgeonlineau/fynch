@@ -30,7 +30,7 @@ export function register(): void {
     clearTimeout(timeoutId);
     observer.disconnect();
 
-    sendFynchEvent(FORM_LEAD, 'Squarespace Form', {
+    sendFynchEvent(FORM_LEAD, {
       service_provider: 'squarespace',
     });
   });

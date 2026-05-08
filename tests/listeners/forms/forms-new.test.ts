@@ -24,7 +24,6 @@ describe('form-listeners (new platforms)', () => {
         expect.objectContaining({
           event: 'fynch.event',
           action: 'form_lead',
-          specifics: 'XAP Form: Brisbane',
           service_provider: 'xap',
           form_name: 'Brisbane',
         }),
@@ -45,7 +44,6 @@ describe('form-listeners (new platforms)', () => {
 
       expect(window.dataLayer).toContainEqual(
         expect.objectContaining({
-          specifics: 'XAP Form: XAP Form',
           form_name: 'XAP Form',
         }),
       );
@@ -111,7 +109,6 @@ describe('form-listeners (new platforms)', () => {
           expect.objectContaining({
             event: 'fynch.event',
             action: 'form_lead',
-            specifics: 'Squarespace Form',
             service_provider: 'squarespace',
           }),
         );

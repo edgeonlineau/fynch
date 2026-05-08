@@ -22,13 +22,13 @@ describe('sendFynchEvent', () => {
 
   it('pushes a fynch.event entry to dataLayer with page context', async () => {
     const sendFynchEvent = await loadSendFynchEvent();
-    sendFynchEvent('email_clicked', 'test@example.com');
+    sendFynchEvent('email_clicked', { link_url: 'mailto:test@example.com' });
 
     expect(window.dataLayer).toHaveLength(1);
     const event = window.dataLayer[0];
     expect(event.event).toBe('fynch.event');
     expect(event.action).toBe('email_clicked');
-    expect(event.specifics).toBe('test@example.com');
+    expect(event.link_url).toBe('mailto:test@example.com');
     expect(event.page_url).toBe(window.location.href);
     expect(event.page_title).toBe(document.title);
     expect(event.page_path).toBe(window.location.pathname);
@@ -36,18 +36,18 @@ describe('sendFynchEvent', () => {
     expect(event.timestamp).toBeDefined();
   });
 
-  it('pushes exactly one entry per call', async () => {
+  it('pushes event with action only when no params given', async () => {
     const sendFynchEvent = await loadSendFynchEvent();
-    sendFynchEvent('phone_clicked', '+1234567890');
+    sendFynchEvent('scroll_milestone');
 
     expect(window.dataLayer).toHaveLength(1);
+    expect(window.dataLayer[0].action).toBe('scroll_milestone');
   });
 
   it('preserves existing dataLayer entries', async () => {
     window.dataLayer.push({
       event: 'existing',
       action: 'test',
-      specifics: '',
       page_url: '',
       page_title: '',
       page_path: '',
@@ -56,7 +56,7 @@ describe('sendFynchEvent', () => {
     });
 
     const sendFynchEvent = await loadSendFynchEvent();
-    sendFynchEvent('sms_clicked', '+1234567890');
+    sendFynchEvent('sms_clicked', { link_url: 'sms:+1234567890' });
 
     expect(window.dataLayer).toHaveLength(2);
     expect(window.dataLayer[0].event).toBe('existing');
@@ -64,7 +64,7 @@ describe('sendFynchEvent', () => {
 
   it('includes event params when provided', async () => {
     const sendFynchEvent = await loadSendFynchEvent();
-    sendFynchEvent('form_lead', 'Contact Form 7 ID: 123', {
+    sendFynchEvent('form_lead', {
       service_provider: 'contact-form-7',
       form_id: '123',
     });
@@ -74,9 +74,9 @@ describe('sendFynchEvent', () => {
     expect(event.form_id).toBe('123');
   });
 
-  it('does not include event params when not provided', async () => {
+  it('does not include params fields when not provided', async () => {
     const sendFynchEvent = await loadSendFynchEvent();
-    sendFynchEvent('email_clicked', 'test@example.com');
+    sendFynchEvent('email_clicked');
 
     const event = window.dataLayer[0];
     expect(event.service_provider).toBeUndefined();
@@ -85,7 +85,7 @@ describe('sendFynchEvent', () => {
 
   it('omits form_name when not provided in params', async () => {
     const sendFynchEvent = await loadSendFynchEvent();
-    sendFynchEvent('chat_started', 'Beacon Chat', {
+    sendFynchEvent('chat_started', {
       service_provider: 'beacon',
     });
 
@@ -96,7 +96,7 @@ describe('sendFynchEvent', () => {
 
   it('includes click params when provided', async () => {
     const sendFynchEvent = await loadSendFynchEvent();
-    sendFynchEvent('email_clicked', 'click-test@example.com', {
+    sendFynchEvent('email_clicked', {
       link_url: 'mailto:click-test@example.com',
       link_text: 'Email Us',
       link_id: 'contact-cta',
@@ -112,7 +112,7 @@ describe('sendFynchEvent', () => {
 
   it('omits undefined params fields', async () => {
     const sendFynchEvent = await loadSendFynchEvent();
-    sendFynchEvent('outbound_link_clicked', 'https://example.com', {
+    sendFynchEvent('outbound_link_clicked', {
       link_url: 'https://example.com',
       link_domain: 'example.com',
     });
@@ -127,27 +127,35 @@ describe('sendFynchEvent', () => {
 
   it('deduplicates identical events within 500ms', async () => {
     const sendFynchEvent = await loadSendFynchEvent();
-    sendFynchEvent('email_clicked', 'test@example.com');
-    sendFynchEvent('email_clicked', 'test@example.com');
+    sendFynchEvent('email_clicked', { link_url: 'mailto:test@example.com' });
+    sendFynchEvent('email_clicked', { link_url: 'mailto:test@example.com' });
 
     expect(window.dataLayer).toHaveLength(1);
   });
 
-  it('allows same event after dedup window expires', async () => {
+  it('allows same action after dedup window expires', async () => {
     const sendFynchEvent = await loadSendFynchEvent();
-    sendFynchEvent('email_clicked', 'test@example.com');
+    sendFynchEvent('email_clicked', { link_url: 'mailto:test@example.com' });
     vi.advanceTimersByTime(501);
-    sendFynchEvent('email_clicked', 'test@example.com');
+    sendFynchEvent('email_clicked', { link_url: 'mailto:test@example.com' });
 
     expect(window.dataLayer).toHaveLength(2);
   });
 
-  it('allows different events within dedup window', async () => {
+  it('allows different params within dedup window', async () => {
     const sendFynchEvent = await loadSendFynchEvent();
-    sendFynchEvent('email_clicked', 'a@example.com');
-    sendFynchEvent('email_clicked', 'b@example.com');
+    sendFynchEvent('email_clicked', { link_url: 'mailto:a@example.com' });
+    sendFynchEvent('email_clicked', { link_url: 'mailto:b@example.com' });
 
     expect(window.dataLayer).toHaveLength(2);
+  });
+
+  it('deduplicates events with no params', async () => {
+    const sendFynchEvent = await loadSendFynchEvent();
+    sendFynchEvent('chat_started', { service_provider: 'beacon' });
+    sendFynchEvent('chat_started', { service_provider: 'beacon' });
+
+    expect(window.dataLayer).toHaveLength(1);
   });
 
   it('includes ISO 8601 timestamp', async () => {
@@ -155,7 +163,7 @@ describe('sendFynchEvent', () => {
     vi.setSystemTime(now);
 
     const sendFynchEvent = await loadSendFynchEvent();
-    sendFynchEvent('email_clicked', 'test@example.com');
+    sendFynchEvent('email_clicked');
 
     expect(window.dataLayer[0].timestamp).toBe('2026-04-14T10:00:00.000Z');
   });

@@ -21,7 +21,6 @@ describe('booking-listeners', () => {
       expect.objectContaining({
         event: 'fynch.event',
         action: 'booking_scheduled',
-        specifics: 'Calendly Booking',
         service_provider: 'calendly',
       }),
     );
@@ -70,7 +69,6 @@ describe('booking-listeners', () => {
       expect.objectContaining({
         event: 'fynch.event',
         action: 'booking_scheduled',
-        specifics: 'NowBookIt Booking',
         service_provider: 'nowbookit',
       }),
     );
@@ -119,7 +117,6 @@ describe('booking-listeners', () => {
       expect.objectContaining({
         event: 'fynch.event',
         action: 'booking_scheduled',
-        specifics: 'OpenTable Reservation',
         service_provider: 'opentable',
       }),
     );
@@ -168,8 +165,8 @@ describe('booking-listeners', () => {
       expect.objectContaining({
         event: 'fynch.event',
         action: 'booking_scheduled',
-        specifics: 'LineLeader Tour: lead-123',
         service_provider: 'lineleader',
+        lead_id: 'lead-123',
       }),
     );
   });

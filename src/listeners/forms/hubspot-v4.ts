@@ -7,7 +7,7 @@ export function register(): void {
     const hsform = HubspotFormsV4.getFormFromEvent(event);
     if (hsform) {
       const formId = hsform.getFormId();
-      sendFynchEvent(FORM_LEAD, `HubSpot Form ID: ${formId}`, {
+      sendFynchEvent(FORM_LEAD, {
         service_provider: 'hubspot-v4',
         form_id: formId,
       });

@@ -35,7 +35,7 @@ describe('scroll-listener', () => {
       expect.objectContaining({
         event: 'fynch.event',
         action: 'scroll_milestone',
-        specifics: '25%',
+        percent_scrolled: 25,
       }),
     );
   });
@@ -49,11 +49,11 @@ describe('scroll-listener', () => {
 
     const milestones = window.dataLayer
       .filter((e) => e.action === 'scroll_milestone')
-      .map((e) => e.specifics);
+      .map((e) => e.percent_scrolled);
 
-    expect(milestones).toContain('25%');
-    expect(milestones).toContain('50%');
-    expect(milestones).toContain('75%');
+    expect(milestones).toContain(25);
+    expect(milestones).toContain(50);
+    expect(milestones).toContain(75);
   });
 
   it('does not fire duplicate milestones', async () => {
@@ -65,7 +65,7 @@ describe('scroll-listener', () => {
     window.dispatchEvent(new Event('scroll'));
 
     const milestones25 = window.dataLayer.filter(
-      (e) => e.action === 'scroll_milestone' && e.specifics === '25%',
+      (e) => e.action === 'scroll_milestone' && e.percent_scrolled === 25,
     );
     expect(milestones25).toHaveLength(1);
   });

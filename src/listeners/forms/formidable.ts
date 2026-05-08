@@ -6,7 +6,7 @@ export function register($: JQueryStatic): void {
     const label = $(form as string)
       .find('.frm_screen_reader')
       ?.text();
-    sendFynchEvent(FORM_LEAD, `Formidable Forms: ${label}`, {
+    sendFynchEvent(FORM_LEAD, {
       service_provider: 'formidable',
       form_name: label,
     });

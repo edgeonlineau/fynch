@@ -1,7 +1,6 @@
 interface DataLayerEvent {
   event: string;
   action: string;
-  specifics: string;
   page_url: string;
   page_title: string;
   page_path: string;
@@ -10,6 +9,7 @@ interface DataLayerEvent {
   service_provider?: string;
   form_id?: string;
   form_name?: string;
+  lead_id?: string;
   link_url?: string;
   link_text?: string;
   link_id?: string;
@@ -17,6 +17,7 @@ interface DataLayerEvent {
   link_domain?: string;
   file_name?: string;
   file_extension?: string;
+  percent_scrolled?: number;
 }
 
 interface Window {

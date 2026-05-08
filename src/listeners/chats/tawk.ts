@@ -4,7 +4,7 @@ import { CHAT_STARTED } from '../../utilities/constants';
 export function register(): void {
   window.Tawk_API = window.Tawk_API || {};
   window.Tawk_API.onChatStarted = () => {
-    sendFynchEvent(CHAT_STARTED, 'Tawk.to Chat', {
+    sendFynchEvent(CHAT_STARTED, {
       service_provider: 'tawk',
     });
   };

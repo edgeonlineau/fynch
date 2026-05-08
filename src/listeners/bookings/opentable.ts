@@ -14,7 +14,7 @@ export function register(): void {
       'type' in event.data &&
       event.data.type === 'reservation-made'
     ) {
-      sendFynchEvent(BOOKING_SCHEDULED, 'OpenTable Reservation', {
+      sendFynchEvent(BOOKING_SCHEDULED, {
         service_provider: 'opentable',
       });
     }

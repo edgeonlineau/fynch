@@ -128,7 +128,6 @@ describe('click-listeners', () => {
       expect.objectContaining({
         event: 'fynch.event',
         action: 'outbound_link_clicked',
-        specifics: 'https://external-site.com/page',
         link_url: 'https://external-site.com/page',
         link_text: 'Visit Partner',
         link_domain: 'external-site.com',
@@ -165,7 +164,6 @@ describe('click-listeners', () => {
       expect.objectContaining({
         event: 'fynch.event',
         action: 'file_downloaded',
-        specifics: '/docs/report.pdf',
         link_url: `${window.location.origin}/docs/report.pdf`,
         link_text: 'Download Report',
         file_name: 'report.pdf',
@@ -238,7 +236,7 @@ describe('click-listeners', () => {
 
     clickElement(link);
 
-    const event = window.dataLayer.find((e) => e.specifics === 'longtext@example.com');
+    const event = window.dataLayer.find((e) => e.link_url === 'mailto:longtext@example.com');
     expect(event?.link_text).toHaveLength(100);
   });
 

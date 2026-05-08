@@ -73,20 +73,20 @@ function handleClick(event: MouseEvent): void {
 
   switch (url.protocol) {
     case 'mailto:':
-      sendFynchEvent(CLICK_EMAIL, url.pathname, ctx);
+      sendFynchEvent(CLICK_EMAIL, ctx);
       return;
     case 'tel:':
     case 'callto:':
-      sendFynchEvent(CLICK_PHONE, url.pathname, ctx);
+      sendFynchEvent(CLICK_PHONE, ctx);
       return;
     case 'sms:':
-      sendFynchEvent(CLICK_SMS, url.pathname, ctx);
+      sendFynchEvent(CLICK_SMS, ctx);
       return;
   }
 
   if (isDownloadLink(url.pathname)) {
     const fileInfo = extractFileInfo(url.pathname);
-    sendFynchEvent(CLICK_DOWNLOAD, url.pathname, {
+    sendFynchEvent(CLICK_DOWNLOAD, {
       ...ctx,
       ...(fileInfo && { file_name: fileInfo.file_name, file_extension: fileInfo.file_extension }),
     });
@@ -94,7 +94,7 @@ function handleClick(event: MouseEvent): void {
   }
 
   if (isOutboundLink(href)) {
-    sendFynchEvent(CLICK_OUTBOUND, url.href, {
+    sendFynchEvent(CLICK_OUTBOUND, {
       ...ctx,
       link_domain: url.hostname,
     });

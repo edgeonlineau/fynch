@@ -17,7 +17,7 @@ export function register(): void {
       data?.type === 'NBIWidget2GoogleAnalytics' &&
       data.event?.event_action === 'Booking Confirmed'
     ) {
-      sendFynchEvent(BOOKING_SCHEDULED, 'NowBookIt Booking', {
+      sendFynchEvent(BOOKING_SCHEDULED, {
         service_provider: 'nowbookit',
       });
     }

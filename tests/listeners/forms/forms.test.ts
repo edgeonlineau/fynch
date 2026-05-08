@@ -18,7 +18,6 @@ describe('form-listeners', () => {
       expect.objectContaining({
         event: 'fynch.event',
         action: 'form_lead',
-        specifics: 'Contact Form 7 ID: 123',
         service_provider: 'contact-form-7',
         form_id: '123',
       }),
@@ -41,7 +40,6 @@ describe('form-listeners', () => {
       expect.objectContaining({
         event: 'fynch.event',
         action: 'form_lead',
-        specifics: 'HubSpot Form ID: hs-form-456',
         service_provider: 'hubspot-v3',
         form_id: 'hs-form-456',
       }),
@@ -79,7 +77,6 @@ describe('form-listeners', () => {
       expect.objectContaining({
         event: 'fynch.event',
         action: 'form_lead',
-        specifics: 'HubSpot Form ID: hs-v4-789',
         service_provider: 'hubspot-v4',
         form_id: 'hs-v4-789',
       }),
@@ -122,7 +119,6 @@ describe('form-listeners', () => {
       expect.objectContaining({
         event: 'fynch.event',
         action: 'form_lead',
-        specifics: 'Duda Form',
         service_provider: 'duda',
       }),
     );
@@ -143,7 +139,6 @@ describe('form-listeners', () => {
       expect.objectContaining({
         event: 'fynch.event',
         action: 'form_lead',
-        specifics: 'Typeform ID: tf-abc123',
         service_provider: 'typeform',
         form_id: 'tf-abc123',
       }),
@@ -163,7 +158,6 @@ describe('form-listeners', () => {
       expect.objectContaining({
         event: 'fynch.event',
         action: 'form_lead',
-        specifics: 'Generic Form: contact-us',
         service_provider: 'generic',
         form_name: 'contact-us',
       }),

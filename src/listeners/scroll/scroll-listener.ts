@@ -16,7 +16,7 @@ function handleScroll(): void {
   for (const milestone of MILESTONES) {
     if (percent >= milestone && !reached.has(milestone)) {
       reached.add(milestone);
-      sendFynchEvent(SCROLL_MILESTONE, `${milestone}%`);
+      sendFynchEvent(SCROLL_MILESTONE, { percent_scrolled: milestone });
     }
   }
 }

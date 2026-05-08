@@ -7,7 +7,7 @@ export function register($: JQueryStatic): void {
     const target = (event as JQueryEvent).target;
     if (target instanceof Element) {
       const formId = target.getAttribute('data-formid') ?? '';
-      sendFynchEvent(FORM_LEAD, `WP Forms ID: ${formId}`, {
+      sendFynchEvent(FORM_LEAD, {
         service_provider: 'wp-forms',
         form_id: formId,
       });

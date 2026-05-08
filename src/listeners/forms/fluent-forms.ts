@@ -12,7 +12,7 @@ export function register($: JQueryStatic): void {
       'config' in data
     ) {
       const formId = String((data as FluentFormsData).config?.id ?? '');
-      sendFynchEvent(FORM_LEAD, `Fluent Forms ID: ${formId}`, {
+      sendFynchEvent(FORM_LEAD, {
         service_provider: 'fluent-forms',
         form_id: formId,
       });

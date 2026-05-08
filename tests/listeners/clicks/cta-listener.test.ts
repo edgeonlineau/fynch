@@ -25,7 +25,6 @@ describe('cta-listener', () => {
       expect.objectContaining({
         event: 'fynch.event',
         action: 'cta_clicked',
-        specifics: 'Get Started',
         link_id: 'hero-cta',
         link_classes: 'btn primary',
       }),
@@ -46,7 +45,6 @@ describe('cta-listener', () => {
       expect.objectContaining({
         event: 'fynch.event',
         action: 'cta_clicked',
-        specifics: 'Sign Up Now',
       }),
     );
   });
@@ -67,7 +65,6 @@ describe('cta-listener', () => {
       expect.objectContaining({
         event: 'fynch.event',
         action: 'cta_clicked',
-        specifics: 'Hero CTA',
       }),
     );
   });

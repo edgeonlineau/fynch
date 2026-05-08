@@ -46,8 +46,7 @@ function handleCtaClick(event: MouseEvent): void {
   const cta = findCtaElement(event.target);
   if (!cta) return;
 
-  const label = cta.getAttribute('data-fynch-cta') || cta.textContent?.trim().slice(0, 100) || '';
-  sendFynchEvent(CLICK_CTA, label, buildCtaEventParams(cta));
+  sendFynchEvent(CLICK_CTA, buildCtaEventParams(cta));
 }
 
 document.addEventListener('click', handleCtaClick, { capture: true, passive: true });

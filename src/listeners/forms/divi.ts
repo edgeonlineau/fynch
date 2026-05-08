@@ -14,7 +14,7 @@ export function register($: JQueryStatic): void {
       jqXhr.status === 200 &&
       !$(data as string).find('.et_pb_contact_error_text').length
     ) {
-      sendFynchEvent(FORM_LEAD, 'Divi Form', {
+      sendFynchEvent(FORM_LEAD, {
         service_provider: 'divi',
       });
     }

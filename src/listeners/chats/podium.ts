@@ -8,8 +8,10 @@ export function register(): void {
       existingCallback(event, properties);
     }
     if (event === 'Conversation Started') {
-      sendFynchEvent(CHAT_STARTED, 'Podium Chat', {
+      const leadId = properties.uid || properties.conversationUid || undefined;
+      sendFynchEvent(CHAT_STARTED, {
         service_provider: 'podium',
+        ...(leadId && { lead_id: leadId }),
       });
     }
   };
