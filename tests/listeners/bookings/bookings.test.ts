@@ -193,4 +193,49 @@ describe('booking-listeners', () => {
     expect(() => register()).not.toThrow();
     expect(window.dataLayer).toHaveLength(0);
   });
+
+  it('tracks SevenRooms reservation via postMessage', async () => {
+    const { register } = await import('../../../src/listeners/bookings/sevenrooms');
+    register();
+
+    const event = new MessageEvent('message', {
+      origin: 'https://www.sevenrooms.com',
+      data: { type: 'reservation' },
+    });
+    window.dispatchEvent(event);
+
+    expect(window.dataLayer).toContainEqual(
+      expect.objectContaining({
+        event: 'fynch.event',
+        action: 'booking_scheduled',
+        service_provider: 'sevenrooms',
+      }),
+    );
+  });
+
+  it('ignores non-reservation SevenRooms events', async () => {
+    const { register } = await import('../../../src/listeners/bookings/sevenrooms');
+    register();
+
+    const event = new MessageEvent('message', {
+      origin: 'https://www.sevenrooms.com',
+      data: { type: 'widget_opened' },
+    });
+    window.dispatchEvent(event);
+
+    expect(window.dataLayer).toHaveLength(0);
+  });
+
+  it('ignores messages from non-SevenRooms origins', async () => {
+    const { register } = await import('../../../src/listeners/bookings/sevenrooms');
+    register();
+
+    const event = new MessageEvent('message', {
+      origin: 'https://evil.com',
+      data: { type: 'reservation' },
+    });
+    window.dispatchEvent(event);
+
+    expect(window.dataLayer).toHaveLength(0);
+  });
 });
