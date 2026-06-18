@@ -1,4 +1,5 @@
-import type { FynchEventAction } from './constants';
+import { FORM_LEAD, type FynchEventAction } from './constants';
+import { isFormDuplicate } from './form-dedup';
 
 window.dataLayer = window.dataLayer || [];
 
@@ -50,6 +51,7 @@ function buildPageContext(): Pick<
 }
 
 export function sendFynchEvent(action: FynchEventAction, params?: EventParams): void {
+  if (action === FORM_LEAD && params && isFormDuplicate(params)) return;
   if (isDuplicate(action, params)) return;
 
   const event: DataLayerEvent = {

@@ -1,3 +1,5 @@
+/// <reference types="vite/client" />
+
 interface DataLayerEvent {
   event: string;
   action: string;
