@@ -29,7 +29,7 @@ describe('chat-listeners', () => {
     expect(window.dataLayer).toContainEqual(
       expect.objectContaining({
         event: 'fynch.event',
-        action: 'chat_started',
+        action: 'start_chat',
         provider: 'beacon',
       }),
     );
@@ -51,7 +51,7 @@ describe('chat-listeners', () => {
     expect(window.dataLayer).toContainEqual(
       expect.objectContaining({
         event: 'fynch.event',
-        action: 'chat_started',
+        action: 'start_chat',
         provider: 'tawk',
       }),
     );
@@ -80,7 +80,7 @@ describe('chat-listeners', () => {
     expect(window.dataLayer).toContainEqual(
       expect.objectContaining({
         event: 'fynch.event',
-        action: 'chat_started',
+        action: 'start_chat',
         provider: 'podium',
       }),
     );
@@ -97,7 +97,7 @@ describe('chat-listeners', () => {
 
     expect(window.dataLayer).toContainEqual(
       expect.objectContaining({
-        action: 'chat_started',
+        action: 'start_chat',
         provider: 'podium',
         lead_id: 'conv-abc-123',
       }),

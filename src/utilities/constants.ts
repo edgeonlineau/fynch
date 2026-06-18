@@ -1,17 +1,17 @@
-export const CLICK_EMAIL = 'email_clicked' as const;
-export const CLICK_PHONE = 'phone_clicked' as const;
-export const CLICK_SMS = 'sms_clicked' as const;
-export const CLICK_OUTBOUND = 'outbound_link_clicked' as const;
-export const CLICK_DOWNLOAD = 'file_downloaded' as const;
-export const CLICK_CTA = 'cta_clicked' as const;
-export const CLICK_DIRECTIONS = 'directions_clicked' as const;
-export const CLICK_MESSAGING = 'messaging_app_clicked' as const;
-export const CLICK_APP_STORE = 'app_store_clicked' as const;
-export const CLICK_CALENDAR = 'add_to_calendar_clicked' as const;
+export const CLICK_EMAIL = 'click_to_email' as const;
+export const CLICK_PHONE = 'click_to_call' as const;
+export const CLICK_SMS = 'click_to_text' as const;
+export const CLICK_OUTBOUND = 'outbound_click' as const;
+export const CLICK_DOWNLOAD = 'download_file_click' as const;
+export const CLICK_CTA = 'call_to_action_click' as const;
+export const CLICK_DIRECTIONS = 'get_directions' as const;
+export const CLICK_MESSAGING = 'click_to_message' as const;
+export const CLICK_APP_STORE = 'app_store_click' as const;
+export const CLICK_CALENDAR = 'add_to_calendar' as const;
 export const FORM_LEAD = 'form_lead' as const;
 export const SCROLL_MILESTONE = 'scroll_milestone' as const;
-export const CHAT_STARTED = 'chat_started' as const;
-export const BOOKING_SCHEDULED = 'booking_scheduled' as const;
+export const CHAT_STARTED = 'start_chat' as const;
+export const BOOKING_SCHEDULED = 'schedule_booking' as const;
 
 export type FynchEventAction =
   | typeof CLICK_EMAIL

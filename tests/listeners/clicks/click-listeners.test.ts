@@ -10,7 +10,7 @@ describe('click-listeners', () => {
     el.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true }));
   }
 
-  it('tracks mailto link clicks as email_clicked', async () => {
+  it('tracks mailto link clicks as click_to_email', async () => {
     await import('../../../src/listeners/clicks/click-listeners');
 
     const link = document.createElement('a');
@@ -23,14 +23,14 @@ describe('click-listeners', () => {
     expect(window.dataLayer).toContainEqual(
       expect.objectContaining({
         event: 'fynch.event',
-        action: 'email_clicked',
+        action: 'click_to_email',
         link_url: 'mailto:hello@example.com',
         link_text: 'Email Us',
       }),
     );
   });
 
-  it('tracks tel link clicks as phone_clicked', async () => {
+  it('tracks tel link clicks as click_to_call', async () => {
     await import('../../../src/listeners/clicks/click-listeners');
 
     const link = document.createElement('a');
@@ -42,12 +42,12 @@ describe('click-listeners', () => {
     expect(window.dataLayer).toContainEqual(
       expect.objectContaining({
         event: 'fynch.event',
-        action: 'phone_clicked',
+        action: 'click_to_call',
       }),
     );
   });
 
-  it('tracks sms link clicks as sms_clicked', async () => {
+  it('tracks sms link clicks as click_to_text', async () => {
     await import('../../../src/listeners/clicks/click-listeners');
 
     const link = document.createElement('a');
@@ -59,7 +59,7 @@ describe('click-listeners', () => {
     expect(window.dataLayer).toContainEqual(
       expect.objectContaining({
         event: 'fynch.event',
-        action: 'sms_clicked',
+        action: 'click_to_text',
       }),
     );
   });
@@ -79,7 +79,7 @@ describe('click-listeners', () => {
     expect(window.dataLayer).toContainEqual(
       expect.objectContaining({
         event: 'fynch.event',
-        action: 'email_clicked',
+        action: 'click_to_email',
       }),
     );
   });
@@ -97,7 +97,7 @@ describe('click-listeners', () => {
     expect(fynchEvents).toHaveLength(0);
   });
 
-  it('tracks callto protocol as phone_clicked', async () => {
+  it('tracks callto protocol as click_to_call', async () => {
     await import('../../../src/listeners/clicks/click-listeners');
 
     const link = document.createElement('a');
@@ -109,7 +109,7 @@ describe('click-listeners', () => {
     expect(window.dataLayer).toContainEqual(
       expect.objectContaining({
         event: 'fynch.event',
-        action: 'phone_clicked',
+        action: 'click_to_call',
       }),
     );
   });
@@ -127,7 +127,7 @@ describe('click-listeners', () => {
     expect(window.dataLayer).toContainEqual(
       expect.objectContaining({
         event: 'fynch.event',
-        action: 'outbound_link_clicked',
+        action: 'outbound_click',
         link_url: 'https://external-site.com/page',
         link_text: 'Visit Partner',
         link_domain: 'external-site.com',
@@ -145,7 +145,7 @@ describe('click-listeners', () => {
     clickElement(link);
 
     const outbound = window.dataLayer.filter(
-      (e) => e.event === 'fynch.event' && e.action === 'outbound_link_clicked',
+      (e) => e.event === 'fynch.event' && e.action === 'outbound_click',
     );
     expect(outbound).toHaveLength(0);
   });
@@ -163,7 +163,7 @@ describe('click-listeners', () => {
     expect(window.dataLayer).toContainEqual(
       expect.objectContaining({
         event: 'fynch.event',
-        action: 'file_downloaded',
+        action: 'download_file_click',
         link_url: `${window.location.origin}/docs/report.pdf`,
         link_text: 'Download Report',
         file_name: 'report.pdf',
@@ -185,7 +185,7 @@ describe('click-listeners', () => {
 
       expect(window.dataLayer).toContainEqual(
         expect.objectContaining({
-          action: 'file_downloaded',
+          action: 'download_file_click',
         }),
       );
     }
@@ -205,7 +205,7 @@ describe('click-listeners', () => {
 
     expect(window.dataLayer).toContainEqual(
       expect.objectContaining({
-        action: 'email_clicked',
+        action: 'click_to_email',
         link_id: 'contact-link',
         link_classes: 'btn btn-primary',
       }),
@@ -221,7 +221,7 @@ describe('click-listeners', () => {
 
     clickElement(link);
 
-    const event = window.dataLayer.find((e) => e.action === 'email_clicked');
+    const event = window.dataLayer.find((e) => e.action === 'click_to_email');
     expect(event?.link_id).toBeUndefined();
     expect(event?.link_classes).toBeUndefined();
   });
@@ -250,11 +250,11 @@ describe('click-listeners', () => {
     clickElement(link);
 
     const actions = window.dataLayer.filter((e) => e.event === 'fynch.event').map((e) => e.action);
-    expect(actions).toContain('file_downloaded');
-    expect(actions).not.toContain('outbound_link_clicked');
+    expect(actions).toContain('download_file_click');
+    expect(actions).not.toContain('outbound_click');
   });
 
-  it('tracks maps links as directions_clicked with provider', async () => {
+  it('tracks maps links as get_directions with provider', async () => {
     await import('../../../src/listeners/clicks/click-listeners');
 
     const link = document.createElement('a');
@@ -267,7 +267,7 @@ describe('click-listeners', () => {
     expect(window.dataLayer).toContainEqual(
       expect.objectContaining({
         event: 'fynch.event',
-        action: 'directions_clicked',
+        action: 'get_directions',
         link_url: 'https://www.google.com/maps/place/Cafe',
         link_text: 'Get Directions',
         provider: 'google',
@@ -275,7 +275,7 @@ describe('click-listeners', () => {
     );
   });
 
-  it('tracks WhatsApp links as messaging_app_clicked', async () => {
+  it('tracks WhatsApp links as click_to_message', async () => {
     await import('../../../src/listeners/clicks/click-listeners');
 
     const link = document.createElement('a');
@@ -287,13 +287,13 @@ describe('click-listeners', () => {
     expect(window.dataLayer).toContainEqual(
       expect.objectContaining({
         event: 'fynch.event',
-        action: 'messaging_app_clicked',
+        action: 'click_to_message',
         provider: 'whatsapp',
       }),
     );
   });
 
-  it('tracks app store links as app_store_clicked', async () => {
+  it('tracks app store links as app_store_click', async () => {
     await import('../../../src/listeners/clicks/click-listeners');
 
     const link = document.createElement('a');
@@ -305,13 +305,13 @@ describe('click-listeners', () => {
     expect(window.dataLayer).toContainEqual(
       expect.objectContaining({
         event: 'fynch.event',
-        action: 'app_store_clicked',
+        action: 'app_store_click',
         provider: 'apple',
       }),
     );
   });
 
-  it('tracks .ics links as add_to_calendar_clicked', async () => {
+  it('tracks .ics links as add_to_calendar', async () => {
     await import('../../../src/listeners/clicks/click-listeners');
 
     const link = document.createElement('a');
@@ -323,13 +323,13 @@ describe('click-listeners', () => {
     expect(window.dataLayer).toContainEqual(
       expect.objectContaining({
         event: 'fynch.event',
-        action: 'add_to_calendar_clicked',
+        action: 'add_to_calendar',
         provider: 'ics',
       }),
     );
   });
 
-  it('tracks whatsapp:// deep links as messaging_app_clicked', async () => {
+  it('tracks whatsapp:// deep links as click_to_message', async () => {
     await import('../../../src/listeners/clicks/click-listeners');
 
     const link = document.createElement('a');
@@ -341,13 +341,13 @@ describe('click-listeners', () => {
     expect(window.dataLayer).toContainEqual(
       expect.objectContaining({
         event: 'fynch.event',
-        action: 'messaging_app_clicked',
+        action: 'click_to_message',
         provider: 'whatsapp',
       }),
     );
   });
 
-  it('tracks maps:// deep links as directions_clicked', async () => {
+  it('tracks maps:// deep links as get_directions', async () => {
     await import('../../../src/listeners/clicks/click-listeners');
 
     const link = document.createElement('a');
@@ -359,7 +359,7 @@ describe('click-listeners', () => {
     expect(window.dataLayer).toContainEqual(
       expect.objectContaining({
         event: 'fynch.event',
-        action: 'directions_clicked',
+        action: 'get_directions',
         provider: 'apple',
       }),
     );

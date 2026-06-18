@@ -24,7 +24,7 @@ describe('cta-listener', () => {
     expect(window.dataLayer).toContainEqual(
       expect.objectContaining({
         event: 'fynch.event',
-        action: 'cta_clicked',
+        action: 'call_to_action_click',
         link_id: 'hero-cta',
         link_classes: 'btn primary',
       }),
@@ -44,7 +44,7 @@ describe('cta-listener', () => {
     expect(window.dataLayer).toContainEqual(
       expect.objectContaining({
         event: 'fynch.event',
-        action: 'cta_clicked',
+        action: 'call_to_action_click',
       }),
     );
   });
@@ -64,7 +64,7 @@ describe('cta-listener', () => {
     expect(window.dataLayer).toContainEqual(
       expect.objectContaining({
         event: 'fynch.event',
-        action: 'cta_clicked',
+        action: 'call_to_action_click',
       }),
     );
   });
@@ -81,7 +81,7 @@ describe('cta-listener', () => {
 
     expect(window.dataLayer).toContainEqual(
       expect.objectContaining({
-        action: 'cta_clicked',
+        action: 'call_to_action_click',
         link_url: `${window.location.origin}/pricing`,
       }),
     );
@@ -99,7 +99,7 @@ describe('cta-listener', () => {
 
     expect(window.dataLayer).toContainEqual(
       expect.objectContaining({
-        action: 'cta_clicked',
+        action: 'call_to_action_click',
         link_url: 'https://partner.example.com/signup',
         link_domain: 'partner.example.com',
       }),
@@ -121,7 +121,7 @@ describe('cta-listener', () => {
 
     expect(window.dataLayer).toContainEqual(
       expect.objectContaining({
-        action: 'cta_clicked',
+        action: 'call_to_action_click',
         link_url: 'https://external.com/page',
         link_domain: 'external.com',
       }),
@@ -138,7 +138,7 @@ describe('cta-listener', () => {
     clickElement(button);
 
     const ctaEvents = window.dataLayer.filter(
-      (e) => e.event === 'fynch.event' && e.action === 'cta_clicked',
+      (e) => e.event === 'fynch.event' && e.action === 'call_to_action_click',
     );
     expect(ctaEvents).toHaveLength(0);
   });
