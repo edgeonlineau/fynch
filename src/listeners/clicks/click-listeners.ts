@@ -3,10 +3,10 @@ import {
   CLICK_EMAIL,
   CLICK_PHONE,
   CLICK_SMS,
-  CLICK_OUTBOUND,
-  CLICK_DOWNLOAD,
-  DOWNLOAD_EXTENSIONS,
+  CLICK_MESSAGING,
+  CLICK_DIRECTIONS,
 } from '../../utilities/constants';
+import { classifyLink } from './classify-link';
 
 const MAX_LINK_TEXT_LENGTH = 100;
 
@@ -19,23 +19,6 @@ function findAnchorFromTarget(target: EventTarget | null): HTMLAnchorElement | n
   return null;
 }
 
-function isDownloadLink(pathname: string): boolean {
-  const lower = pathname.toLowerCase();
-  return DOWNLOAD_EXTENSIONS.some((ext) => lower.endsWith(ext));
-}
-
-function isOutboundLink(href: string): boolean {
-  try {
-    const url = new URL(href);
-    return (
-      (url.protocol === 'http:' || url.protocol === 'https:') &&
-      url.hostname !== window.location.hostname
-    );
-  } catch {
-    return false;
-  }
-}
-
 function buildBaseClickContext(anchor: HTMLAnchorElement): EventParams {
   const text = anchor.textContent?.trim() ?? '';
   return {
@@ -43,17 +26,6 @@ function buildBaseClickContext(anchor: HTMLAnchorElement): EventParams {
     ...(text && { link_text: text.slice(0, MAX_LINK_TEXT_LENGTH) }),
     ...(anchor.id && { link_id: anchor.id }),
     ...(anchor.className && { link_classes: anchor.className }),
-  };
-}
-
-function extractFileInfo(pathname: string): { file_name: string; file_extension: string } | null {
-  const lastSegment = pathname.split('/').pop();
-  if (!lastSegment) return null;
-  const dotIndex = lastSegment.lastIndexOf('.');
-  if (dotIndex < 0) return null;
-  return {
-    file_name: lastSegment,
-    file_extension: lastSegment.slice(dotIndex + 1),
   };
 }
 
@@ -71,6 +43,7 @@ function handleClick(event: MouseEvent): void {
 
   const ctx = buildBaseClickContext(anchor);
 
+  // Scheme-based intents, including mobile deep links (whatsapp://, maps://).
   switch (url.protocol) {
     case 'mailto:':
       sendFynchEvent(CLICK_EMAIL, ctx);
@@ -82,23 +55,18 @@ function handleClick(event: MouseEvent): void {
     case 'sms:':
       sendFynchEvent(CLICK_SMS, ctx);
       return;
+    case 'whatsapp:':
+      sendFynchEvent(CLICK_MESSAGING, { ...ctx, messaging_channel: 'whatsapp' });
+      return;
+    case 'maps:':
+      sendFynchEvent(CLICK_DIRECTIONS, { ...ctx, map_provider: 'apple' });
+      return;
   }
 
-  if (isDownloadLink(url.pathname)) {
-    const fileInfo = extractFileInfo(url.pathname);
-    sendFynchEvent(CLICK_DOWNLOAD, {
-      ...ctx,
-      ...(fileInfo && { file_name: fileInfo.file_name, file_extension: fileInfo.file_extension }),
-    });
-    return;
-  }
+  const classification = classifyLink(url);
+  if (!classification) return;
 
-  if (isOutboundLink(href)) {
-    sendFynchEvent(CLICK_OUTBOUND, {
-      ...ctx,
-      link_domain: url.hostname,
-    });
-  }
+  sendFynchEvent(classification.action, { ...ctx, ...classification.params });
 }
 
 document.addEventListener('click', handleClick, { capture: true, passive: true });

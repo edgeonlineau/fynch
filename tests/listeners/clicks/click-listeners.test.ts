@@ -253,4 +253,115 @@ describe('click-listeners', () => {
     expect(actions).toContain('file_downloaded');
     expect(actions).not.toContain('outbound_link_clicked');
   });
+
+  it('tracks maps links as directions_clicked with map_provider', async () => {
+    await import('../../../src/listeners/clicks/click-listeners');
+
+    const link = document.createElement('a');
+    link.href = 'https://www.google.com/maps/place/Cafe';
+    link.textContent = 'Get Directions';
+    document.body.appendChild(link);
+
+    clickElement(link);
+
+    expect(window.dataLayer).toContainEqual(
+      expect.objectContaining({
+        event: 'fynch.event',
+        action: 'directions_clicked',
+        link_url: 'https://www.google.com/maps/place/Cafe',
+        link_text: 'Get Directions',
+        map_provider: 'google',
+      }),
+    );
+  });
+
+  it('tracks WhatsApp links as messaging_app_clicked', async () => {
+    await import('../../../src/listeners/clicks/click-listeners');
+
+    const link = document.createElement('a');
+    link.href = 'https://wa.me/15551234567';
+    document.body.appendChild(link);
+
+    clickElement(link);
+
+    expect(window.dataLayer).toContainEqual(
+      expect.objectContaining({
+        event: 'fynch.event',
+        action: 'messaging_app_clicked',
+        messaging_channel: 'whatsapp',
+      }),
+    );
+  });
+
+  it('tracks app store links as app_store_clicked', async () => {
+    await import('../../../src/listeners/clicks/click-listeners');
+
+    const link = document.createElement('a');
+    link.href = 'https://apps.apple.com/us/app/x/id123';
+    document.body.appendChild(link);
+
+    clickElement(link);
+
+    expect(window.dataLayer).toContainEqual(
+      expect.objectContaining({
+        event: 'fynch.event',
+        action: 'app_store_clicked',
+        app_store: 'apple',
+      }),
+    );
+  });
+
+  it('tracks .ics links as add_to_calendar_clicked', async () => {
+    await import('../../../src/listeners/clicks/click-listeners');
+
+    const link = document.createElement('a');
+    link.href = `${window.location.origin}/events/invite.ics`;
+    document.body.appendChild(link);
+
+    clickElement(link);
+
+    expect(window.dataLayer).toContainEqual(
+      expect.objectContaining({
+        event: 'fynch.event',
+        action: 'add_to_calendar_clicked',
+        calendar_provider: 'ics',
+      }),
+    );
+  });
+
+  it('tracks whatsapp:// deep links as messaging_app_clicked', async () => {
+    await import('../../../src/listeners/clicks/click-listeners');
+
+    const link = document.createElement('a');
+    link.href = 'whatsapp://send?phone=15551234567';
+    document.body.appendChild(link);
+
+    clickElement(link);
+
+    expect(window.dataLayer).toContainEqual(
+      expect.objectContaining({
+        event: 'fynch.event',
+        action: 'messaging_app_clicked',
+        messaging_channel: 'whatsapp',
+      }),
+    );
+  });
+
+  it('tracks maps:// deep links as directions_clicked', async () => {
+    await import('../../../src/listeners/clicks/click-listeners');
+
+    const link = document.createElement('a');
+    link.href = 'maps://?q=cafe';
+    document.body.appendChild(link);
+
+    clickElement(link);
+
+    expect(window.dataLayer).toContainEqual(
+      expect.objectContaining({
+        event: 'fynch.event',
+        action: 'directions_clicked',
+        map_provider: 'apple',
+      }),
+    );
+  });
 });
