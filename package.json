@@ -1,6 +1,6 @@
 {
   "name": "@edgeonline/fynch",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Client-side event tracking library for GTM integrators — listens for form, click, scroll, booking, and chat interactions and pushes them to the dataLayer.",
   "license": "MIT",
   "type": "module",
