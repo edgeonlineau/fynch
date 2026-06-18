@@ -30,12 +30,12 @@ describe('isFormDuplicate', () => {
     });
 
     it('allows different lead_ids under the same provider', () => {
-      expect(
-        isFormDuplicate({ provider: 'hubspot-v3', form_id: 'f1', lead_id: 'abc' }),
-      ).toBe(false);
-      expect(
-        isFormDuplicate({ provider: 'hubspot-v3', form_id: 'f1', lead_id: 'def' }),
-      ).toBe(false);
+      expect(isFormDuplicate({ provider: 'hubspot-v3', form_id: 'f1', lead_id: 'abc' })).toBe(
+        false,
+      );
+      expect(isFormDuplicate({ provider: 'hubspot-v3', form_id: 'f1', lead_id: 'def' })).toBe(
+        false,
+      );
     });
 
     it('allows the same lead_id value under different providers', () => {
@@ -44,12 +44,12 @@ describe('isFormDuplicate', () => {
     });
 
     it('takes precedence over Tier 2 — presence of lead_id skips form-identity check', () => {
-      expect(
-        isFormDuplicate({ provider: 'hubspot-v3', form_id: 'f1', lead_id: 'abc' }),
-      ).toBe(false);
-      expect(
-        isFormDuplicate({ provider: 'hubspot-v3', form_id: 'f1', lead_id: 'def' }),
-      ).toBe(false);
+      expect(isFormDuplicate({ provider: 'hubspot-v3', form_id: 'f1', lead_id: 'abc' })).toBe(
+        false,
+      );
+      expect(isFormDuplicate({ provider: 'hubspot-v3', form_id: 'f1', lead_id: 'def' })).toBe(
+        false,
+      );
     });
   });
 
@@ -76,12 +76,10 @@ describe('isFormDuplicate', () => {
     });
 
     it('treats empty string and undefined form_name as the same key', () => {
-      expect(isFormDuplicate({ provider: 'elementor', form_id: '12', form_name: '' })).toBe(
-        false,
+      expect(isFormDuplicate({ provider: 'elementor', form_id: '12', form_name: '' })).toBe(false);
+      expect(isFormDuplicate({ provider: 'elementor', form_id: '12', form_name: undefined })).toBe(
+        true,
       );
-      expect(
-        isFormDuplicate({ provider: 'elementor', form_id: '12', form_name: undefined }),
-      ).toBe(true);
     });
 
     it('treats empty string and undefined form_id as the same key', () => {

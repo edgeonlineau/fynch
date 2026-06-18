@@ -17,12 +17,39 @@ Embed the bundled script on any page where you want tracking. Make sure your GTM
 (which creates `window.dataLayer`) is present — Fynch will create the array if it is
 missing, but GTM needs it to receive events.
 
+Fynch is published to npm, so you can load it straight from a CDN — no build or
+hosting required.
+
 ```html
 <!-- Google Tag Manager dataLayer should already exist on the page -->
-<script src="https://your-cdn.example.com/fynch.js"></script>
+
+<!-- jsDelivr — pin to a version (recommended for production) -->
+<script src="https://cdn.jsdelivr.net/npm/fynch@0.1.0/dist/fynch.js"></script>
+
+<!-- ...or always pull the latest release -->
+<script src="https://cdn.jsdelivr.net/npm/fynch"></script>
+
+<!-- unpkg works too -->
+<script src="https://unpkg.com/fynch@0.1.0/dist/fynch.js"></script>
 ```
 
+Pin to an exact version in production so a future release can't change behaviour
+unexpectedly. The bare `…/npm/fynch` URL resolves to `dist/fynch.js` automatically
+(via the `jsdelivr`/`unpkg` fields in `package.json`).
+
 The script self-initialises on load. No configuration, options, or init call is required.
+
+### Installing from npm
+
+If you bundle your own assets instead of using a CDN:
+
+```bash
+npm install fynch
+```
+
+```js
+import 'fynch'; // side-effect import — attaches all listeners on load
+```
 
 ### Building from source
 
@@ -58,7 +85,7 @@ Every event Fynch pushes has the same envelope:
 
 **Common fields on every event:** `event`, `action`, `page_url`, `page_title`,
 `page_path`, `referrer`, `timestamp`. The per-event tables below list only the
-*additional* params for each action.
+_additional_ params for each action.
 
 **Deduplication.** Identical events fired within **500ms** of each other are suppressed,
 so rapid double-clicks or duplicate platform callbacks won't double-count. Form leads have
@@ -96,18 +123,18 @@ Fynch listens for clicks on anchor (`<a>`) elements and classifies them by schem
 destination. **All click events also carry these params:** `link_url`, `link_text`
 (trimmed, max 100 chars), `link_id`, `link_classes`.
 
-| `action` | Triggered when the user clicks… | Additional params |
-| --- | --- | --- |
-| `click_to_email` | a `mailto:` link | — |
-| `click_to_call` | a `tel:` or `callto:` link | — |
-| `click_to_text` | an `sms:` link | — |
-| `click_to_message` | a messaging link (WhatsApp, Messenger, Instagram) | `provider` |
-| `get_directions` | a maps/directions link (Google Maps, Apple Maps, Waze, Google Business) | `provider` |
-| `app_store_click` | an app store link (Apple App Store, Google Play) | `provider` |
-| `add_to_calendar` | an add-to-calendar link (Google, Outlook, AddToCalendar, AddEvent, `.ics`) | `provider` |
-| `download_file_click` | a link to a downloadable file (see extensions below) | `file_name`, `file_extension` |
-| `outbound_click` | a link to an external domain | `link_domain` |
-| `call_to_action_click` | an element marked with the `data-fynch-cta` attribute | `link_domain` (when the target is external) |
+| `action`               | Triggered when the user clicks…                                            | Additional params                           |
+| ---------------------- | -------------------------------------------------------------------------- | ------------------------------------------- |
+| `click_to_email`       | a `mailto:` link                                                           | —                                           |
+| `click_to_call`        | a `tel:` or `callto:` link                                                 | —                                           |
+| `click_to_text`        | an `sms:` link                                                             | —                                           |
+| `click_to_message`     | a messaging link (WhatsApp, Messenger, Instagram)                          | `provider`                                  |
+| `get_directions`       | a maps/directions link (Google Maps, Apple Maps, Waze, Google Business)    | `provider`                                  |
+| `app_store_click`      | an app store link (Apple App Store, Google Play)                           | `provider`                                  |
+| `add_to_calendar`      | an add-to-calendar link (Google, Outlook, AddToCalendar, AddEvent, `.ics`) | `provider`                                  |
+| `download_file_click`  | a link to a downloadable file (see extensions below)                       | `file_name`, `file_extension`               |
+| `outbound_click`       | a link to an external domain                                               | `link_domain`                               |
+| `call_to_action_click` | an element marked with the `data-fynch-cta` attribute                      | `link_domain` (when the target is external) |
 
 **Marking a CTA.** Add `data-fynch-cta` to any element you want tracked as a call to
 action. Fynch resolves the clicked target up to the nearest tagged ancestor (and into a
@@ -135,35 +162,35 @@ A successful form submission emits a single action, `form_lead`, regardless of p
 **Params:** `provider` (always), plus `form_id`, `form_name`, and `lead_id` where the
 underlying platform exposes them.
 
-| `action` | Triggered when… | Params |
-| --- | --- | --- |
+| `action`    | Triggered when…                            | Params                                           |
+| ----------- | ------------------------------------------ | ------------------------------------------------ |
 | `form_lead` | a supported form is submitted successfully | `provider`, `form_id?`, `form_name?`, `lead_id?` |
 
 **Supported form platforms** (`provider` value → platform):
 
-| `provider` | Platform |
-| --- | --- |
-| `contact-form-7` | Contact Form 7 |
-| `gravity-forms` | Gravity Forms |
-| `hubspot-v3` | HubSpot Forms (v3) |
-| `hubspot-v4` | HubSpot Forms (v4) |
-| `ninja-forms` | Ninja Forms |
-| `typeform` | Typeform |
-| `squarespace` | Squarespace Forms |
-| `zoho` | Zoho Forms |
-| `duda` | Duda |
-| `divi` | Divi |
-| `elementor` | Elementor Forms |
-| `fluent-forms` | Fluent Forms |
-| `formidable` | Formidable Forms |
-| `forminator` | Forminator |
-| `wp-forms` | WPForms |
-| `ws-form` | WS Form |
+| `provider`       | Platform           |
+| ---------------- | ------------------ |
+| `contact-form-7` | Contact Form 7     |
+| `gravity-forms`  | Gravity Forms      |
+| `hubspot-v3`     | HubSpot Forms (v3) |
+| `hubspot-v4`     | HubSpot Forms (v4) |
+| `ninja-forms`    | Ninja Forms        |
+| `typeform`       | Typeform           |
+| `squarespace`    | Squarespace Forms  |
+| `zoho`           | Zoho Forms         |
+| `duda`           | Duda               |
+| `divi`           | Divi               |
+| `elementor`      | Elementor Forms    |
+| `fluent-forms`   | Fluent Forms       |
+| `formidable`     | Formidable Forms   |
+| `forminator`     | Forminator         |
+| `wp-forms`       | WPForms            |
+| `ws-form`        | WS Form            |
 
 ### Scroll
 
-| `action` | Triggered when… | Params |
-| --- | --- | --- |
+| `action`           | Triggered when…                         | Params             |
+| ------------------ | --------------------------------------- | ------------------ |
 | `scroll_milestone` | the user scrolls past a depth milestone | `percent_scrolled` |
 
 `percent_scrolled` is one of `25`, `50`, `75`, or `90`. Each milestone fires at most once
@@ -173,62 +200,62 @@ per page load.
 
 Starting a conversation in a supported chat widget emits `start_chat`.
 
-| `action` | Triggered when… | Params |
-| --- | --- | --- |
+| `action`     | Triggered when…                  | Params                 |
+| ------------ | -------------------------------- | ---------------------- |
 | `start_chat` | a chat conversation is initiated | `provider`, `lead_id?` |
 
 **Supported chat platforms:**
 
-| `provider` | Platform |
-| --- | --- |
-| `beacon` | Help Scout Beacon |
-| `tawk` | Tawk.to |
-| `podium` | Podium |
-| `livechat` | LiveChat |
+| `provider` | Platform          |
+| ---------- | ----------------- |
+| `beacon`   | Help Scout Beacon |
+| `tawk`     | Tawk.to           |
+| `podium`   | Podium            |
+| `livechat` | LiveChat          |
 
 ### Bookings
 
 Completing a reservation/booking in a supported widget emits `schedule_booking`.
 
-| `action` | Triggered when… | Params |
-| --- | --- | --- |
+| `action`           | Triggered when…        | Params                 |
+| ------------------ | ---------------------- | ---------------------- |
 | `schedule_booking` | a booking is confirmed | `provider`, `lead_id?` |
 
 **Supported booking platforms:**
 
-| `provider` | Platform |
-| --- | --- |
-| `calendly` | Calendly |
+| `provider`   | Platform   |
+| ------------ | ---------- |
+| `calendly`   | Calendly   |
 | `lineleader` | LineLeader |
-| `nowbookit` | NowBookit |
-| `opentable` | OpenTable |
+| `nowbookit`  | NowBookit  |
+| `opentable`  | OpenTable  |
 | `sevenrooms` | SevenRooms |
 
 ---
 
 ## Parameter glossary
 
-| Param | Meaning |
-| --- | --- |
-| `event` | Always `fynch.event`. Use as the GTM trigger. |
-| `action` | The event name — one of the 14 actions above. |
-| `page_url` | Full page URL (`window.location.href`) at the time of the event. |
-| `page_title` | Document title (`document.title`). |
-| `page_path` | URL path (`window.location.pathname`). |
-| `referrer` | `document.referrer` (empty string if none). |
-| `timestamp` | ISO 8601 timestamp of when the event fired. |
-| `provider` | The detected platform/channel (e.g. `whatsapp`, `gravity-forms`, `calendly`). |
-| `form_id` | Platform form identifier, when available. |
-| `form_name` | Human-readable form name, when available. |
-| `lead_id` | Submission / conversation / booking identifier, when the platform provides one. |
-| `link_url` | The clicked link's `href`. |
-| `link_text` | The link's visible text (trimmed, max 100 chars). |
-| `link_id` | The link element's `id`. |
-| `link_classes` | The link element's class list. |
-| `link_domain` | Hostname of an external/outbound link. |
-| `file_name` | Filename of a downloaded file (last URL path segment). |
-| `file_extension` | Extension of a downloaded file (without the leading dot). |
-| `percent_scrolled` | Scroll-depth milestone reached: `25`, `50`, `75`, or `90`. |
+| Param              | Meaning                                                                         |
+| ------------------ | ------------------------------------------------------------------------------- |
+| `event`            | Always `fynch.event`. Use as the GTM trigger.                                   |
+| `action`           | The event name — one of the 14 actions above.                                   |
+| `page_url`         | Full page URL (`window.location.href`) at the time of the event.                |
+| `page_title`       | Document title (`document.title`).                                              |
+| `page_path`        | URL path (`window.location.pathname`).                                          |
+| `referrer`         | `document.referrer` (empty string if none).                                     |
+| `timestamp`        | ISO 8601 timestamp of when the event fired.                                     |
+| `provider`         | The detected platform/channel (e.g. `whatsapp`, `gravity-forms`, `calendly`).   |
+| `form_id`          | Platform form identifier, when available.                                       |
+| `form_name`        | Human-readable form name, when available.                                       |
+| `lead_id`          | Submission / conversation / booking identifier, when the platform provides one. |
+| `link_url`         | The clicked link's `href`.                                                      |
+| `link_text`        | The link's visible text (trimmed, max 100 chars).                               |
+| `link_id`          | The link element's `id`.                                                        |
+| `link_classes`     | The link element's class list.                                                  |
+| `link_domain`      | Hostname of an external/outbound link.                                          |
+| `file_name`        | Filename of a downloaded file (last URL path segment).                          |
+| `file_extension`   | Extension of a downloaded file (without the leading dot).                       |
+| `percent_scrolled` | Scroll-depth milestone reached: `25`, `50`, `75`, or `90`.                      |
 
 ---
 
@@ -236,14 +263,14 @@ Completing a reservation/booking in a supported widget emits `schedule_booking`.
 
 The repo uses **npm**, Vite for bundling, and Vitest (with jsdom) for tests.
 
-| Command | Purpose |
-| --- | --- |
-| `npm run dev` | Start the Vite dev server. |
-| `npm run build` | Type-check, then build the `fynch.js` bundle. |
-| `npm run typecheck` | Run `tsc --noEmit`. |
-| `npm run lint` / `npm run lint:fix` | Run ESLint (optionally autofix). |
-| `npm run format` / `npm run format:check` | Run Prettier (write / check). |
-| `npm test` | Run the test suite once. |
-| `npm run test:watch` | Run tests in watch mode. |
-| `npm run test:coverage` | Run tests with coverage (80% threshold). |
-| `npm run check` | Prettier check + ESLint + tests (CI gate). |
+| Command                                   | Purpose                                       |
+| ----------------------------------------- | --------------------------------------------- |
+| `npm run dev`                             | Start the Vite dev server.                    |
+| `npm run build`                           | Type-check, then build the `fynch.js` bundle. |
+| `npm run typecheck`                       | Run `tsc --noEmit`.                           |
+| `npm run lint` / `npm run lint:fix`       | Run ESLint (optionally autofix).              |
+| `npm run format` / `npm run format:check` | Run Prettier (write / check).                 |
+| `npm test`                                | Run the test suite once.                      |
+| `npm run test:watch`                      | Run tests in watch mode.                      |
+| `npm run test:coverage`                   | Run tests with coverage (80% threshold).      |
+| `npm run check`                           | Prettier check + ESLint + tests (CI gate).    |

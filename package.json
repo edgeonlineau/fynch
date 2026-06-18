@@ -1,9 +1,34 @@
 {
   "name": "fynch",
-  "private": true,
-  "version": "0.0.0",
+  "version": "0.1.0",
+  "description": "Client-side event tracking library for GTM integrators — listens for form, click, scroll, booking, and chat interactions and pushes them to the dataLayer.",
   "license": "MIT",
   "type": "module",
+  "main": "dist/fynch.js",
+  "unpkg": "dist/fynch.js",
+  "jsdelivr": "dist/fynch.js",
+  "files": [
+    "dist"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/edgeonlineau/fynch.git"
+  },
+  "homepage": "https://github.com/edgeonlineau/fynch#readme",
+  "bugs": {
+    "url": "https://github.com/edgeonlineau/fynch/issues"
+  },
+  "keywords": [
+    "gtm",
+    "google-tag-manager",
+    "datalayer",
+    "analytics",
+    "event-tracking",
+    "conversion-tracking"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
   "scripts": {
     "dev": "vite",
     "build": "tsc --noEmit && vite build",
@@ -16,7 +41,9 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "test:coverage": "vitest run --coverage",
-    "check": "prettier --check . && eslint . && vitest run"
+    "check": "prettier --check . && eslint . && vitest run",
+    "prepack": "npm run build",
+    "prepublishOnly": "npm run check"
   },
   "prettier": {
     "singleQuote": true,
