@@ -24,18 +24,18 @@ hosting required.
 <!-- Google Tag Manager dataLayer should already exist on the page -->
 
 <!-- jsDelivr — pin to a version (recommended for production) -->
-<script src="https://cdn.jsdelivr.net/npm/fynch@0.1.0/dist/fynch.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@edgeonline/fynch@0.1.0/dist/fynch.js"></script>
 
 <!-- ...or always pull the latest release -->
-<script src="https://cdn.jsdelivr.net/npm/fynch"></script>
+<script src="https://cdn.jsdelivr.net/npm/@edgeonline/fynch"></script>
 
 <!-- unpkg works too -->
-<script src="https://unpkg.com/fynch@0.1.0/dist/fynch.js"></script>
+<script src="https://unpkg.com/@edgeonline/fynch@0.1.0/dist/fynch.js"></script>
 ```
 
 Pin to an exact version in production so a future release can't change behaviour
-unexpectedly. The bare `…/npm/fynch` URL resolves to `dist/fynch.js` automatically
-(via the `jsdelivr`/`unpkg` fields in `package.json`).
+unexpectedly. The bare `…/npm/@edgeonline/fynch` URL resolves to `dist/fynch.js`
+automatically (via the `jsdelivr`/`unpkg` fields in `package.json`).
 
 The script self-initialises on load. No configuration, options, or init call is required.
 
@@ -44,11 +44,11 @@ The script self-initialises on load. No configuration, options, or init call is 
 If you bundle your own assets instead of using a CDN:
 
 ```bash
-npm install fynch
+npm install @edgeonline/fynch
 ```
 
 ```js
-import 'fynch'; // side-effect import — attaches all listeners on load
+import '@edgeonline/fynch'; // side-effect import — attaches all listeners on load
 ```
 
 ### Building from source
