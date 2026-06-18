@@ -11,7 +11,7 @@ export function register(): void {
       event.data.type === 'reservation'
     ) {
       sendFynchEvent(BOOKING_SCHEDULED, {
-        service_provider: 'sevenrooms',
+        provider: 'sevenrooms',
       });
     }
   });

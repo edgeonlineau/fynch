@@ -5,7 +5,7 @@ export function register(): void {
   window.Tawk_API = window.Tawk_API || {};
   window.Tawk_API.onChatStarted = () => {
     sendFynchEvent(CHAT_STARTED, {
-      service_provider: 'tawk',
+      provider: 'tawk',
     });
   };
 }

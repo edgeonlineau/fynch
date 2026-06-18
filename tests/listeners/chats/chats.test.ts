@@ -30,7 +30,7 @@ describe('chat-listeners', () => {
       expect.objectContaining({
         event: 'fynch.event',
         action: 'chat_started',
-        service_provider: 'beacon',
+        provider: 'beacon',
       }),
     );
   });
@@ -52,7 +52,7 @@ describe('chat-listeners', () => {
       expect.objectContaining({
         event: 'fynch.event',
         action: 'chat_started',
-        service_provider: 'tawk',
+        provider: 'tawk',
       }),
     );
   });
@@ -81,7 +81,7 @@ describe('chat-listeners', () => {
       expect.objectContaining({
         event: 'fynch.event',
         action: 'chat_started',
-        service_provider: 'podium',
+        provider: 'podium',
       }),
     );
   });
@@ -98,7 +98,7 @@ describe('chat-listeners', () => {
     expect(window.dataLayer).toContainEqual(
       expect.objectContaining({
         action: 'chat_started',
-        service_provider: 'podium',
+        provider: 'podium',
         lead_id: 'conv-abc-123',
       }),
     );
@@ -112,7 +112,7 @@ describe('chat-listeners', () => {
       'customer-name': 'Jane',
     });
 
-    const event = window.dataLayer.find((e) => e.service_provider === 'podium');
+    const event = window.dataLayer.find((e) => e.provider === 'podium');
     expect(event?.lead_id).toBeUndefined();
   });
 

@@ -20,7 +20,7 @@ export function register($: JQueryStatic): void {
           ?.querySelector('.fluentform-title')
           ?.textContent?.trim() ?? '';
       sendFynchEvent(FORM_LEAD, {
-        service_provider: 'fluent-forms',
+        provider: 'fluent-forms',
         form_id: formId,
         ...(leadId && { lead_id: leadId }),
         ...(formName && { form_name: formName }),

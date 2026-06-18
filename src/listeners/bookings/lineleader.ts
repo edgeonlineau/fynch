@@ -10,7 +10,7 @@ export function register(): void {
       existingCallback(leadId);
     }
     sendFynchEvent(BOOKING_SCHEDULED, {
-      service_provider: 'lineleader',
+      provider: 'lineleader',
       lead_id: leadId,
     });
   };

@@ -19,7 +19,7 @@ describe('classifyLink', () => {
     ])('classifies %s as directions/%s', (href, provider) => {
       const result = classify(href);
       expect(result?.action).toBe('directions_clicked');
-      expect(result?.params.map_provider).toBe(provider);
+      expect(result?.params.provider).toBe(provider);
     });
 
     it('does not classify google.com/search as directions', () => {
@@ -43,13 +43,13 @@ describe('classifyLink', () => {
     ])('classifies %s as messaging/%s', (href, channel) => {
       const result = classify(href);
       expect(result?.action).toBe('messaging_app_clicked');
-      expect(result?.params.messaging_channel).toBe(channel);
+      expect(result?.params.provider).toBe(channel);
     });
 
     it('matches a messaging host with a query string', () => {
       const result = classify('https://wa.me/15551234567?text=hello%20there');
       expect(result?.action).toBe('messaging_app_clicked');
-      expect(result?.params.messaging_channel).toBe('whatsapp');
+      expect(result?.params.provider).toBe('whatsapp');
     });
   });
 
@@ -61,7 +61,7 @@ describe('classifyLink', () => {
     ])('classifies %s as app store/%s', (href, store) => {
       const result = classify(href);
       expect(result?.action).toBe('app_store_clicked');
-      expect(result?.params.app_store).toBe(store);
+      expect(result?.params.provider).toBe(store);
     });
   });
 
@@ -76,7 +76,7 @@ describe('classifyLink', () => {
     ])('classifies %s as calendar/%s', (href, provider) => {
       const result = classify(href);
       expect(result?.action).toBe('add_to_calendar_clicked');
-      expect(result?.params.calendar_provider).toBe(provider);
+      expect(result?.params.provider).toBe(provider);
     });
 
     it('does not classify a bare calendar.google.com path as calendar', () => {
@@ -89,7 +89,7 @@ describe('classifyLink', () => {
     it('classifies an .ics link as calendar, not download or outbound', () => {
       const result = classify('https://files.example.com/invite.ics');
       expect(result?.action).toBe('add_to_calendar_clicked');
-      expect(result?.params.calendar_provider).toBe('ics');
+      expect(result?.params.provider).toBe('ics');
     });
 
     it('still classifies a regular download by extension', () => {

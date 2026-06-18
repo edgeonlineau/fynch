@@ -254,7 +254,7 @@ describe('click-listeners', () => {
     expect(actions).not.toContain('outbound_link_clicked');
   });
 
-  it('tracks maps links as directions_clicked with map_provider', async () => {
+  it('tracks maps links as directions_clicked with provider', async () => {
     await import('../../../src/listeners/clicks/click-listeners');
 
     const link = document.createElement('a');
@@ -270,7 +270,7 @@ describe('click-listeners', () => {
         action: 'directions_clicked',
         link_url: 'https://www.google.com/maps/place/Cafe',
         link_text: 'Get Directions',
-        map_provider: 'google',
+        provider: 'google',
       }),
     );
   });
@@ -288,7 +288,7 @@ describe('click-listeners', () => {
       expect.objectContaining({
         event: 'fynch.event',
         action: 'messaging_app_clicked',
-        messaging_channel: 'whatsapp',
+        provider: 'whatsapp',
       }),
     );
   });
@@ -306,7 +306,7 @@ describe('click-listeners', () => {
       expect.objectContaining({
         event: 'fynch.event',
         action: 'app_store_clicked',
-        app_store: 'apple',
+        provider: 'apple',
       }),
     );
   });
@@ -324,7 +324,7 @@ describe('click-listeners', () => {
       expect.objectContaining({
         event: 'fynch.event',
         action: 'add_to_calendar_clicked',
-        calendar_provider: 'ics',
+        provider: 'ics',
       }),
     );
   });
@@ -342,7 +342,7 @@ describe('click-listeners', () => {
       expect.objectContaining({
         event: 'fynch.event',
         action: 'messaging_app_clicked',
-        messaging_channel: 'whatsapp',
+        provider: 'whatsapp',
       }),
     );
   });
@@ -360,7 +360,7 @@ describe('click-listeners', () => {
       expect.objectContaining({
         event: 'fynch.event',
         action: 'directions_clicked',
-        map_provider: 'apple',
+        provider: 'apple',
       }),
     );
   });

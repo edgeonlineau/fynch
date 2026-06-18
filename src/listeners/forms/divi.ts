@@ -15,7 +15,7 @@ export function register($: JQueryStatic): void {
       !$(data as string).find('.et_pb_contact_error_text').length
     ) {
       sendFynchEvent(FORM_LEAD, {
-        service_provider: 'divi',
+        provider: 'divi',
       });
     }
   });

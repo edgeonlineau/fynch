@@ -13,7 +13,7 @@ export function register(): void {
           ? String(detail.submissionGuid ?? '') || undefined
           : undefined;
       sendFynchEvent(FORM_LEAD, {
-        service_provider: 'hubspot-v4',
+        provider: 'hubspot-v4',
         form_id: formId,
         ...(leadId && { lead_id: leadId }),
       });

@@ -10,7 +10,7 @@ export function register(): void {
     if (event === 'Conversation Started') {
       const leadId = properties.uid || properties.conversationUid || undefined;
       sendFynchEvent(CHAT_STARTED, {
-        service_provider: 'podium',
+        provider: 'podium',
         ...(leadId && { lead_id: leadId }),
       });
     }

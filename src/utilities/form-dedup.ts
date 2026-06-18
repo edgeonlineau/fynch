@@ -13,14 +13,14 @@ function norm(value: string | undefined): string {
 }
 
 function tier1Key(params: EventParams): string | null {
-  const provider = norm(params.service_provider);
+  const provider = norm(params.provider);
   const leadId = norm(params.lead_id);
   if (!provider || !leadId) return null;
   return `${provider}${SEP}${leadId}`;
 }
 
 function tier2Key(params: EventParams): string {
-  return [norm(params.service_provider), norm(params.form_id), norm(params.form_name)].join(SEP);
+  return [norm(params.provider), norm(params.form_id), norm(params.form_name)].join(SEP);
 }
 
 function evictOldestFromSet(set: Set<string>, max: number): void {

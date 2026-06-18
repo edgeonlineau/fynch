@@ -15,7 +15,7 @@ export function register(): void {
     if (!permalink || !Number.isFinite(Number(heightStr))) return;
 
     sendFynchEvent(FORM_LEAD, {
-      service_provider: 'zoho',
+      provider: 'zoho',
       form_id: permalink,
     });
   });

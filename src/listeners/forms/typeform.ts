@@ -14,7 +14,7 @@ export function register(): void {
       const leadId =
         'responseId' in event.data ? String(event.data.responseId) || undefined : undefined;
       sendFynchEvent(FORM_LEAD, {
-        service_provider: 'typeform',
+        provider: 'typeform',
         form_id: formId,
         ...(leadId && { lead_id: leadId }),
       });

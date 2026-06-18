@@ -16,7 +16,7 @@ describe('Zoho forms listener', () => {
 
   function zohoLeads(): DataLayerEvent[] {
     return window.dataLayer.filter(
-      (e) => e.event === 'fynch.event' && e.action === 'form_lead' && e.service_provider === 'zoho',
+      (e) => e.event === 'fynch.event' && e.action === 'form_lead' && e.provider === 'zoho',
     );
   }
 
@@ -28,7 +28,7 @@ describe('Zoho forms listener', () => {
       expect.objectContaining({
         event: 'fynch.event',
         action: 'form_lead',
-        service_provider: 'zoho',
+        provider: 'zoho',
         form_id: permalink,
       }),
     );
@@ -41,7 +41,7 @@ describe('Zoho forms listener', () => {
     for (const height of heights) {
       postZoho(`${permalink}|${height}`);
       // Zoho has no lead_id so it falls into Tier 2 form-identity dedup
-      // (2s window keyed on service_provider + form_id). Space submissions
+      // (2s window keyed on provider + form_id). Space submissions
       // beyond that window so each is treated as distinct.
       await new Promise((resolve) => setTimeout(resolve, 2100));
     }

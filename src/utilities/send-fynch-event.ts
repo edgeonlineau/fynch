@@ -4,7 +4,7 @@ import { isFormDuplicate } from './form-dedup';
 window.dataLayer = window.dataLayer || [];
 
 export interface EventParams {
-  readonly service_provider?: string;
+  readonly provider?: string;
   readonly form_id?: string;
   readonly form_name?: string;
   readonly lead_id?: string;
@@ -13,10 +13,6 @@ export interface EventParams {
   readonly link_id?: string;
   readonly link_classes?: string;
   readonly link_domain?: string;
-  readonly map_provider?: string;
-  readonly messaging_channel?: string;
-  readonly app_store?: string;
-  readonly calendar_provider?: string;
   readonly file_name?: string;
   readonly file_extension?: string;
   readonly percent_scrolled?: number;

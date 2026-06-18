@@ -7,7 +7,7 @@ export function register($: JQueryStatic): void {
     const formName =
       document.getElementById(`gform_wrapper_${id}`)?.getAttribute('aria-label') ?? '';
     sendFynchEvent(FORM_LEAD, {
-      service_provider: 'gravity-forms',
+      provider: 'gravity-forms',
       form_id: id,
       ...(formName && { form_name: formName }),
     });

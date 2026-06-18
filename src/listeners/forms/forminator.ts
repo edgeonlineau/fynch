@@ -12,7 +12,7 @@ export function register($: JQueryStatic): void {
           ? String((data as { formName?: string }).formName ?? '')
           : '';
       sendFynchEvent(FORM_LEAD, {
-        service_provider: 'forminator',
+        provider: 'forminator',
         form_id: formId,
         ...(formName && { form_name: formName }),
       });

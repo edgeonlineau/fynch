@@ -77,7 +77,7 @@ describe('form-listeners (jQuery-dependent)', () => {
       expect.objectContaining({
         event: 'fynch.event',
         action: 'form_lead',
-        service_provider: 'elementor',
+        provider: 'elementor',
         form_id: 'elem-42',
         form_name: 'My Elementor Form',
       }),
@@ -106,7 +106,7 @@ describe('form-listeners (jQuery-dependent)', () => {
       expect.objectContaining({
         event: 'fynch.event',
         action: 'form_lead',
-        service_provider: 'fluent-forms',
+        provider: 'fluent-forms',
         form_id: 'ff-42',
         lead_id: 'entry-101',
         form_name: 'Newsletter Signup',
@@ -139,7 +139,7 @@ describe('form-listeners (jQuery-dependent)', () => {
       expect.objectContaining({
         event: 'fynch.event',
         action: 'form_lead',
-        service_provider: 'formidable',
+        provider: 'formidable',
         form_name: 'Test Form',
       }),
     );
@@ -159,7 +159,7 @@ describe('form-listeners (jQuery-dependent)', () => {
       expect.objectContaining({
         event: 'fynch.event',
         action: 'form_lead',
-        service_provider: 'forminator',
+        provider: 'forminator',
         form_id: 'forminator-99',
         form_name: 'Feedback Form',
       }),
@@ -184,7 +184,7 @@ describe('form-listeners (jQuery-dependent)', () => {
       expect.objectContaining({
         event: 'fynch.event',
         action: 'form_lead',
-        service_provider: 'ninja-forms',
+        provider: 'ninja-forms',
         form_id: 'ninja-7',
         lead_id: 'nf-entry-55',
         form_name: 'Contact Ninja',
@@ -207,7 +207,7 @@ describe('form-listeners (jQuery-dependent)', () => {
       expect.objectContaining({
         event: 'fynch.event',
         action: 'form_lead',
-        service_provider: 'wp-forms',
+        provider: 'wp-forms',
         form_id: 'wp-55',
         form_name: 'Inquiry Form',
       }),
@@ -229,7 +229,7 @@ describe('form-listeners (jQuery-dependent)', () => {
       expect.objectContaining({
         event: 'fynch.event',
         action: 'form_lead',
-        service_provider: 'ws-form',
+        provider: 'ws-form',
         form_id: 'ws-form-12',
         lead_id: 'ws-sub-77',
         form_name: 'Booking Form',
@@ -256,7 +256,7 @@ describe('form-listeners (jQuery-dependent)', () => {
       expect.objectContaining({
         event: 'fynch.event',
         action: 'form_lead',
-        service_provider: 'divi',
+        provider: 'divi',
       }),
     );
   });
@@ -275,7 +275,7 @@ describe('form-listeners (jQuery-dependent)', () => {
       expect.objectContaining({
         event: 'fynch.event',
         action: 'form_lead',
-        service_provider: 'gravity-forms',
+        provider: 'gravity-forms',
         form_id: 'gf-33',
         form_name: 'Request a Quote',
       }),

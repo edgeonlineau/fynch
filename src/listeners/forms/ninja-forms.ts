@@ -12,7 +12,7 @@ export function register($: JQueryStatic): void {
         undefined;
       const formName = String(resp.response?.data?.settings?.title ?? '') || undefined;
       sendFynchEvent(FORM_LEAD, {
-        service_provider: 'ninja-forms',
+        provider: 'ninja-forms',
         form_id: formId,
         ...(leadId && { lead_id: leadId }),
         ...(formName && { form_name: formName }),

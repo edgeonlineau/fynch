@@ -26,7 +26,7 @@ describe('form-listeners (new platforms)', () => {
           expect.objectContaining({
             event: 'fynch.event',
             action: 'form_lead',
-            service_provider: 'squarespace',
+            provider: 'squarespace',
           }),
         );
       });

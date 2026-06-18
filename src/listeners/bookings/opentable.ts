@@ -16,7 +16,7 @@ export function register(): void {
     ) {
       const leadId = String(event.data.confirmation_number ?? '') || undefined;
       sendFynchEvent(BOOKING_SCHEDULED, {
-        service_provider: 'opentable',
+        provider: 'opentable',
         ...(leadId && { lead_id: leadId }),
       });
     }

@@ -65,12 +65,12 @@ describe('sendFynchEvent', () => {
   it('includes event params when provided', async () => {
     const sendFynchEvent = await loadSendFynchEvent();
     sendFynchEvent('form_lead', {
-      service_provider: 'contact-form-7',
+      provider: 'contact-form-7',
       form_id: '123',
     });
 
     const event = window.dataLayer[0];
-    expect(event.service_provider).toBe('contact-form-7');
+    expect(event.provider).toBe('contact-form-7');
     expect(event.form_id).toBe('123');
   });
 
@@ -79,18 +79,18 @@ describe('sendFynchEvent', () => {
     sendFynchEvent('email_clicked');
 
     const event = window.dataLayer[0];
-    expect(event.service_provider).toBeUndefined();
+    expect(event.provider).toBeUndefined();
     expect(event.form_name).toBeUndefined();
   });
 
   it('omits form_name when not provided in params', async () => {
     const sendFynchEvent = await loadSendFynchEvent();
     sendFynchEvent('chat_started', {
-      service_provider: 'beacon',
+      provider: 'beacon',
     });
 
     const event = window.dataLayer[0];
-    expect(event.service_provider).toBe('beacon');
+    expect(event.provider).toBe('beacon');
     expect(event.form_name).toBeUndefined();
   });
 
@@ -152,8 +152,8 @@ describe('sendFynchEvent', () => {
 
   it('deduplicates events with no params', async () => {
     const sendFynchEvent = await loadSendFynchEvent();
-    sendFynchEvent('chat_started', { service_provider: 'beacon' });
-    sendFynchEvent('chat_started', { service_provider: 'beacon' });
+    sendFynchEvent('chat_started', { provider: 'beacon' });
+    sendFynchEvent('chat_started', { provider: 'beacon' });
 
     expect(window.dataLayer).toHaveLength(1);
   });

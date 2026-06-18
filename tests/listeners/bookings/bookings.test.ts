@@ -21,7 +21,7 @@ describe('booking-listeners', () => {
       expect.objectContaining({
         event: 'fynch.event',
         action: 'booking_scheduled',
-        service_provider: 'calendly',
+        provider: 'calendly',
       }),
     );
   });
@@ -70,7 +70,7 @@ describe('booking-listeners', () => {
       expect.objectContaining({
         event: 'fynch.event',
         action: 'booking_scheduled',
-        service_provider: 'nowbookit',
+        provider: 'nowbookit',
         lead_id: 'NBI-67890',
       }),
     );
@@ -119,7 +119,7 @@ describe('booking-listeners', () => {
       expect.objectContaining({
         event: 'fynch.event',
         action: 'booking_scheduled',
-        service_provider: 'opentable',
+        provider: 'opentable',
         lead_id: 'OT-12345',
       }),
     );
@@ -138,7 +138,7 @@ describe('booking-listeners', () => {
     expect(window.dataLayer).toContainEqual(
       expect.objectContaining({
         action: 'booking_scheduled',
-        service_provider: 'opentable',
+        provider: 'opentable',
         lead_id: 'OT-99999',
       }),
     );
@@ -169,7 +169,7 @@ describe('booking-listeners', () => {
       expect.objectContaining({
         event: 'fynch.event',
         action: 'booking_scheduled',
-        service_provider: 'lineleader',
+        provider: 'lineleader',
         lead_id: 'lead-123',
       }),
     );
@@ -208,7 +208,7 @@ describe('booking-listeners', () => {
       expect.objectContaining({
         event: 'fynch.event',
         action: 'booking_scheduled',
-        service_provider: 'sevenrooms',
+        provider: 'sevenrooms',
       }),
     );
   });

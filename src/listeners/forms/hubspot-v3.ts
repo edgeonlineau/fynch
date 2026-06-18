@@ -7,7 +7,7 @@ export function register(): void {
       const formId = String(event.data?.id ?? '');
       const leadId = String(event.data.data?.submissionGuid ?? '') || undefined;
       sendFynchEvent(FORM_LEAD, {
-        service_provider: 'hubspot-v3',
+        provider: 'hubspot-v3',
         form_id: formId,
         ...(leadId && { lead_id: leadId }),
       });

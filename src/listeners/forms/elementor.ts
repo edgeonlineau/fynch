@@ -12,7 +12,7 @@ export function register($: JQueryStatic): void {
     ) as HTMLInputElement | null;
     const formName = formNameInput?.value ?? target?.name ?? '';
     sendFynchEvent(FORM_LEAD, {
-      service_provider: 'elementor',
+      provider: 'elementor',
       ...(formId && { form_id: formId }),
       form_name: formName,
     });

@@ -12,7 +12,7 @@ export function register($: JQueryStatic): void {
       const formName =
         nativeEvent instanceof CustomEvent ? String(nativeEvent.detail?.formName ?? '') : '';
       sendFynchEvent(FORM_LEAD, {
-        service_provider: 'wp-forms',
+        provider: 'wp-forms',
         form_id: formId,
         ...(formName && { form_name: formName }),
       });

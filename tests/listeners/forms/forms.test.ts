@@ -23,7 +23,7 @@ describe('form-listeners', () => {
       expect.objectContaining({
         event: 'fynch.event',
         action: 'form_lead',
-        service_provider: 'contact-form-7',
+        provider: 'contact-form-7',
         form_id: '123',
         form_name: 'Contact Us',
       }),
@@ -49,7 +49,7 @@ describe('form-listeners', () => {
       expect.objectContaining({
         event: 'fynch.event',
         action: 'form_lead',
-        service_provider: 'hubspot-v3',
+        provider: 'hubspot-v3',
         form_id: 'hs-form-456',
         lead_id: 'guid-789',
       }),
@@ -89,7 +89,7 @@ describe('form-listeners', () => {
       expect.objectContaining({
         event: 'fynch.event',
         action: 'form_lead',
-        service_provider: 'hubspot-v4',
+        provider: 'hubspot-v4',
         form_id: 'hs-v4-789',
         lead_id: 'v4-guid-001',
       }),
@@ -132,7 +132,7 @@ describe('form-listeners', () => {
       expect.objectContaining({
         event: 'fynch.event',
         action: 'form_lead',
-        service_provider: 'duda',
+        provider: 'duda',
       }),
     );
   });
@@ -153,7 +153,7 @@ describe('form-listeners', () => {
       expect.objectContaining({
         event: 'fynch.event',
         action: 'form_lead',
-        service_provider: 'typeform',
+        provider: 'typeform',
         form_id: 'tf-abc123',
         lead_id: 'resp-xyz',
       }),

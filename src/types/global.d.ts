@@ -8,7 +8,7 @@ interface DataLayerEvent {
   page_path: string;
   referrer: string;
   timestamp: string;
-  service_provider?: string;
+  provider?: string;
   form_id?: string;
   form_name?: string;
   lead_id?: string;
@@ -17,10 +17,6 @@ interface DataLayerEvent {
   link_id?: string;
   link_classes?: string;
   link_domain?: string;
-  map_provider?: string;
-  messaging_channel?: string;
-  app_store?: string;
-  calendar_provider?: string;
   file_name?: string;
   file_extension?: string;
   percent_scrolled?: number;

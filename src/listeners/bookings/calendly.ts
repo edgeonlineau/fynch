@@ -11,7 +11,7 @@ export function register(): void {
       event.data.event === 'calendly.event_scheduled'
     ) {
       sendFynchEvent(BOOKING_SCHEDULED, {
-        service_provider: 'calendly',
+        provider: 'calendly',
       });
     }
   });

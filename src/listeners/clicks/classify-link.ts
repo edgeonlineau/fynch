@@ -43,24 +43,24 @@ function extractFileInfo(pathname: string): { file_name: string; file_extension:
 // Directions use path-dependent and wildcard-TLD shapes, so they stay as logic
 // rather than a flat host table.
 function classifyDirections(host: string, path: string): EventParams | null {
-  if (matchesHost(host, 'g.page')) return { map_provider: 'google-business' };
-  if (matchesHost(host, 'maps.apple.com')) return { map_provider: 'apple' };
-  if (matchesHost(host, 'waze.com')) return { map_provider: 'waze' };
+  if (matchesHost(host, 'g.page')) return { provider: 'google-business' };
+  if (matchesHost(host, 'maps.apple.com')) return { provider: 'apple' };
+  if (matchesHost(host, 'waze.com')) return { provider: 'waze' };
   if (host === 'maps.google.com' || host.startsWith('maps.google.')) {
-    return { map_provider: 'google' };
+    return { provider: 'google' };
   }
   if (matchesHost(host, 'goo.gl') && path.startsWith('/maps')) {
-    return { map_provider: 'google' };
+    return { provider: 'google' };
   }
   // google.com/maps, google.co.uk/maps, etc.
   if (/^google\.[a-z.]+$/.test(host) && path.startsWith('/maps')) {
-    return { map_provider: 'google' };
+    return { provider: 'google' };
   }
   return null;
 }
 
 function classifyCalendar(host: string, path: string): EventParams | null {
-  if (path.endsWith('.ics')) return { calendar_provider: 'ics' };
+  if (path.endsWith('.ics')) return { provider: 'ics' };
   for (const [calendarHost, provider] of Object.entries(CALENDAR_HOSTS)) {
     if (!matchesHost(host, calendarHost)) continue;
     if (
@@ -69,7 +69,7 @@ function classifyCalendar(host: string, path: string): EventParams | null {
     ) {
       continue;
     }
-    return { calendar_provider: provider };
+    return { provider };
   }
   return null;
 }
@@ -102,13 +102,13 @@ export function classifyLink(url: URL): LinkClassification | null {
 
   for (const [messagingHost, channel] of Object.entries(MESSAGING_HOSTS)) {
     if (matchesHost(host, messagingHost)) {
-      return { action: CLICK_MESSAGING, params: { messaging_channel: channel } };
+      return { action: CLICK_MESSAGING, params: { provider: channel } };
     }
   }
 
   for (const [storeHost, store] of Object.entries(APP_STORE_HOSTS)) {
     if (matchesHost(host, storeHost)) {
-      return { action: CLICK_APP_STORE, params: { app_store: store } };
+      return { action: CLICK_APP_STORE, params: { provider: store } };
     }
   }
 

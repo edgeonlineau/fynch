@@ -15,7 +15,7 @@ export function register($: JQueryStatic): void {
           undefined
         : undefined;
     sendFynchEvent(FORM_LEAD, {
-      service_provider: 'ws-form',
+      provider: 'ws-form',
       form_id: id,
       ...(leadId && { lead_id: leadId }),
       ...(formName && { form_name: formName }),

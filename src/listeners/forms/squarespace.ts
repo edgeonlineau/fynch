@@ -31,7 +31,7 @@ export function register(): void {
     observer.disconnect();
 
     sendFynchEvent(FORM_LEAD, {
-      service_provider: 'squarespace',
+      provider: 'squarespace',
     });
   });
 

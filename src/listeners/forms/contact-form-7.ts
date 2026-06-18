@@ -8,7 +8,7 @@ export function register(): void {
     const formName =
       document.querySelector(`[id^="wpcf7-f${formId}-"]`)?.getAttribute('data-name') ?? '';
     sendFynchEvent(FORM_LEAD, {
-      service_provider: 'contact-form-7',
+      provider: 'contact-form-7',
       form_id: formId,
       ...(formName && { form_name: formName }),
     });

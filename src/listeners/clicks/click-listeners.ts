@@ -56,10 +56,10 @@ function handleClick(event: MouseEvent): void {
       sendFynchEvent(CLICK_SMS, ctx);
       return;
     case 'whatsapp:':
-      sendFynchEvent(CLICK_MESSAGING, { ...ctx, messaging_channel: 'whatsapp' });
+      sendFynchEvent(CLICK_MESSAGING, { ...ctx, provider: 'whatsapp' });
       return;
     case 'maps:':
-      sendFynchEvent(CLICK_DIRECTIONS, { ...ctx, map_provider: 'apple' });
+      sendFynchEvent(CLICK_DIRECTIONS, { ...ctx, provider: 'apple' });
       return;
   }
 
