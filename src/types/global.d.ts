@@ -66,6 +66,16 @@ interface TawkAPI {
   onChatStarted?: () => void;
 }
 
+interface LiveChatNewEvent {
+  type?: string;
+  timestamp?: number;
+  author?: { id?: string; type?: string };
+}
+
+interface LiveChatWidgetAPI {
+  on(eventName: string, callback: (event: LiveChatNewEvent) => void): void;
+}
+
 interface CrmForm {
   callback?: (leadId: string) => void;
 }
@@ -77,4 +87,5 @@ interface Window {
   Tawk_API?: TawkAPI;
   crmForm?: CrmForm;
   PodiumEventsCallback?: PodiumEventsCallback;
+  LiveChatWidget?: LiveChatWidgetAPI;
 }

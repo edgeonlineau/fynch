@@ -7,6 +7,7 @@ describe('chat-listeners', () => {
     delete (window as Record<string, unknown>).Beacon;
     delete (window as Record<string, unknown>).Tawk_API;
     delete (window as Record<string, unknown>).PodiumEventsCallback;
+    delete (window as Record<string, unknown>).LiveChatWidget;
   });
 
   it('tracks Beacon chat started when Beacon API is available', async () => {
@@ -138,5 +139,116 @@ describe('chat-listeners', () => {
 
     expect(existingCallback).toHaveBeenCalledWith('Conversation Started', props);
     expect(window.dataLayer).toHaveLength(1);
+  });
+
+  it('tracks LiveChat chat started on first customer message', async () => {
+    let capturedCallback:
+      | ((event: { author?: { id?: string; type?: string } }) => void)
+      | undefined;
+
+    (window as Record<string, unknown>).LiveChatWidget = {
+      on: (
+        _eventName: string,
+        callback: (event: { author?: { id?: string; type?: string } }) => void,
+      ) => {
+        capturedCallback = callback;
+      },
+    };
+
+    const { register } = await import('../../../src/listeners/chats/livechat');
+    register();
+
+    capturedCallback?.({ author: { type: 'customer' } });
+
+    expect(window.dataLayer).toContainEqual(
+      expect.objectContaining({
+        event: 'fynch.event',
+        action: 'start_chat',
+        provider: 'livechat',
+      }),
+    );
+  });
+
+  it('includes lead_id from LiveChat author id', async () => {
+    let capturedCallback:
+      | ((event: { author?: { id?: string; type?: string } }) => void)
+      | undefined;
+
+    (window as Record<string, unknown>).LiveChatWidget = {
+      on: (
+        _eventName: string,
+        callback: (event: { author?: { id?: string; type?: string } }) => void,
+      ) => {
+        capturedCallback = callback;
+      },
+    };
+
+    const { register } = await import('../../../src/listeners/chats/livechat');
+    register();
+
+    capturedCallback?.({ author: { id: 'visitor-xyz-789', type: 'customer' } });
+
+    expect(window.dataLayer).toContainEqual(
+      expect.objectContaining({
+        action: 'start_chat',
+        provider: 'livechat',
+        lead_id: 'visitor-xyz-789',
+      }),
+    );
+  });
+
+  it('ignores agent-authored LiveChat messages', async () => {
+    let capturedCallback:
+      | ((event: { author?: { id?: string; type?: string } }) => void)
+      | undefined;
+
+    (window as Record<string, unknown>).LiveChatWidget = {
+      on: (
+        _eventName: string,
+        callback: (event: { author?: { id?: string; type?: string } }) => void,
+      ) => {
+        capturedCallback = callback;
+      },
+    };
+
+    const { register } = await import('../../../src/listeners/chats/livechat');
+    register();
+
+    capturedCallback?.({ author: { type: 'agent' } });
+
+    expect(window.dataLayer).toHaveLength(0);
+  });
+
+  it('fires LiveChat start_chat at most once per page load', async () => {
+    let capturedCallback:
+      | ((event: { author?: { id?: string; type?: string } }) => void)
+      | undefined;
+
+    (window as Record<string, unknown>).LiveChatWidget = {
+      on: (
+        _eventName: string,
+        callback: (event: { author?: { id?: string; type?: string } }) => void,
+      ) => {
+        capturedCallback = callback;
+      },
+    };
+
+    const { register } = await import('../../../src/listeners/chats/livechat');
+    register();
+
+    capturedCallback?.({ author: { id: 'msg-1', type: 'customer' } });
+    capturedCallback?.({ author: { id: 'msg-2', type: 'customer' } });
+    capturedCallback?.({ author: { id: 'msg-3', type: 'customer' } });
+
+    expect(window.dataLayer).toHaveLength(1);
+    expect(window.dataLayer[0]).toEqual(
+      expect.objectContaining({ provider: 'livechat', lead_id: 'msg-1' }),
+    );
+  });
+
+  it('does not throw when LiveChat widget is not available', async () => {
+    const { register } = await import('../../../src/listeners/chats/livechat');
+    expect(() => register()).not.toThrow();
+    expect(window.dataLayer).toHaveLength(0);
   });
 });

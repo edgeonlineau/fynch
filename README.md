@@ -184,6 +184,7 @@ Starting a conversation in a supported chat widget emits `start_chat`.
 | `beacon` | Help Scout Beacon |
 | `tawk` | Tawk.to |
 | `podium` | Podium |
+| `livechat` | LiveChat |
 
 ### Bookings
 
