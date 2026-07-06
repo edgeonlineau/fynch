@@ -1,7 +1,7 @@
 {
   "name": "@edgeonline/fynch",
   "version": "0.1.2",
-  "description": "Client-side event tracking library for GTM integrators — listens for form, click, scroll, booking, and chat interactions and pushes them to the dataLayer.",
+  "description": "Client-side event tracking library for GTM integrators \u2014 listens for form, click, scroll, booking, and chat interactions and pushes them to the dataLayer.",
   "license": "MIT",
   "type": "module",
   "main": "dist/fynch.js",
@@ -42,7 +42,7 @@
   },
   "scripts": {
     "dev": "vite",
-    "build": "tsc --noEmit && vite build",
+    "build": "tsc --noEmit && vite build && BUILD_FORMAT=es vite build",
     "preview": "vite preview",
     "typecheck": "tsc --noEmit",
     "format": "prettier --write .",
