@@ -32,10 +32,11 @@ describe('form-listeners', () => {
     wrapper.remove();
   });
 
-  it('tracks HubSpot Forms v3 submissions via postMessage', async () => {
+  it('tracks HubSpot Forms v3 submissions posted from the host page origin', async () => {
     await import('../../../src/listeners/forms/index');
 
     const event = new MessageEvent('message', {
+      origin: window.location.origin,
       data: {
         type: 'hsFormCallback',
         eventName: 'onFormSubmitted',
@@ -56,10 +57,52 @@ describe('form-listeners', () => {
     );
   });
 
+  it('tracks HubSpot Forms v3 submissions posted from an hsforms iframe origin', async () => {
+    await import('../../../src/listeners/forms/index');
+
+    const event = new MessageEvent('message', {
+      origin: 'https://forms.hsforms.com',
+      data: {
+        type: 'hsFormCallback',
+        eventName: 'onFormSubmitted',
+        id: 'hs-form-999',
+      },
+    });
+    window.dispatchEvent(event);
+
+    expect(window.dataLayer).toContainEqual(
+      expect.objectContaining({
+        action: 'form_lead',
+        provider: 'hubspot-v3',
+        form_id: 'hs-form-999',
+      }),
+    );
+  });
+
+  it('ignores HubSpot-shaped messages from untrusted origins', async () => {
+    await import('../../../src/listeners/forms/index');
+
+    const event = new MessageEvent('message', {
+      origin: 'https://evil.com',
+      data: {
+        type: 'hsFormCallback',
+        eventName: 'onFormSubmitted',
+        id: 'hs-form-456',
+      },
+    });
+    window.dispatchEvent(event);
+
+    const formLeads = window.dataLayer.filter(
+      (e) => e.event === 'fynch.event' && e.action === 'form_lead',
+    );
+    expect(formLeads).toHaveLength(0);
+  });
+
   it('ignores non-HubSpot postMessage events', async () => {
     await import('../../../src/listeners/forms/index');
 
     const event = new MessageEvent('message', {
+      origin: window.location.origin,
       data: { type: 'otherCallback', eventName: 'something' },
     });
     window.dispatchEvent(event);
@@ -68,6 +111,21 @@ describe('form-listeners', () => {
       (e) => e.event === 'fynch.event' && e.action === 'form_lead',
     );
     expect(formLeads).toHaveLength(0);
+  });
+
+  it('does not throw on null or string message data', async () => {
+    await import('../../../src/listeners/forms/index');
+
+    expect(() => {
+      window.dispatchEvent(
+        new MessageEvent('message', { origin: window.location.origin, data: null }),
+      );
+      window.dispatchEvent(
+        new MessageEvent('message', { origin: window.location.origin, data: 'plain-string' }),
+      );
+    }).not.toThrow();
+
+    expect(window.dataLayer).toHaveLength(0);
   });
 
   it('tracks HubSpot Forms v4 submissions', async () => {
@@ -141,6 +199,7 @@ describe('form-listeners', () => {
     await import('../../../src/listeners/forms/index');
 
     const event = new MessageEvent('message', {
+      origin: 'https://form.typeform.com',
       data: {
         type: 'form-submit',
         formId: 'tf-abc123',
@@ -158,5 +217,27 @@ describe('form-listeners', () => {
         lead_id: 'resp-xyz',
       }),
     );
+  });
+
+  it('ignores Typeform-shaped messages from untrusted origins', async () => {
+    await import('../../../src/listeners/forms/index');
+
+    for (const origin of [
+      'https://evil.com',
+      'https://typeform.com.evil.com',
+      'http://form.typeform.com',
+    ]) {
+      window.dispatchEvent(
+        new MessageEvent('message', {
+          origin,
+          data: { type: 'form-submit', formId: 'tf-spoof' },
+        }),
+      );
+    }
+
+    const formLeads = window.dataLayer.filter(
+      (e) => e.event === 'fynch.event' && e.action === 'form_lead',
+    );
+    expect(formLeads).toHaveLength(0);
   });
 });

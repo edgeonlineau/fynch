@@ -125,7 +125,7 @@ describe('booking-listeners', () => {
     );
   });
 
-  it('matches OpenTable from any TLD', async () => {
+  it('matches OpenTable regional origins from the allowlist', async () => {
     const { register } = await import('../../../src/listeners/bookings/opentable');
     register();
 
@@ -142,6 +142,26 @@ describe('booking-listeners', () => {
         lead_id: 'OT-99999',
       }),
     );
+  });
+
+  it('rejects attacker origins that merely start with www.opentable.', async () => {
+    const { register } = await import('../../../src/listeners/bookings/opentable');
+    register();
+
+    for (const origin of [
+      'https://www.opentable.evil.com',
+      'https://www.opentable.com.evil.com',
+      'http://www.opentable.com',
+    ]) {
+      window.dispatchEvent(
+        new MessageEvent('message', {
+          origin,
+          data: { type: 'reservation-made', confirmation_number: 'OT-SPOOF' },
+        }),
+      );
+    }
+
+    expect(window.dataLayer).toHaveLength(0);
   });
 
   it('ignores non-reservation OpenTable events', async () => {

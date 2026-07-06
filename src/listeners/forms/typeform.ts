@@ -1,8 +1,12 @@
 import { sendFynchEvent } from '../../utilities/send-fynch-event';
 import { FORM_LEAD } from '../../utilities/constants';
 
+// Embedded typeforms live on form.typeform.com or a branded *.typeform.com subdomain.
+const TYPEFORM_ORIGIN_PATTERN = /^https:\/\/([a-z0-9-]+\.)?typeform\.com$/;
+
 export function register(): void {
   window.addEventListener('message', (event: MessageEvent) => {
+    if (!TYPEFORM_ORIGIN_PATTERN.test(event.origin)) return;
     if (
       typeof event.data === 'object' &&
       event.data !== null &&
