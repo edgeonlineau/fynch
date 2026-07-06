@@ -7,10 +7,10 @@ export function register(): void {
     const hsform = HubspotFormsV4.getFormFromEvent(event);
     if (hsform) {
       const formId = hsform.getFormId();
-      const detail = (event as CustomEvent)?.detail;
+      const detail: unknown = event instanceof CustomEvent ? event.detail : undefined;
       const leadId =
-        typeof detail === 'object' && detail !== null
-          ? String(detail.submissionGuid ?? '') || undefined
+        typeof detail === 'object' && detail !== null && 'submissionGuid' in detail
+          ? String((detail as { submissionGuid?: unknown }).submissionGuid ?? '') || undefined
           : undefined;
       sendFynchEvent(FORM_LEAD, {
         provider: 'hubspot-v4',

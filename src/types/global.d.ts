@@ -29,7 +29,7 @@ interface Window {
 declare const dataLayer: DataLayerEvent[];
 
 interface JQueryStatic {
-  (selector: string | Document | Element): JQuery;
+  (selector: string | Document | Element | JQuery): JQuery;
 }
 
 interface JQuery {

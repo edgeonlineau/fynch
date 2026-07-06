@@ -1,6 +1,8 @@
 import { sendFynchEvent } from '../../utilities/send-fynch-event';
 import { FORM_LEAD } from '../../utilities/constants';
 
+// Lowercase-only on purpose: browsers serialise MessageEvent.origin in
+// canonical (lowercase-host) form.
 const ZOHO_ORIGIN_PATTERN = /^https:\/\/forms\.zohopublic\.(com|eu|in|com\.au|com\.cn|jp|sa)$/;
 
 export function register(): void {

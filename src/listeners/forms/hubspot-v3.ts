@@ -3,6 +3,9 @@ import { FORM_LEAD } from '../../utilities/constants';
 
 // v3 inline embeds post from the host page's own origin; iframe embeds post
 // from a *.hsforms.com / *.hsforms.net origin.
+// Lowercase-only on purpose: browsers serialise MessageEvent.origin in
+// canonical (lowercase-host) form, so a case-insensitive flag would only
+// widen the trust surface, never fix a real mismatch.
 const HSFORMS_ORIGIN_PATTERN = /^https:\/\/[a-z0-9-]+\.hsforms\.(com|net)$/;
 
 function isTrustedOrigin(origin: string): boolean {
