@@ -1,7 +1,9 @@
 import { sendFynchEvent } from '../../utilities/send-fynch-event';
 import { FORM_LEAD } from '../../utilities/constants';
 
-// Embedded typeforms live on form.typeform.com or a branded *.typeform.com subdomain.
+// Embedded typeforms live on form.typeform.com or a branded *.typeform.com
+// subdomain, so the whole (Typeform-controlled) subdomain space is accepted.
+// Restricting to form.typeform.com would break branded-subdomain customers.
 const TYPEFORM_ORIGIN_PATTERN = /^https:\/\/([a-z0-9-]+\.)?typeform\.com$/;
 
 export function register(): void {

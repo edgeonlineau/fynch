@@ -27,6 +27,9 @@ zoho();
 // so their detection retries at DOMContentLoaded, window load, and a short poll.
 registerWithRetry(duda);
 
+// Registers once, as soon as jQuery exists. Individual plugins being absent is
+// fine: each listener just waits for its plugin's jQuery event, which never
+// fires on sites that don't run that plugin.
 registerWithRetry(() => {
   if (typeof jQuery !== 'function') return false;
   const $ = jQuery;
