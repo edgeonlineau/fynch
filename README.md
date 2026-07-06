@@ -262,27 +262,27 @@ Completing a reservation/booking in a supported widget emits `schedule_booking`.
 
 ## Parameter glossary
 
-| Param              | Meaning                                                                         |
-| ------------------ | ------------------------------------------------------------------------------- |
-| `event`            | Always `fynch.event`. Use as the GTM trigger.                                   |
-| `action`           | The event name — one of the 14 actions above.                                   |
-| `page_url`         | Full page URL (`window.location.href`) at the time of the event.                |
-| `page_title`       | Document title (`document.title`).                                              |
-| `page_path`        | URL path (`window.location.pathname`).                                          |
-| `referrer`         | `document.referrer` (empty string if none).                                     |
-| `timestamp`        | ISO 8601 timestamp of when the event fired.                                     |
-| `provider`         | The detected platform/channel (e.g. `whatsapp`, `gravity-forms`, `calendly`).   |
-| `form_id`          | Platform form identifier, when available.                                       |
-| `form_name`        | Human-readable form name, when available.                                       |
-| `lead_id`          | Submission / conversation / booking identifier, when the platform provides one. |
+| Param              | Meaning                                                                                                                                                |
+| ------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `event`            | Always `fynch.event`. Use as the GTM trigger.                                                                                                          |
+| `action`           | The event name — one of the 14 actions above.                                                                                                          |
+| `page_url`         | Full page URL (`window.location.href`) at the time of the event.                                                                                       |
+| `page_title`       | Document title (`document.title`).                                                                                                                     |
+| `page_path`        | URL path (`window.location.pathname`).                                                                                                                 |
+| `referrer`         | `document.referrer` (empty string if none).                                                                                                            |
+| `timestamp`        | ISO 8601 timestamp of when the event fired.                                                                                                            |
+| `provider`         | The detected platform/channel (e.g. `whatsapp`, `gravity-forms`, `calendly`).                                                                          |
+| `form_id`          | Platform form identifier, when available.                                                                                                              |
+| `form_name`        | Human-readable form name, when available.                                                                                                              |
+| `lead_id`          | Submission / conversation / booking identifier, when the platform provides one.                                                                        |
 | `link_url`         | The clicked link's `href`. For `mailto:`/`tel:`/`callto:`/`sms:` links the address or number is redacted — only the bare scheme (e.g. `tel:`) is sent. |
-| `link_text`        | The link's visible text (trimmed, max 100 chars).                               |
-| `link_id`          | The link element's `id`.                                                        |
-| `link_classes`     | The link element's class list.                                                  |
-| `link_domain`      | Hostname of an external/outbound link.                                          |
-| `file_name`        | Filename of a downloaded file (last URL path segment).                          |
-| `file_extension`   | Extension of a downloaded file (without the leading dot).                       |
-| `percent_scrolled` | Scroll-depth milestone reached: `25`, `50`, `75`, or `90`.                      |
+| `link_text`        | The link's visible text (trimmed, max 100 chars).                                                                                                      |
+| `link_id`          | The link element's `id`.                                                                                                                               |
+| `link_classes`     | The link element's class list.                                                                                                                         |
+| `link_domain`      | Hostname of an external/outbound link.                                                                                                                 |
+| `file_name`        | Filename of a downloaded file (last URL path segment).                                                                                                 |
+| `file_extension`   | Extension of a downloaded file (without the leading dot).                                                                                              |
+| `percent_scrolled` | Scroll-depth milestone reached: `25`, `50`, `75`, or `90`.                                                                                             |
 
 > **Privacy note:** `page_url` includes the page's query string. If your URLs
 > can carry sensitive parameters (password-reset tokens, OAuth callbacks,
