@@ -4,16 +4,16 @@ describe('chat-listeners', () => {
   beforeEach(() => {
     window.dataLayer = [];
     vi.resetModules();
-    delete (window as Record<string, unknown>).Beacon;
-    delete (window as Record<string, unknown>).Tawk_API;
-    delete (window as Record<string, unknown>).PodiumEventsCallback;
-    delete (window as Record<string, unknown>).LiveChatWidget;
+    delete (window as unknown as Record<string, unknown>).Beacon;
+    delete (window as unknown as Record<string, unknown>).Tawk_API;
+    delete (window as unknown as Record<string, unknown>).PodiumEventsCallback;
+    delete (window as unknown as Record<string, unknown>).LiveChatWidget;
   });
 
   it('tracks Beacon chat started when Beacon API is available', async () => {
     let capturedCallback: (() => void) | undefined;
 
-    (window as Record<string, unknown>).Beacon = (
+    (window as unknown as Record<string, unknown>).Beacon = (
       _method: string,
       _event: string,
       callback: () => void,
@@ -164,7 +164,7 @@ describe('chat-listeners', () => {
       | ((event: { author?: { id?: string; type?: string } }) => void)
       | undefined;
 
-    (window as Record<string, unknown>).LiveChatWidget = {
+    (window as unknown as Record<string, unknown>).LiveChatWidget = {
       on: (
         _eventName: string,
         callback: (event: { author?: { id?: string; type?: string } }) => void,
@@ -192,7 +192,7 @@ describe('chat-listeners', () => {
       | ((event: { author?: { id?: string; type?: string } }) => void)
       | undefined;
 
-    (window as Record<string, unknown>).LiveChatWidget = {
+    (window as unknown as Record<string, unknown>).LiveChatWidget = {
       on: (
         _eventName: string,
         callback: (event: { author?: { id?: string; type?: string } }) => void,
@@ -220,7 +220,7 @@ describe('chat-listeners', () => {
       | ((event: { author?: { id?: string; type?: string } }) => void)
       | undefined;
 
-    (window as Record<string, unknown>).LiveChatWidget = {
+    (window as unknown as Record<string, unknown>).LiveChatWidget = {
       on: (
         _eventName: string,
         callback: (event: { author?: { id?: string; type?: string } }) => void,
@@ -242,7 +242,7 @@ describe('chat-listeners', () => {
       | ((event: { author?: { id?: string; type?: string } }) => void)
       | undefined;
 
-    (window as Record<string, unknown>).LiveChatWidget = {
+    (window as unknown as Record<string, unknown>).LiveChatWidget = {
       on: (
         _eventName: string,
         callback: (event: { author?: { id?: string; type?: string } }) => void,

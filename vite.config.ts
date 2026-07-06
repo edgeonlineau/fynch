@@ -1,5 +1,5 @@
-/// <reference types="vitest" />
-import { defineConfig, type Plugin } from 'vite';
+import { defineConfig } from 'vitest/config';
+import type { Plugin } from 'vite';
 
 // Vite 8's rolldown output keeps //#region / //#endregion debug markers in
 // the ESM bundle (~2kB raw). They carry no runtime meaning, so strip them.

@@ -4,7 +4,7 @@ describe('booking-listeners', () => {
   beforeEach(() => {
     window.dataLayer = [];
     vi.resetModules();
-    delete (window as Record<string, unknown>).crmForm;
+    delete (window as unknown as Record<string, unknown>).crmForm;
   });
 
   it('tracks Calendly event_scheduled via postMessage', async () => {
@@ -178,7 +178,7 @@ describe('booking-listeners', () => {
   });
 
   it('tracks LineLeader tour booking when crmForm exists', async () => {
-    (window as Record<string, unknown>).crmForm = { callback: undefined };
+    (window as unknown as Record<string, unknown>).crmForm = { callback: undefined };
 
     const { register } = await import('../../../src/listeners/bookings/lineleader');
     register();
@@ -197,7 +197,7 @@ describe('booking-listeners', () => {
 
   it('preserves existing crmForm callback', async () => {
     const existingCallback = vi.fn();
-    (window as Record<string, unknown>).crmForm = { callback: existingCallback };
+    (window as unknown as Record<string, unknown>).crmForm = { callback: existingCallback };
 
     const { register } = await import('../../../src/listeners/bookings/lineleader');
     register();
