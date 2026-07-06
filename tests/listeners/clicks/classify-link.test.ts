@@ -10,7 +10,9 @@ describe('classifyLink', () => {
     it.each([
       ['https://google.com/maps/place/abc', 'google'],
       ['https://google.co.uk/maps?q=cafe', 'google'],
+      ['https://google.com.au/maps?q=cafe', 'google'],
       ['https://maps.google.com/?q=cafe', 'google'],
+      ['https://maps.google.co.uk/?q=cafe', 'google'],
       ['https://goo.gl/maps/abc123', 'google'],
       ['https://maps.apple.com/?q=cafe', 'apple'],
       ['https://waze.com/ul?ll=1,2', 'waze'],
@@ -29,6 +31,15 @@ describe('classifyLink', () => {
 
     it('does not classify goo.gl without /maps as directions', () => {
       const result = classify('https://goo.gl/abc123');
+      expect(result?.action).toBe('outbound_click');
+    });
+
+    it.each([
+      'https://google.evil.com/maps?q=cafe',
+      'https://maps.google.evil.com/?q=cafe',
+      'https://google.com.evil.net/maps',
+    ])('does not classify lookalike host %s as directions', (href) => {
+      const result = classify(href);
       expect(result?.action).toBe('outbound_click');
     });
   });

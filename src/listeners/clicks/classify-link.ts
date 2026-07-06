@@ -40,20 +40,22 @@ function extractFileInfo(pathname: string): { file_name: string; file_extension:
   };
 }
 
+// Matches google.com, google.de, google.co.uk, google.com.au (with an
+// optional maps. prefix) but not lookalikes such as google.evil.com —
+// the TLD part is anchored to Google's ccTLD shapes, not a free-form suffix.
+const GOOGLE_HOST_PATTERN = /^(maps\.)?google\.(com|[a-z]{2}|co\.[a-z]{2}|com\.[a-z]{2})$/;
+
 // Directions use path-dependent and wildcard-TLD shapes, so they stay as logic
 // rather than a flat host table.
 function classifyDirections(host: string, path: string): EventParams | null {
   if (matchesHost(host, 'g.page')) return { provider: 'google-business' };
   if (matchesHost(host, 'maps.apple.com')) return { provider: 'apple' };
   if (matchesHost(host, 'waze.com')) return { provider: 'waze' };
-  if (host === 'maps.google.com' || host.startsWith('maps.google.')) {
-    return { provider: 'google' };
-  }
   if (matchesHost(host, 'goo.gl') && path.startsWith('/maps')) {
     return { provider: 'google' };
   }
-  // google.com/maps, google.co.uk/maps, etc.
-  if (/^google\.[a-z.]+$/.test(host) && path.startsWith('/maps')) {
+  // maps.google.*, or google.*/maps
+  if (GOOGLE_HOST_PATTERN.test(host) && (host.startsWith('maps.') || path.startsWith('/maps'))) {
     return { provider: 'google' };
   }
   return null;
