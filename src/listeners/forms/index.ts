@@ -1,3 +1,4 @@
+import { registerWithRetry } from '../../utilities/register-with-retry';
 import { register as contactForm7 } from './contact-form-7';
 import { register as duda } from './duda';
 import { register as hubspotV3 } from './hubspot-v3';
@@ -16,14 +17,18 @@ import { register as wpForms } from './wp-forms';
 import { register as wsForm } from './ws-form';
 
 contactForm7();
-duda();
 hubspotV3();
 hubspotV4();
 typeform();
 squarespace();
 zoho();
 
-if (typeof jQuery === 'function') {
+// dmAPI and jQuery are often loaded after this script (defer/async embeds),
+// so their detection retries at DOMContentLoaded, window load, and a short poll.
+registerWithRetry(duda);
+
+registerWithRetry(() => {
+  if (typeof jQuery !== 'function') return false;
   const $ = jQuery;
   divi($);
   elementor($);
@@ -34,4 +39,5 @@ if (typeof jQuery === 'function') {
   ninjaForms($);
   wpForms($);
   wsForm($);
-}
+  return true;
+});

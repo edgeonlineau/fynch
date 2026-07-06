@@ -1,9 +1,9 @@
 import { sendFynchEvent } from '../../utilities/send-fynch-event';
 import { CHAT_STARTED } from '../../utilities/constants';
 
-export function register(): void {
+export function register(): boolean {
   if (typeof window.LiveChatWidget?.on !== 'function') {
-    return;
+    return false;
   }
   let hasStarted = false;
   window.LiveChatWidget.on('new_event', (event) => {
@@ -17,4 +17,5 @@ export function register(): void {
       ...(leadId && { lead_id: leadId }),
     });
   });
+  return true;
 }
