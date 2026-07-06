@@ -11,7 +11,7 @@ describe('cta-listener', () => {
   }
 
   it('tracks clicks on elements with data-fynch-cta attribute', async () => {
-    await import('../../../src/listeners/clicks/cta-listener');
+    await import('../../../src/listeners/clicks');
 
     const button = document.createElement('button');
     button.setAttribute('data-fynch-cta', 'Get Started');
@@ -32,7 +32,7 @@ describe('cta-listener', () => {
   });
 
   it('falls back to text content when data-fynch-cta is empty', async () => {
-    await import('../../../src/listeners/clicks/cta-listener');
+    await import('../../../src/listeners/clicks');
 
     const button = document.createElement('button');
     button.setAttribute('data-fynch-cta', '');
@@ -50,7 +50,7 @@ describe('cta-listener', () => {
   });
 
   it('tracks clicks on nested elements within a CTA', async () => {
-    await import('../../../src/listeners/clicks/cta-listener');
+    await import('../../../src/listeners/clicks');
 
     const div = document.createElement('div');
     div.setAttribute('data-fynch-cta', 'Hero CTA');
@@ -70,7 +70,7 @@ describe('cta-listener', () => {
   });
 
   it('includes link_url when CTA is an anchor', async () => {
-    await import('../../../src/listeners/clicks/cta-listener');
+    await import('../../../src/listeners/clicks');
 
     const link = document.createElement('a');
     link.setAttribute('data-fynch-cta', 'Learn More');
@@ -88,7 +88,7 @@ describe('cta-listener', () => {
   });
 
   it('includes link_domain when CTA links to external site', async () => {
-    await import('../../../src/listeners/clicks/cta-listener');
+    await import('../../../src/listeners/clicks');
 
     const link = document.createElement('a');
     link.setAttribute('data-fynch-cta', 'Partner Site');
@@ -107,7 +107,7 @@ describe('cta-listener', () => {
   });
 
   it('includes link_url from nested anchor inside CTA', async () => {
-    await import('../../../src/listeners/clicks/cta-listener');
+    await import('../../../src/listeners/clicks');
 
     const div = document.createElement('div');
     div.setAttribute('data-fynch-cta', 'Card CTA');
@@ -129,7 +129,7 @@ describe('cta-listener', () => {
   });
 
   it('does not track clicks on elements without data-fynch-cta', async () => {
-    await import('../../../src/listeners/clicks/cta-listener');
+    await import('../../../src/listeners/clicks');
 
     const button = document.createElement('button');
     button.textContent = 'Regular button';

@@ -11,7 +11,7 @@ describe('click-listeners', () => {
   }
 
   it('tracks mailto link clicks as click_to_email', async () => {
-    await import('../../../src/listeners/clicks/click-listeners');
+    await import('../../../src/listeners/clicks');
 
     const link = document.createElement('a');
     link.href = 'mailto:hello@example.com';
@@ -31,7 +31,7 @@ describe('click-listeners', () => {
   });
 
   it('tracks tel link clicks as click_to_call', async () => {
-    await import('../../../src/listeners/clicks/click-listeners');
+    await import('../../../src/listeners/clicks');
 
     const link = document.createElement('a');
     link.href = 'tel:+1234567890';
@@ -48,7 +48,7 @@ describe('click-listeners', () => {
   });
 
   it('tracks sms link clicks as click_to_text', async () => {
-    await import('../../../src/listeners/clicks/click-listeners');
+    await import('../../../src/listeners/clicks');
 
     const link = document.createElement('a');
     link.href = 'sms:+1234567890';
@@ -65,7 +65,7 @@ describe('click-listeners', () => {
   });
 
   it('tracks clicks on nested elements within anchor tags', async () => {
-    await import('../../../src/listeners/clicks/click-listeners');
+    await import('../../../src/listeners/clicks');
 
     const link = document.createElement('a');
     link.href = 'mailto:nested@example.com';
@@ -85,7 +85,7 @@ describe('click-listeners', () => {
   });
 
   it('does not track clicks on non-anchor elements', async () => {
-    await import('../../../src/listeners/clicks/click-listeners');
+    await import('../../../src/listeners/clicks');
 
     const div = document.createElement('div');
     div.textContent = 'Not a link';
@@ -98,7 +98,7 @@ describe('click-listeners', () => {
   });
 
   it('tracks callto protocol as click_to_call', async () => {
-    await import('../../../src/listeners/clicks/click-listeners');
+    await import('../../../src/listeners/clicks');
 
     const link = document.createElement('a');
     link.href = 'callto:+1234567890';
@@ -115,7 +115,7 @@ describe('click-listeners', () => {
   });
 
   it('tracks outbound link clicks with link_domain', async () => {
-    await import('../../../src/listeners/clicks/click-listeners');
+    await import('../../../src/listeners/clicks');
 
     const link = document.createElement('a');
     link.href = 'https://external-site.com/page';
@@ -136,7 +136,7 @@ describe('click-listeners', () => {
   });
 
   it('does not track internal link clicks as outbound', async () => {
-    await import('../../../src/listeners/clicks/click-listeners');
+    await import('../../../src/listeners/clicks');
 
     const link = document.createElement('a');
     link.href = `${window.location.origin}/about`;
@@ -151,7 +151,7 @@ describe('click-listeners', () => {
   });
 
   it('tracks file download clicks with file_name and file_extension', async () => {
-    await import('../../../src/listeners/clicks/click-listeners');
+    await import('../../../src/listeners/clicks');
 
     const link = document.createElement('a');
     link.href = `${window.location.origin}/docs/report.pdf`;
@@ -173,7 +173,7 @@ describe('click-listeners', () => {
   });
 
   it('tracks various download extensions', async () => {
-    await import('../../../src/listeners/clicks/click-listeners');
+    await import('../../../src/listeners/clicks');
 
     for (const ext of ['.zip', '.doc', '.xlsx', '.csv']) {
       window.dataLayer = [];
@@ -192,7 +192,7 @@ describe('click-listeners', () => {
   });
 
   it('includes link_id and link_classes when present', async () => {
-    await import('../../../src/listeners/clicks/click-listeners');
+    await import('../../../src/listeners/clicks');
 
     const link = document.createElement('a');
     link.href = 'mailto:test@example.com';
@@ -213,7 +213,7 @@ describe('click-listeners', () => {
   });
 
   it('omits link_id and link_classes when absent', async () => {
-    await import('../../../src/listeners/clicks/click-listeners');
+    await import('../../../src/listeners/clicks');
 
     const link = document.createElement('a');
     link.href = 'mailto:test@example.com';
@@ -227,7 +227,7 @@ describe('click-listeners', () => {
   });
 
   it('truncates link_text to 100 characters', async () => {
-    await import('../../../src/listeners/clicks/click-listeners');
+    await import('../../../src/listeners/clicks');
 
     const link = document.createElement('a');
     link.href = 'mailto:longtext@example.com';
@@ -241,7 +241,7 @@ describe('click-listeners', () => {
   });
 
   it('prioritises download over outbound for external download links', async () => {
-    await import('../../../src/listeners/clicks/click-listeners');
+    await import('../../../src/listeners/clicks');
 
     const link = document.createElement('a');
     link.href = 'https://cdn.example.com/assets/file.pdf';
@@ -255,7 +255,7 @@ describe('click-listeners', () => {
   });
 
   it('tracks maps links as get_directions with provider', async () => {
-    await import('../../../src/listeners/clicks/click-listeners');
+    await import('../../../src/listeners/clicks');
 
     const link = document.createElement('a');
     link.href = 'https://www.google.com/maps/place/Cafe';
@@ -276,7 +276,7 @@ describe('click-listeners', () => {
   });
 
   it('tracks WhatsApp links as click_to_message', async () => {
-    await import('../../../src/listeners/clicks/click-listeners');
+    await import('../../../src/listeners/clicks');
 
     const link = document.createElement('a');
     link.href = 'https://wa.me/15551234567';
@@ -294,7 +294,7 @@ describe('click-listeners', () => {
   });
 
   it('tracks app store links as app_store_click', async () => {
-    await import('../../../src/listeners/clicks/click-listeners');
+    await import('../../../src/listeners/clicks');
 
     const link = document.createElement('a');
     link.href = 'https://apps.apple.com/us/app/x/id123';
@@ -312,7 +312,7 @@ describe('click-listeners', () => {
   });
 
   it('tracks .ics links as add_to_calendar', async () => {
-    await import('../../../src/listeners/clicks/click-listeners');
+    await import('../../../src/listeners/clicks');
 
     const link = document.createElement('a');
     link.href = `${window.location.origin}/events/invite.ics`;
@@ -330,7 +330,7 @@ describe('click-listeners', () => {
   });
 
   it('tracks whatsapp:// deep links as click_to_message', async () => {
-    await import('../../../src/listeners/clicks/click-listeners');
+    await import('../../../src/listeners/clicks');
 
     const link = document.createElement('a');
     link.href = 'whatsapp://send?phone=15551234567';
@@ -348,7 +348,7 @@ describe('click-listeners', () => {
   });
 
   it('tracks maps:// deep links as get_directions', async () => {
-    await import('../../../src/listeners/clicks/click-listeners');
+    await import('../../../src/listeners/clicks');
 
     const link = document.createElement('a');
     link.href = 'maps://?q=cafe';

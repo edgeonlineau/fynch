@@ -29,6 +29,8 @@ export type FynchEventAction =
   | typeof CHAT_STARTED
   | typeof BOOKING_SCHEDULED;
 
+export const MAX_LINK_TEXT_LENGTH = 100;
+
 export const DOWNLOAD_EXTENSIONS = [
   '.pdf',
   '.doc',

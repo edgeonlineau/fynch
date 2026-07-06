@@ -7,8 +7,7 @@ import {
   CLICK_DIRECTIONS,
 } from '../../utilities/constants';
 import { classifyLink } from './classify-link';
-
-const MAX_LINK_TEXT_LENGTH = 100;
+import { MAX_LINK_TEXT_LENGTH } from '../../utilities/constants';
 
 function findAnchorFromTarget(target: EventTarget | null): HTMLAnchorElement | null {
   let current = target;
@@ -29,7 +28,7 @@ function buildBaseClickContext(anchor: HTMLAnchorElement): EventParams {
   };
 }
 
-function handleClick(event: MouseEvent): void {
+export function handleAnchorClick(event: MouseEvent): void {
   const anchor = findAnchorFromTarget(event.target);
   if (!anchor) return;
 
@@ -68,5 +67,3 @@ function handleClick(event: MouseEvent): void {
 
   sendFynchEvent(classification.action, { ...ctx, ...classification.params });
 }
-
-document.addEventListener('click', handleClick, { capture: true, passive: true });

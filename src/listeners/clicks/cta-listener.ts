@@ -1,7 +1,5 @@
 import { sendFynchEvent, type EventParams } from '../../utilities/send-fynch-event';
-import { CLICK_CTA } from '../../utilities/constants';
-
-const MAX_LINK_TEXT_LENGTH = 100;
+import { CLICK_CTA, MAX_LINK_TEXT_LENGTH } from '../../utilities/constants';
 
 function findCtaElement(target: EventTarget | null): HTMLElement | null {
   let current = target;
@@ -42,11 +40,9 @@ function buildCtaEventParams(cta: HTMLElement): EventParams {
   return ctx;
 }
 
-function handleCtaClick(event: MouseEvent): void {
+export function handleCtaClick(event: MouseEvent): void {
   const cta = findCtaElement(event.target);
   if (!cta) return;
 
   sendFynchEvent(CLICK_CTA, buildCtaEventParams(cta));
 }
-
-document.addEventListener('click', handleCtaClick, { capture: true, passive: true });
