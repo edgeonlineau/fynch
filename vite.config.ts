@@ -6,8 +6,11 @@ export default defineConfig({
     lib: {
       entry: 'src/fynch.ts',
       name: 'FynchEventTracking',
-      formats: ['iife'],
-      fileName: () => `fynch.js`,
+      // iife for the CDN <script> tag, es for bundler consumers (tree-shakeable,
+      // no FynchEventTracking global). dist/fynch.js keeps its historic name so
+      // existing pinned CDN URLs continue to resolve.
+      formats: ['iife', 'es'],
+      fileName: (format) => (format === 'es' ? 'fynch.mjs' : 'fynch.js'),
     },
     target: 'es2015',
   },

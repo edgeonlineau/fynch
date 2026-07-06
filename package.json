@@ -5,10 +5,21 @@
   "license": "MIT",
   "type": "module",
   "main": "dist/fynch.js",
+  "module": "dist/fynch.mjs",
+  "types": "index.d.ts",
   "unpkg": "dist/fynch.js",
   "jsdelivr": "dist/fynch.js",
+  "sideEffects": true,
+  "exports": {
+    ".": {
+      "types": "./index.d.ts",
+      "import": "./dist/fynch.mjs",
+      "default": "./dist/fynch.js"
+    }
+  },
   "files": [
-    "dist"
+    "dist",
+    "index.d.ts"
   ],
   "repository": {
     "type": "git",
