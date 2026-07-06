@@ -26,16 +26,16 @@ Integrity hash so a compromised CDN response can't execute:
 <!-- jsDelivr, pinned + deferred + SRI (recommended for production) -->
 <script
   defer
-  src="https://cdn.jsdelivr.net/npm/@edgeonline/fynch@0.1.0/dist/fynch.js"
-  integrity="sha384-mhY6/MQ5PfO0b8WItD/ADE/CdOzrrewwFYPIOtoxyh0klMFiqetIp9DJ2/cwoAvo"
+  src="https://cdn.jsdelivr.net/npm/@edgeonline/fynch@0.1.2/dist/fynch.js"
+  integrity="sha384-xjso7+YJ6WcTIbQc1P3srsYFBXgTW1Jmi+BMuxr+IcASMUrAB2X8FeLR5CRVresV"
   crossorigin="anonymous"
 ></script>
 
 <!-- unpkg works too (same file, same integrity hash) -->
 <script
   defer
-  src="https://unpkg.com/@edgeonline/fynch@0.1.0/dist/fynch.js"
-  integrity="sha384-mhY6/MQ5PfO0b8WItD/ADE/CdOzrrewwFYPIOtoxyh0klMFiqetIp9DJ2/cwoAvo"
+  src="https://unpkg.com/@edgeonline/fynch@0.1.2/dist/fynch.js"
+  integrity="sha384-xjso7+YJ6WcTIbQc1P3srsYFBXgTW1Jmi+BMuxr+IcASMUrAB2X8FeLR5CRVresV"
   crossorigin="anonymous"
 ></script>
 ```
