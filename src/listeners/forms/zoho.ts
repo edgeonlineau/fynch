@@ -1,5 +1,5 @@
 import { sendFynchEvent } from '../../utilities/send-fynch-event';
-import { FORM_LEAD } from '../../utilities/constants';
+import { FORM_LEAD, MAX_FORM_ID_LENGTH } from '../../utilities/constants';
 
 // Lowercase-only on purpose: browsers serialise MessageEvent.origin in
 // canonical (lowercase-host) form.
@@ -15,6 +15,10 @@ export function register(): void {
 
     const [permalink, heightStr] = parts;
     if (!permalink || !Number.isFinite(Number(heightStr))) return;
+    // Defence in depth: real Zoho permalinks are short slugs, so an
+    // oversized value means a malformed (or hostile) frame — drop it rather
+    // than push arbitrary-length data into the dataLayer.
+    if (permalink.length > MAX_FORM_ID_LENGTH) return;
 
     sendFynchEvent(FORM_LEAD, {
       provider: 'zoho',

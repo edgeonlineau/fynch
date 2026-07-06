@@ -90,6 +90,13 @@ describe('Zoho forms listener', () => {
     expect(zohoLeads()).toHaveLength(before);
   });
 
+  it('drops oversized permalinks instead of pushing them to the dataLayer', () => {
+    const oversized = 'x'.repeat(10_000);
+    postZoho(`${oversized}|1573`);
+
+    expect(zohoLeads()).toHaveLength(0);
+  });
+
   it('accepts regional Zoho origins (e.g. .com.au, .eu)', () => {
     const permAu = 'zoho-au-' + Math.random().toString(36).slice(2);
     const permEu = 'zoho-eu-' + Math.random().toString(36).slice(2);

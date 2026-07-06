@@ -30,6 +30,7 @@ export type FynchEventAction =
   | typeof BOOKING_SCHEDULED;
 
 export const MAX_LINK_TEXT_LENGTH = 100;
+export const MAX_FORM_ID_LENGTH = 256;
 
 export const DOWNLOAD_EXTENSIONS = [
   '.pdf',
