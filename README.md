@@ -275,7 +275,7 @@ Completing a reservation/booking in a supported widget emits `schedule_booking`.
 | `form_id`          | Platform form identifier, when available.                                       |
 | `form_name`        | Human-readable form name, when available.                                       |
 | `lead_id`          | Submission / conversation / booking identifier, when the platform provides one. |
-| `link_url`         | The clicked link's `href`.                                                      |
+| `link_url`         | The clicked link's `href`. For `mailto:`/`tel:`/`callto:`/`sms:` links the address or number is redacted — only the bare scheme (e.g. `tel:`) is sent. |
 | `link_text`        | The link's visible text (trimmed, max 100 chars).                               |
 | `link_id`          | The link element's `id`.                                                        |
 | `link_classes`     | The link element's class list.                                                  |
@@ -283,6 +283,11 @@ Completing a reservation/booking in a supported widget emits `schedule_booking`.
 | `file_name`        | Filename of a downloaded file (last URL path segment).                          |
 | `file_extension`   | Extension of a downloaded file (without the leading dot).                       |
 | `percent_scrolled` | Scroll-depth milestone reached: `25`, `50`, `75`, or `90`.                      |
+
+> **Privacy note:** `page_url` includes the page's query string. If your URLs
+> can carry sensitive parameters (password-reset tokens, OAuth callbacks,
+> session identifiers), configure GTM to redact those parameters before
+> forwarding events to third-party destinations.
 
 ---
 

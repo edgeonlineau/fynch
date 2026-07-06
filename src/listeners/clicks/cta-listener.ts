@@ -1,5 +1,6 @@
 import { sendFynchEvent, type EventParams } from '../../utilities/send-fynch-event';
 import { CLICK_CTA, MAX_LINK_TEXT_LENGTH } from '../../utilities/constants';
+import { redactPersonalLinkUrl } from './link-privacy';
 
 function findCtaElement(target: EventTarget | null): HTMLElement | null {
   let current = target;
@@ -20,7 +21,7 @@ function buildCtaEventParams(cta: HTMLElement): EventParams {
   const text = cta.textContent?.trim() ?? '';
 
   const ctx: EventParams = {
-    link_url: anchor?.href ?? '',
+    link_url: anchor ? redactPersonalLinkUrl(anchor.href) : '',
     ...(text && { link_text: text.slice(0, MAX_LINK_TEXT_LENGTH) }),
     ...(cta.id && { link_id: cta.id }),
     ...(cta.className && { link_classes: cta.className }),
