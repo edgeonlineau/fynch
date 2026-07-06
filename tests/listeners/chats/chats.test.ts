@@ -58,6 +58,24 @@ describe('chat-listeners', () => {
     );
   });
 
+  it('preserves existing Tawk_API.onChatStarted', async () => {
+    const existingCallback = vi.fn();
+    window.Tawk_API = { onChatStarted: existingCallback };
+
+    const { register } = await import('../../../src/listeners/chats/tawk');
+    register();
+
+    window.Tawk_API?.onChatStarted?.();
+
+    expect(existingCallback).toHaveBeenCalledOnce();
+    expect(window.dataLayer).toContainEqual(
+      expect.objectContaining({
+        action: 'start_chat',
+        provider: 'tawk',
+      }),
+    );
+  });
+
   it('initializes Tawk_API if not present', async () => {
     expect(window.Tawk_API).toBeUndefined();
 
