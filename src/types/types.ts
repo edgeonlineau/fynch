@@ -5,7 +5,7 @@ export interface JQueryXhr {
 export interface JQueryAjaxSettings {
   url: string;
   type: string;
-  data: string;
+  data: unknown;
 }
 
 export interface JQueryEvent {

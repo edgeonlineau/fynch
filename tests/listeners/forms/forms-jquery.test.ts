@@ -261,6 +261,65 @@ describe('form-listeners (jQuery-dependent)', () => {
     );
   });
 
+  it('does not track Divi submissions when the response contains a validation error', async () => {
+    await import('../../../src/listeners/forms/index');
+
+    const mockReq = {
+      url: window.location.href,
+      type: 'POST',
+      data: 'et_pb_contactform_submit=true',
+    };
+    const mockData = '<div><p class="et_pb_contact_error_text">Please fix the errors.</p></div>';
+
+    triggerJQueryEvent(jQueryMock._handlers, 'ajaxSuccess', {}, { status: 200 }, mockReq, mockData);
+
+    expect(window.dataLayer).toHaveLength(0);
+  });
+
+  it('ignores Divi ajaxSuccess with non-string request data without throwing', async () => {
+    await import('../../../src/listeners/forms/index');
+
+    const mockReq = {
+      url: window.location.href,
+      type: 'POST',
+      data: new FormData(),
+    };
+
+    expect(() =>
+      triggerJQueryEvent(
+        jQueryMock._handlers,
+        'ajaxSuccess',
+        {},
+        { status: 200 },
+        mockReq,
+        '<div></div>',
+      ),
+    ).not.toThrow();
+
+    expect(window.dataLayer).toHaveLength(0);
+  });
+
+  it('ignores non-Divi ajaxSuccess responses', async () => {
+    await import('../../../src/listeners/forms/index');
+
+    const mockReq = {
+      url: window.location.href,
+      type: 'POST',
+      data: 'some_other_plugin_field=1',
+    };
+
+    triggerJQueryEvent(
+      jQueryMock._handlers,
+      'ajaxSuccess',
+      {},
+      { status: 200 },
+      mockReq,
+      '<div></div>',
+    );
+
+    expect(window.dataLayer).toHaveLength(0);
+  });
+
   it('tracks Gravity Forms submissions', async () => {
     const wrapper = document.createElement('div');
     wrapper.id = 'gform_wrapper_gf-33';

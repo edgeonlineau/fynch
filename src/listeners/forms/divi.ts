@@ -6,17 +6,22 @@ export function register($: JQueryStatic): void {
   $(document).on('ajaxSuccess', (_event: unknown, xhr: unknown, req: unknown, data: unknown) => {
     const jqXhr = xhr as JQueryXhr;
     const jqReq = req as JQueryAjaxSettings;
-    const reqData = Object.fromEntries(new URLSearchParams(jqReq.data));
-    if (
-      jqReq.url === window.location.href &&
-      jqReq.type === 'POST' &&
-      Object.keys(reqData).some((key) => key.startsWith('et_pb_contactform')) &&
-      jqXhr.status === 200 &&
-      !$(data as string).find('.et_pb_contact_error_text').length
-    ) {
-      sendFynchEvent(FORM_LEAD, {
-        provider: 'divi',
-      });
+    // Cheap checks first: this handler fires for every jQuery AJAX response on the page.
+    if (jqReq.url !== window.location.href || jqReq.type !== 'POST' || jqXhr.status !== 200) {
+      return;
     }
+    if (typeof jqReq.data !== 'string' || !jqReq.data.includes('et_pb_contactform')) {
+      return;
+    }
+    if (typeof data !== 'string') return;
+
+    // DOMParser is inert: unlike jQuery's HTML parsing it neither executes
+    // scripts nor fetches subresources referenced by the response markup.
+    const responseDoc = new DOMParser().parseFromString(data, 'text/html');
+    if (responseDoc.querySelector('.et_pb_contact_error_text')) return;
+
+    sendFynchEvent(FORM_LEAD, {
+      provider: 'divi',
+    });
   });
 }
