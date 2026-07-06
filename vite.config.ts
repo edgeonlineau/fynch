@@ -43,7 +43,10 @@ export default defineConfig({
     coverage: {
       provider: 'v8',
       include: ['src/**/*.ts'],
-      exclude: ['src/types/global.d.ts'],
+      // fynch.ts is side-effect-only registration; v8 reports it at 0%
+      // because the module cache means it only executes once across the
+      // suite, which misleads the aggregate numbers.
+      exclude: ['src/types/global.d.ts', 'src/fynch.ts'],
       thresholds: {
         statements: 80,
         branches: 80,

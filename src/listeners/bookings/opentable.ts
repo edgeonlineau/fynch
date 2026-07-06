@@ -18,7 +18,8 @@ const OPENTABLE_ORIGINS: ReadonlySet<string> = new Set([
   'https://www.opentable.hk',
 ]);
 
-// TODO Add custom events for APP_READY > open_table_find_table and APP_CLOSED > open_table_closed
+// Only reservation-made is tracked. OpenTable also posts APP_READY/APP_CLOSED
+// widget-lifecycle messages, but those aren't lead events.
 
 export function register(): void {
   window.addEventListener('message', (event: MessageEvent) => {

@@ -70,6 +70,10 @@ interface TestingHelpers {
   sizes(): { leadIds: number; formKeys: number };
 }
 
+// Test-only escape hatch for the module-level dedup state. The MODE check is
+// statically replaced at build time, so both production bundles compile this
+// to `undefined` and dead-code-eliminate the helpers (verified in dist/);
+// only Vitest (MODE === 'test') sees live references.
 export const __testing: TestingHelpers | undefined =
   import.meta.env.MODE === 'test'
     ? {

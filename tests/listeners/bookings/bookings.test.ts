@@ -125,6 +125,21 @@ describe('booking-listeners', () => {
     );
   });
 
+  it('omits lead_id when OpenTable sends no confirmation number', async () => {
+    const { register } = await import('../../../src/listeners/bookings/opentable');
+    register();
+
+    const event = new MessageEvent('message', {
+      origin: 'https://www.opentable.com',
+      data: { type: 'reservation-made' },
+    });
+    window.dispatchEvent(event);
+
+    const booking = window.dataLayer.find((e) => e.provider === 'opentable');
+    expect(booking?.action).toBe('schedule_booking');
+    expect(booking?.lead_id).toBeUndefined();
+  });
+
   it('matches OpenTable regional origins from the allowlist', async () => {
     const { register } = await import('../../../src/listeners/bookings/opentable');
     register();
