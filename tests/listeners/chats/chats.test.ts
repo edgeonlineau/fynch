@@ -12,18 +12,26 @@ describe('chat-listeners', () => {
 
   it('tracks Beacon chat started when Beacon API is available', async () => {
     let capturedCallback: (() => void) | undefined;
+    let capturedMethod: string | undefined;
+    let capturedEvent: string | undefined;
 
     (window as unknown as Record<string, unknown>).Beacon = (
-      _method: string,
-      _event: string,
+      method: string,
+      event: string,
       callback: () => void,
     ) => {
+      capturedMethod = method;
+      capturedEvent = event;
       capturedCallback = callback;
     };
 
     await import('../../../src/listeners/chats/beacon');
     const { register } = await import('../../../src/listeners/chats/beacon');
     register();
+
+    // Must subscribe to Help Scout's documented chat-start event.
+    expect(capturedMethod).toBe('once');
+    expect(capturedEvent).toBe('chat-started');
 
     capturedCallback?.();
 
