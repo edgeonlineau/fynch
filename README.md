@@ -18,26 +18,50 @@ Embed the bundled script on any page where you want tracking. Make sure your GTM
 missing, but GTM needs it to receive events.
 
 Fynch is published to npm, so you can load it straight from a CDN — no build or
-hosting required.
+hosting required. The recommended production embed pins an exact version, uses
+`defer` so the script never blocks HTML parsing, and carries a Subresource
+Integrity hash so a compromised CDN response can't execute:
 
 ```html
-<!-- Google Tag Manager dataLayer should already exist on the page -->
+<!-- jsDelivr, pinned + deferred + SRI (recommended for production) -->
+<script
+  defer
+  src="https://cdn.jsdelivr.net/npm/@edgeonline/fynch@0.1.0/dist/fynch.js"
+  integrity="sha384-mhY6/MQ5PfO0b8WItD/ADE/CdOzrrewwFYPIOtoxyh0klMFiqetIp9DJ2/cwoAvo"
+  crossorigin="anonymous"
+></script>
 
-<!-- jsDelivr — pin to a version (recommended for production) -->
-<script src="https://cdn.jsdelivr.net/npm/@edgeonline/fynch@0.1.0/dist/fynch.js"></script>
-
-<!-- ...or always pull the latest release -->
-<script src="https://cdn.jsdelivr.net/npm/@edgeonline/fynch"></script>
-
-<!-- unpkg works too -->
-<script src="https://unpkg.com/@edgeonline/fynch@0.1.0/dist/fynch.js"></script>
+<!-- unpkg works too (same file, same integrity hash) -->
+<script
+  defer
+  src="https://unpkg.com/@edgeonline/fynch@0.1.0/dist/fynch.js"
+  integrity="sha384-mhY6/MQ5PfO0b8WItD/ADE/CdOzrrewwFYPIOtoxyh0klMFiqetIp9DJ2/cwoAvo"
+  crossorigin="anonymous"
+></script>
 ```
 
-Pin to an exact version in production so a future release can't change behaviour
-unexpectedly. The bare `…/npm/@edgeonline/fynch` URL resolves to `dist/fynch.js`
-automatically (via the `jsdelivr`/`unpkg` fields in `package.json`).
-
 The script self-initialises on load. No configuration, options, or init call is required.
+
+### Loading notes
+
+- **Always use `defer` (or `async`).** Fynch only registers event listeners — it never
+  renders anything — so there is no reason to let it block HTML parsing. A plain
+  `<script src>` without `defer` is render-blocking and directly hurts FCP/LCP in
+  PageSpeed Insights.
+- **Load order doesn't matter.** Fynch re-checks for the platforms it integrates with
+  (jQuery form plugins, Duda, chat and booking widgets) at `DOMContentLoaded`, at
+  `window` load, and on a short poll afterwards, so it works whether it loads before
+  or after those scripts.
+- **Pin an exact version in production.** A floating URL such as
+  `https://cdn.jsdelivr.net/npm/@edgeonline/fynch` always serves the latest release:
+  behaviour can change underneath you, and it cannot be protected with an integrity
+  hash. Treat unpinned URLs as development-only.
+- **Generating the SRI hash for a new version:**
+
+  ```bash
+  curl -s https://cdn.jsdelivr.net/npm/@edgeonline/fynch@<version>/dist/fynch.js \
+    | openssl dgst -sha384 -binary | openssl base64 -A
+  ```
 
 ### Installing from npm
 
@@ -51,6 +75,9 @@ npm install @edgeonline/fynch
 import '@edgeonline/fynch'; // side-effect import — attaches all listeners on load
 ```
 
+Bundlers pick up the ESM build (`dist/fynch.mjs`) via the package `exports` map; the
+IIFE build is only used for `<script>` tags.
+
 ### Building from source
 
 The repo uses **npm**.
@@ -60,8 +87,8 @@ npm install
 npm run build      # type-checks, then bundles to dist/fynch.js
 ```
 
-The build produces a single IIFE bundle (`fynch.js`, global name `FynchEventTracking`,
-`es2015` target) suitable for a plain `<script>` tag.
+The build produces two bundles (`es2015` target): `fynch.js`, an IIFE (global name
+`FynchEventTracking`) for `<script>` tags, and `fynch.mjs`, an ES module for bundlers.
 
 ---
 
