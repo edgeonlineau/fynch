@@ -1,10 +1,10 @@
 import { sendFynchEvent } from '../../utilities/send-fynch-event';
 import { BOOKING_SCHEDULED } from '../../utilities/constants';
+import { onTrustedMessage, exactOrigins } from '../../utilities/message-dispatcher';
 
 export function register(): void {
-  window.addEventListener('message', (event: MessageEvent) => {
+  onTrustedMessage(exactOrigins('https://www.sevenrooms.com'), (event) => {
     if (
-      event.origin === 'https://www.sevenrooms.com' &&
       typeof event.data === 'object' &&
       event.data !== null &&
       'type' in event.data &&

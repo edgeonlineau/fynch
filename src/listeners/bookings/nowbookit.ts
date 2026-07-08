@@ -1,9 +1,9 @@
 import { sendFynchEvent } from '../../utilities/send-fynch-event';
 import { BOOKING_SCHEDULED } from '../../utilities/constants';
+import { onTrustedMessage, exactOrigins } from '../../utilities/message-dispatcher';
 
 export function register(): void {
-  window.addEventListener('message', (event: MessageEvent) => {
-    if (event.origin !== 'https://bookings.nowbookit.com') return;
+  onTrustedMessage(exactOrigins('https://bookings.nowbookit.com'), (event) => {
     if (typeof event.data !== 'string') return;
 
     let data:

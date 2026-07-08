@@ -1,5 +1,6 @@
 import { sendFynchEvent } from '../../utilities/send-fynch-event';
 import { FORM_LEAD } from '../../utilities/constants';
+import { onTrustedMessage } from '../../utilities/message-dispatcher';
 
 // v3 inline embeds post from the host page's own origin; iframe embeds post
 // from a *.hsforms.com / *.hsforms.net origin.
@@ -13,8 +14,7 @@ function isTrustedOrigin(origin: string): boolean {
 }
 
 export function register(): void {
-  window.addEventListener('message', (event: MessageEvent) => {
-    if (!isTrustedOrigin(event.origin)) return;
+  onTrustedMessage(isTrustedOrigin, (event) => {
     if (typeof event.data !== 'object' || event.data === null) return;
     if (event.data.type === 'hsFormCallback' && event.data.eventName === 'onFormSubmitted') {
       const formId = String(event.data.id ?? '');
