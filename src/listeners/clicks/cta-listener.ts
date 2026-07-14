@@ -3,12 +3,11 @@ import { CLICK_CTA, MAX_LINK_TEXT_LENGTH } from '../../utilities/constants';
 import { redactPersonalLinkUrl } from './link-privacy';
 
 function findCtaElement(target: EventTarget | null): HTMLElement | null {
-  let current = target;
-  while (current instanceof HTMLElement) {
-    if (current.hasAttribute('data-fynch-cta')) return current;
-    current = current.parentElement;
-  }
-  return null;
+  // Element (not HTMLElement) so clicks on SVG icons inside a tagged CTA
+  // still resolve to it.
+  if (!(target instanceof Element)) return null;
+  const cta = target.closest('[data-fynch-cta]');
+  return cta instanceof HTMLElement ? cta : null;
 }
 
 function findAnchor(cta: HTMLElement): HTMLAnchorElement | null {

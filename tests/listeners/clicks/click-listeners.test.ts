@@ -64,6 +64,27 @@ describe('click-listeners', () => {
     );
   });
 
+  it('tracks clicks on SVG icons nested within anchor tags', async () => {
+    await import('../../../src/listeners/clicks');
+
+    const link = document.createElement('a');
+    link.href = 'tel:+1234567890';
+    const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+    const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+    svg.appendChild(path);
+    link.appendChild(svg);
+    document.body.appendChild(link);
+
+    clickElement(path as unknown as HTMLElement);
+
+    expect(window.dataLayer).toContainEqual(
+      expect.objectContaining({
+        event: 'fynch.event',
+        action: 'click_to_call',
+      }),
+    );
+  });
+
   it('tracks clicks on nested elements within anchor tags', async () => {
     await import('../../../src/listeners/clicks');
 

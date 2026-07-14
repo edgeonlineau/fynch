@@ -11,12 +11,12 @@ import { redactPersonalLinkUrl } from './link-privacy';
 import { MAX_LINK_TEXT_LENGTH } from '../../utilities/constants';
 
 function findAnchorFromTarget(target: EventTarget | null): HTMLAnchorElement | null {
-  let current = target;
-  while (current instanceof HTMLElement) {
-    if (current instanceof HTMLAnchorElement) return current;
-    current = current.parentElement;
-  }
-  return null;
+  // Element (not HTMLElement) so clicks on SVG icons inside anchors resolve;
+  // the instanceof guard on the result excludes SVG <a> elements, which have
+  // no .href string.
+  if (!(target instanceof Element)) return null;
+  const anchor = target.closest('a');
+  return anchor instanceof HTMLAnchorElement ? anchor : null;
 }
 
 function buildBaseClickContext(anchor: HTMLAnchorElement): EventParams {

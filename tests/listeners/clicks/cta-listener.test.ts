@@ -49,6 +49,25 @@ describe('cta-listener', () => {
     );
   });
 
+  it('tracks clicks on SVG icons nested within a CTA', async () => {
+    await import('../../../src/listeners/clicks');
+
+    const button = document.createElement('button');
+    button.setAttribute('data-fynch-cta', '');
+    const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+    button.appendChild(svg);
+    document.body.appendChild(button);
+
+    clickElement(svg as unknown as HTMLElement);
+
+    expect(window.dataLayer).toContainEqual(
+      expect.objectContaining({
+        event: 'fynch.event',
+        action: 'call_to_action_click',
+      }),
+    );
+  });
+
   it('tracks clicks on nested elements within a CTA', async () => {
     await import('../../../src/listeners/clicks');
 
