@@ -18,6 +18,23 @@ export interface EventParams {
   readonly percent_scrolled?: number;
 }
 
+/**
+ * Coerce an untrusted payload field to a string, treating missing values and
+ * empty strings as absent. Pairs with sendFynchEvent's undefined-stripping so
+ * call sites can write `lead_id: nonEmptyString(data.bookingId)` without
+ * conditional spreads.
+ */
+export function nonEmptyString(value: unknown): string | undefined {
+  const str = String(value ?? '');
+  return str || undefined;
+}
+
+function compactParams(params: EventParams): EventParams {
+  return Object.fromEntries(
+    Object.entries(params).filter(([, value]) => value !== undefined),
+  ) as EventParams;
+}
+
 const DEDUP_WINDOW_MS = 500;
 let lastEventKey = '';
 let lastEventTime = 0;
@@ -46,7 +63,10 @@ function buildPageContext(): Pick<
   };
 }
 
-export function sendFynchEvent(action: FynchEventAction, params?: EventParams): void {
+export function sendFynchEvent(action: FynchEventAction, rawParams?: EventParams): void {
+  // Undefined-valued fields never reach the dataLayer, so call sites can
+  // pass optional extractions directly instead of conditionally spreading.
+  const params = rawParams && compactParams(rawParams);
   if (action === FORM_LEAD && params && isFormDuplicate(params)) return;
   if (isDuplicate(action, params)) return;
 

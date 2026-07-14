@@ -1,4 +1,4 @@
-import { sendFynchEvent } from '../../utilities/send-fynch-event';
+import { sendFynchEvent, nonEmptyString } from '../../utilities/send-fynch-event';
 import { FORM_LEAD } from '../../utilities/constants';
 import { onTrustedMessage } from '../../utilities/message-dispatcher';
 
@@ -20,13 +20,10 @@ export function register(): void {
         event.data.type === 'form-submit' &&
         'formId' in event.data
       ) {
-        const formId = String(event.data.formId);
-        const leadId =
-          'responseId' in event.data ? String(event.data.responseId) || undefined : undefined;
         sendFynchEvent(FORM_LEAD, {
           provider: 'typeform',
-          form_id: formId,
-          ...(leadId && { lead_id: leadId }),
+          form_id: String(event.data.formId),
+          lead_id: 'responseId' in event.data ? nonEmptyString(event.data.responseId) : undefined,
         });
       }
     },

@@ -1,4 +1,4 @@
-import { sendFynchEvent } from '../../utilities/send-fynch-event';
+import { sendFynchEvent, nonEmptyString } from '../../utilities/send-fynch-event';
 import { FORM_LEAD } from '../../utilities/constants';
 import { onTrustedMessage } from '../../utilities/message-dispatcher';
 
@@ -17,12 +17,10 @@ export function register(): void {
   onTrustedMessage(isTrustedOrigin, (event) => {
     if (typeof event.data !== 'object' || event.data === null) return;
     if (event.data.type === 'hsFormCallback' && event.data.eventName === 'onFormSubmitted') {
-      const formId = String(event.data.id ?? '');
-      const leadId = String(event.data.data?.submissionGuid ?? '') || undefined;
       sendFynchEvent(FORM_LEAD, {
         provider: 'hubspot-v3',
-        form_id: formId,
-        ...(leadId && { lead_id: leadId }),
+        form_id: String(event.data.id ?? ''),
+        lead_id: nonEmptyString(event.data.data?.submissionGuid),
       });
     }
   });

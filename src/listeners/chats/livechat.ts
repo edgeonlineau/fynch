@@ -1,4 +1,4 @@
-import { sendFynchEvent } from '../../utilities/send-fynch-event';
+import { sendFynchEvent, nonEmptyString } from '../../utilities/send-fynch-event';
 import { CHAT_STARTED } from '../../utilities/constants';
 
 export function register(): boolean {
@@ -11,10 +11,9 @@ export function register(): boolean {
       return;
     }
     hasStarted = true;
-    const leadId = event.author.id || undefined;
     sendFynchEvent(CHAT_STARTED, {
       provider: 'livechat',
-      ...(leadId && { lead_id: leadId }),
+      lead_id: nonEmptyString(event.author.id),
     });
   });
   return true;

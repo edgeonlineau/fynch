@@ -125,6 +125,31 @@ describe('sendFynchEvent', () => {
     expect(event.file_name).toBeUndefined();
   });
 
+  it('drops params passed with an explicitly undefined value', async () => {
+    const sendFynchEvent = await loadSendFynchEvent();
+    sendFynchEvent('form_lead', {
+      provider: 'test-provider',
+      form_id: 'f-1',
+      lead_id: undefined,
+      form_name: undefined,
+    });
+
+    const event = window.dataLayer[0];
+    expect(event.provider).toBe('test-provider');
+    expect(Object.keys(event)).not.toContain('lead_id');
+    expect(Object.keys(event)).not.toContain('form_name');
+  });
+
+  it('exposes nonEmptyString for param extraction', async () => {
+    const { nonEmptyString } = await import('../../src/utilities/send-fynch-event');
+
+    expect(nonEmptyString('abc')).toBe('abc');
+    expect(nonEmptyString(123)).toBe('123');
+    expect(nonEmptyString('')).toBeUndefined();
+    expect(nonEmptyString(null)).toBeUndefined();
+    expect(nonEmptyString(undefined)).toBeUndefined();
+  });
+
   it('deduplicates identical events within 500ms', async () => {
     const sendFynchEvent = await loadSendFynchEvent();
     sendFynchEvent('click_to_email', { link_url: 'mailto:test@example.com' });

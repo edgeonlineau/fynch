@@ -1,4 +1,4 @@
-import { sendFynchEvent } from '../../utilities/send-fynch-event';
+import { sendFynchEvent, nonEmptyString } from '../../utilities/send-fynch-event';
 import { CHAT_STARTED } from '../../utilities/constants';
 
 export function register(): void {
@@ -8,10 +8,9 @@ export function register(): void {
       existingCallback(event, properties);
     }
     if (event === 'Conversation Started') {
-      const leadId = properties.uid || properties.conversationUid || undefined;
       sendFynchEvent(CHAT_STARTED, {
         provider: 'podium',
-        ...(leadId && { lead_id: leadId }),
+        lead_id: nonEmptyString(properties.uid || properties.conversationUid),
       });
     }
   };
