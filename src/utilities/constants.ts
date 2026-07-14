@@ -32,22 +32,45 @@ export type FynchEventAction =
 export const MAX_LINK_TEXT_LENGTH = 100;
 export const MAX_FORM_ID_LENGTH = 256;
 
+// GA4 enhanced measurement's file-download set, so fynch download events agree
+// with GA4 auto-tracking, plus .tar/.dmg/.apk which GA4 omits.
 export const DOWNLOAD_EXTENSIONS = [
+  // documents
   '.pdf',
   '.doc',
   '.docx',
   '.xls',
   '.xlsx',
-  '.csv',
-  '.zip',
-  '.rar',
-  '.gz',
-  '.tar',
   '.ppt',
   '.pptx',
+  '.pps',
+  '.key',
+  '.txt',
+  '.rtf',
+  '.csv',
+  // archives
+  '.zip',
+  '.rar',
+  '.7z',
+  '.gz',
+  '.tar',
+  // installers
   '.exe',
   '.dmg',
+  '.pkg',
   '.apk',
+  // media
+  '.mp3',
+  '.wav',
+  '.wma',
+  '.mid',
+  '.midi',
+  '.avi',
+  '.mov',
+  '.mp4',
+  '.mpg',
+  '.mpeg',
+  '.wmv',
 ] as const;
 
 // Host (normalised: lowercased, www. and trailing dot stripped) -> provider value.

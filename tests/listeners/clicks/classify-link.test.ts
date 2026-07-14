@@ -96,6 +96,59 @@ describe('classifyLink', () => {
     });
   });
 
+  describe('download extensions', () => {
+    it.each([
+      // GA4 enhanced measurement set
+      '.pdf',
+      '.xls',
+      '.xlsx',
+      '.doc',
+      '.docx',
+      '.txt',
+      '.rtf',
+      '.csv',
+      '.exe',
+      '.key',
+      '.pps',
+      '.ppt',
+      '.pptx',
+      '.7z',
+      '.pkg',
+      '.rar',
+      '.gz',
+      '.zip',
+      '.avi',
+      '.mov',
+      '.mp4',
+      '.mpeg',
+      '.mpg',
+      '.wmv',
+      '.mid',
+      '.midi',
+      '.mp3',
+      '.wav',
+      '.wma',
+      // fynch additions beyond GA4
+      '.tar',
+      '.dmg',
+      '.apk',
+    ])('classifies a link ending in %s as download', (ext) => {
+      const result = classify(`https://cdn.example.com/files/asset${ext}`);
+      expect(result?.action).toBe('download_file_click');
+      expect(result?.params.file_extension).toBe(ext.slice(1));
+    });
+
+    it('matches extensions case-insensitively', () => {
+      const result = classify('https://cdn.example.com/files/REPORT.PDF');
+      expect(result?.action).toBe('download_file_click');
+    });
+
+    it('does not classify a plain page URL as download', () => {
+      const result = classify('https://external-site.com/pricing');
+      expect(result?.action).toBe('outbound_click');
+    });
+  });
+
   describe('download attribute', () => {
     it('classifies an extensionless internal link with a download attribute as download', () => {
       const result = classify(`${window.location.origin}/export/report`, '');
