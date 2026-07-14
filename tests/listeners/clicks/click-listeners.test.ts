@@ -212,6 +212,46 @@ describe('click-listeners', () => {
     }
   });
 
+  it('tracks extensionless links with a download attribute as download_file_click', async () => {
+    await import('../../../src/listeners/clicks');
+
+    const link = document.createElement('a');
+    link.href = `${window.location.origin}/api/reports/123`;
+    link.toggleAttribute('download', true);
+    link.textContent = 'Download Invoice';
+    document.body.appendChild(link);
+
+    clickElement(link);
+
+    expect(window.dataLayer).toContainEqual(
+      expect.objectContaining({
+        event: 'fynch.event',
+        action: 'download_file_click',
+        link_text: 'Download Invoice',
+      }),
+    );
+  });
+
+  it('tracks blob links with a download attribute, using it for file_name', async () => {
+    await import('../../../src/listeners/clicks');
+
+    const link = document.createElement('a');
+    link.href = 'blob:https://example.com/8f3a1c2e';
+    link.setAttribute('download', 'export.csv');
+    document.body.appendChild(link);
+
+    clickElement(link);
+
+    expect(window.dataLayer).toContainEqual(
+      expect.objectContaining({
+        event: 'fynch.event',
+        action: 'download_file_click',
+        file_name: 'export.csv',
+        file_extension: 'csv',
+      }),
+    );
+  });
+
   it('includes link_id and link_classes when present', async () => {
     await import('../../../src/listeners/clicks');
 

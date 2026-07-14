@@ -63,7 +63,7 @@ export function handleAnchorClick(event: MouseEvent): void {
       return;
   }
 
-  const classification = classifyLink(url);
+  const classification = classifyLink(url, anchor.getAttribute('download'));
   if (!classification) return;
 
   sendFynchEvent(classification.action, { ...ctx, ...classification.params });

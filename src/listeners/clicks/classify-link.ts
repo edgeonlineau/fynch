@@ -77,11 +77,17 @@ function classifyCalendar(host: string, path: string): EventParams | null {
 }
 
 /**
- * Classify an http(s) link URL into an intent event. Returns only the
- * type-specific params; the caller merges in base click context. Scheme-based
- * links (mailto/tel/sms/whatsapp/maps) are handled by the click handler, not here.
+ * Classify a link URL into an intent event. Returns only the type-specific
+ * params; the caller merges in base click context. Scheme-based links
+ * (mailto/tel/sms/whatsapp/maps) are handled by the click handler, not here.
+ *
+ * `downloadAttr` is the anchor's raw `download` attribute: null when absent,
+ * '' when present without a value, otherwise the suggested filename. Its
+ * presence marks the link as a download even when the URL has no recognised
+ * extension (dynamic endpoints, blob: URLs); a non-empty value is preferred
+ * over the pathname for file_name/file_extension.
  */
-export function classifyLink(url: URL): LinkClassification | null {
+export function classifyLink(url: URL, downloadAttr?: string | null): LinkClassification | null {
   const host = normaliseHost(url.hostname);
   const path = url.pathname.toLowerCase();
 
@@ -89,14 +95,11 @@ export function classifyLink(url: URL): LinkClassification | null {
   const calendar = classifyCalendar(host, path);
   if (calendar) return { action: CLICK_CALENDAR, params: calendar };
 
-  if (DOWNLOAD_EXTENSIONS.some((ext) => path.endsWith(ext))) {
-    const fileInfo = extractFileInfo(url.pathname);
-    return {
-      action: CLICK_DOWNLOAD,
-      params: fileInfo
-        ? { file_name: fileInfo.file_name, file_extension: fileInfo.file_extension }
-        : {},
-    };
+  if (downloadAttr != null || DOWNLOAD_EXTENSIONS.some((ext) => path.endsWith(ext))) {
+    const fileInfo = downloadAttr
+      ? (extractFileInfo(downloadAttr) ?? { file_name: downloadAttr })
+      : extractFileInfo(url.pathname);
+    return { action: CLICK_DOWNLOAD, params: fileInfo ?? {} };
   }
 
   const directions = classifyDirections(host, path);
