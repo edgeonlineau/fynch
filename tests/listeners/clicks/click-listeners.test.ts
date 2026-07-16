@@ -24,7 +24,7 @@ describe('click-listeners', () => {
       expect.objectContaining({
         event: 'fynch.event',
         action: 'click_to_email',
-        link_url: 'mailto:',
+        link_url: 'hello@example.com',
         link_text: 'Email Us',
       }),
     );
@@ -301,7 +301,7 @@ describe('click-listeners', () => {
     expect(event?.link_text).toHaveLength(100);
   });
 
-  it('redacts the phone number from tel link_url', async () => {
+  it('sends the scheme-stripped number as tel link_url', async () => {
     await import('../../../src/listeners/clicks');
 
     const link = document.createElement('a');
@@ -311,20 +311,20 @@ describe('click-listeners', () => {
     clickElement(link);
 
     const event = window.dataLayer.find((e) => e.action === 'click_to_call');
-    expect(event?.link_url).toBe('tel:');
+    expect(event?.link_url).toBe('+1234567890');
   });
 
-  it('redacts the number from sms link_url', async () => {
+  it('strips the message body from sms link_url but keeps the number', async () => {
     await import('../../../src/listeners/clicks');
 
     const link = document.createElement('a');
-    link.href = 'sms:+1234567890';
+    link.href = 'sms:+1234567890?body=hello';
     document.body.appendChild(link);
 
     clickElement(link);
 
     const event = window.dataLayer.find((e) => e.action === 'click_to_text');
-    expect(event?.link_url).toBe('sms:');
+    expect(event?.link_url).toBe('+1234567890');
   });
 
   it('prioritises download over outbound for external download links', async () => {

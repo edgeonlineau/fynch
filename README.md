@@ -279,7 +279,7 @@ Completing a reservation/booking in a supported widget emits `schedule_booking`.
 | `form_id`          | Platform form identifier, when available.                                                                                                              |
 | `form_name`        | Human-readable form name, when available.                                                                                                              |
 | `lead_id`          | Submission / conversation / booking identifier, when the platform provides one.                                                                        |
-| `link_url`         | The clicked link's `href`. For `mailto:`/`tel:`/`callto:`/`sms:` links the address or number is redacted — only the bare scheme (e.g. `tel:`) is sent. |
+| `link_url`         | The clicked link's `href`. For `mailto:`/`tel:`/`callto:`/`sms:` links only the address or number is sent (e.g. `+61298765432`, `sydney@biz.com`) — the scheme is dropped as redundant with the action, and any `?subject=`/`?body=` style parameters are stripped since prefilled content can carry visitor data. |
 | `link_text`        | The link's visible text (trimmed, max 100 chars).                                                                                                      |
 | `link_id`          | The link element's `id`.                                                                                                                               |
 | `link_classes`     | The link element's class list.                                                                                                                         |

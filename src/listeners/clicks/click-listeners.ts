@@ -7,7 +7,7 @@ import {
   CLICK_DIRECTIONS,
 } from '../../utilities/constants';
 import { classifyLink } from './classify-link';
-import { redactPersonalLinkUrl } from './link-privacy';
+import { normalisePersonalLinkUrl } from './link-privacy';
 import { MAX_LINK_TEXT_LENGTH } from '../../utilities/constants';
 
 function findAnchorFromTarget(target: EventTarget | null): HTMLAnchorElement | null {
@@ -22,7 +22,7 @@ function findAnchorFromTarget(target: EventTarget | null): HTMLAnchorElement | n
 function buildBaseClickContext(anchor: HTMLAnchorElement): EventParams {
   const text = anchor.textContent?.trim() ?? '';
   return {
-    link_url: redactPersonalLinkUrl(anchor.href),
+    link_url: normalisePersonalLinkUrl(anchor.href),
     ...(text && { link_text: text.slice(0, MAX_LINK_TEXT_LENGTH) }),
     ...(anchor.id && { link_id: anchor.id }),
     ...(anchor.className && { link_classes: anchor.className }),

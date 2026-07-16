@@ -1,6 +1,6 @@
 import { sendFynchEvent, type EventParams } from '../../utilities/send-fynch-event';
 import { CLICK_CTA, MAX_LINK_TEXT_LENGTH } from '../../utilities/constants';
-import { redactPersonalLinkUrl } from './link-privacy';
+import { normalisePersonalLinkUrl } from './link-privacy';
 
 function findCtaElement(target: EventTarget | null): HTMLElement | null {
   // Element (not HTMLElement) so clicks on SVG icons inside a tagged CTA
@@ -20,7 +20,7 @@ function buildCtaEventParams(cta: HTMLElement): EventParams {
   const text = cta.textContent?.trim() ?? '';
 
   const ctx: EventParams = {
-    link_url: anchor ? redactPersonalLinkUrl(anchor.href) : '',
+    link_url: anchor ? normalisePersonalLinkUrl(anchor.href) : '',
     ...(text && { link_text: text.slice(0, MAX_LINK_TEXT_LENGTH) }),
     ...(cta.id && { link_id: cta.id }),
     ...(cta.className && { link_classes: cta.className }),
