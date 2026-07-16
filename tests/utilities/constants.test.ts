@@ -26,11 +26,11 @@ describe('constants', () => {
     expect(CLICK_PHONE).toBe('click_to_call');
     expect(CLICK_SMS).toBe('click_to_text');
     expect(CLICK_OUTBOUND).toBe('outbound_click');
-    expect(CLICK_DOWNLOAD).toBe('download_file_click');
+    expect(CLICK_DOWNLOAD).toBe('download_file');
     expect(CLICK_CTA).toBe('call_to_action_click');
     expect(CLICK_DIRECTIONS).toBe('get_directions');
     expect(CLICK_MESSAGING).toBe('click_to_message');
-    expect(CLICK_APP_STORE).toBe('app_store_click');
+    expect(CLICK_APP_STORE).toBe('view_in_app_store');
     expect(CLICK_CALENDAR).toBe('add_to_calendar');
     expect(FORM_LEAD).toBe('form_lead');
     expect(SCROLL_MILESTONE).toBe('scroll_milestone');

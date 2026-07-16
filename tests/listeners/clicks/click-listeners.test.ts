@@ -184,7 +184,7 @@ describe('click-listeners', () => {
     expect(window.dataLayer).toContainEqual(
       expect.objectContaining({
         event: 'fynch.event',
-        action: 'download_file_click',
+        action: 'download_file',
         link_url: `${window.location.origin}/docs/report.pdf`,
         link_text: 'Download Report',
         file_name: 'report.pdf',
@@ -206,13 +206,13 @@ describe('click-listeners', () => {
 
       expect(window.dataLayer).toContainEqual(
         expect.objectContaining({
-          action: 'download_file_click',
+          action: 'download_file',
         }),
       );
     }
   });
 
-  it('tracks extensionless links with a download attribute as download_file_click', async () => {
+  it('tracks extensionless links with a download attribute as download_file', async () => {
     await import('../../../src/listeners/clicks');
 
     const link = document.createElement('a');
@@ -226,7 +226,7 @@ describe('click-listeners', () => {
     expect(window.dataLayer).toContainEqual(
       expect.objectContaining({
         event: 'fynch.event',
-        action: 'download_file_click',
+        action: 'download_file',
         link_text: 'Download Invoice',
       }),
     );
@@ -245,7 +245,7 @@ describe('click-listeners', () => {
     expect(window.dataLayer).toContainEqual(
       expect.objectContaining({
         event: 'fynch.event',
-        action: 'download_file_click',
+        action: 'download_file',
         file_name: 'export.csv',
         file_extension: 'csv',
       }),
@@ -337,7 +337,7 @@ describe('click-listeners', () => {
     clickElement(link);
 
     const actions = window.dataLayer.filter((e) => e.event === 'fynch.event').map((e) => e.action);
-    expect(actions).toContain('download_file_click');
+    expect(actions).toContain('download_file');
     expect(actions).not.toContain('outbound_click');
   });
 
@@ -380,7 +380,7 @@ describe('click-listeners', () => {
     );
   });
 
-  it('tracks app store links as app_store_click', async () => {
+  it('tracks app store links as view_in_app_store', async () => {
     await import('../../../src/listeners/clicks');
 
     const link = document.createElement('a');
@@ -392,7 +392,7 @@ describe('click-listeners', () => {
     expect(window.dataLayer).toContainEqual(
       expect.objectContaining({
         event: 'fynch.event',
-        action: 'app_store_click',
+        action: 'view_in_app_store',
         provider: 'apple',
       }),
     );

@@ -71,7 +71,7 @@ describe('classifyLink', () => {
       ['https://play.google.com/store/apps/details?id=com.x', 'google'],
     ])('classifies %s as app store/%s', (href, store) => {
       const result = classify(href);
-      expect(result?.action).toBe('app_store_click');
+      expect(result?.action).toBe('view_in_app_store');
       expect(result?.params.provider).toBe(store);
     });
   });
@@ -134,13 +134,13 @@ describe('classifyLink', () => {
       '.apk',
     ])('classifies a link ending in %s as download', (ext) => {
       const result = classify(`https://cdn.example.com/files/asset${ext}`);
-      expect(result?.action).toBe('download_file_click');
+      expect(result?.action).toBe('download_file');
       expect(result?.params.file_extension).toBe(ext.slice(1));
     });
 
     it('matches extensions case-insensitively', () => {
       const result = classify('https://cdn.example.com/files/REPORT.PDF');
-      expect(result?.action).toBe('download_file_click');
+      expect(result?.action).toBe('download_file');
     });
 
     it('does not classify a plain page URL as download', () => {
@@ -152,28 +152,28 @@ describe('classifyLink', () => {
   describe('download attribute', () => {
     it('classifies an extensionless internal link with a download attribute as download', () => {
       const result = classify(`${window.location.origin}/export/report`, '');
-      expect(result?.action).toBe('download_file_click');
+      expect(result?.action).toBe('download_file');
       expect(result?.params.file_name).toBeUndefined();
       expect(result?.params.file_extension).toBeUndefined();
     });
 
     it('uses the download attribute value for file_name and file_extension', () => {
       const result = classify(`${window.location.origin}/export/report`, 'q3-report.pdf');
-      expect(result?.action).toBe('download_file_click');
+      expect(result?.action).toBe('download_file');
       expect(result?.params.file_name).toBe('q3-report.pdf');
       expect(result?.params.file_extension).toBe('pdf');
     });
 
     it('reports file_name without extension for an extensionless download attribute', () => {
       const result = classify(`${window.location.origin}/export/report`, 'q3-report');
-      expect(result?.action).toBe('download_file_click');
+      expect(result?.action).toBe('download_file');
       expect(result?.params.file_name).toBe('q3-report');
       expect(result?.params.file_extension).toBeUndefined();
     });
 
     it('prefers the download attribute filename over the path filename', () => {
       const result = classify('https://cdn.example.com/assets/8f3a1c.pdf', 'brochure.pdf');
-      expect(result?.action).toBe('download_file_click');
+      expect(result?.action).toBe('download_file');
       expect(result?.params.file_name).toBe('brochure.pdf');
       expect(result?.params.file_extension).toBe('pdf');
     });
@@ -186,14 +186,14 @@ describe('classifyLink', () => {
 
     it('classifies a blob URL with a download attribute as download', () => {
       const result = classify('blob:https://example.com/8f3a1c2e', 'export.csv');
-      expect(result?.action).toBe('download_file_click');
+      expect(result?.action).toBe('download_file');
       expect(result?.params.file_name).toBe('export.csv');
       expect(result?.params.file_extension).toBe('csv');
     });
 
     it('classifies an external link with a download attribute as download, not outbound', () => {
       const result = classify('https://external-site.com/generated/asset', '');
-      expect(result?.action).toBe('download_file_click');
+      expect(result?.action).toBe('download_file');
     });
 
     it('still classifies an .ics link with a download attribute as calendar', () => {
@@ -212,7 +212,7 @@ describe('classifyLink', () => {
 
     it('still classifies a regular download by extension', () => {
       const result = classify('https://cdn.example.com/assets/file.pdf');
-      expect(result?.action).toBe('download_file_click');
+      expect(result?.action).toBe('download_file');
       expect(result?.params.file_name).toBe('file.pdf');
       expect(result?.params.file_extension).toBe('pdf');
     });

@@ -157,9 +157,9 @@ destination. **All click events also carry these params:** `link_url`, `link_tex
 | `click_to_text`        | an `sms:` link                                                             | —                                           |
 | `click_to_message`     | a messaging link (WhatsApp, Messenger, Instagram)                          | `provider`                                  |
 | `get_directions`       | a maps/directions link (Google Maps, Apple Maps, Waze, Google Business)    | `provider`                                  |
-| `app_store_click`      | an app store link (Apple App Store, Google Play)                           | `provider`                                  |
+| `view_in_app_store`    | an app store link (Apple App Store, Google Play)                           | `provider`                                  |
 | `add_to_calendar`      | an add-to-calendar link (Google, Outlook, AddToCalendar, AddEvent, `.ics`) | `provider`                                  |
-| `download_file_click`  | a link to a downloadable file (see extensions below)                       | `file_name`, `file_extension`               |
+| `download_file`        | a link to a downloadable file (by extension or `download` attribute)       | `file_name`, `file_extension`               |
 | `outbound_click`       | a link to an external domain                                               | `link_domain`                               |
 | `call_to_action_click` | an element marked with the `data-fynch-cta` attribute                      | `link_domain` (when the target is external) |
 
@@ -169,8 +169,12 @@ nested anchor for the URL where applicable).
 
 **Detection coverage:**
 
-- **Downloadable extensions:** `.pdf`, `.doc`, `.docx`, `.xls`, `.xlsx`, `.csv`, `.zip`,
-  `.rar`, `.gz`, `.tar`, `.ppt`, `.pptx`, `.exe`, `.dmg`, `.apk`
+- **Downloadable extensions** (GA4 enhanced measurement's set, plus `.tar`, `.dmg`,
+  `.apk`): `.pdf`, `.doc`, `.docx`, `.xls`, `.xlsx`, `.ppt`, `.pptx`, `.pps`, `.key`,
+  `.txt`, `.rtf`, `.csv`, `.zip`, `.rar`, `.7z`, `.gz`, `.tar`, `.exe`, `.dmg`, `.pkg`,
+  `.apk`, `.mp3`, `.wav`, `.wma`, `.mid`, `.midi`, `.avi`, `.mov`, `.mp4`, `.mpg`,
+  `.mpeg`, `.wmv`. A link with a `download` attribute is always tracked as a download
+  regardless of extension; a non-empty attribute value takes precedence for `file_name`.
 - **Messaging hosts → `provider`:** `wa.me` / `api.whatsapp.com` / `web.whatsapp.com` →
   `whatsapp`, `m.me` → `messenger`, `ig.me` → `instagram` (plus the `whatsapp:` scheme)
 - **App store hosts → `provider`:** `apps.apple.com` / `itunes.apple.com` → `apple`,
