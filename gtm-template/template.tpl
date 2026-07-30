@@ -3,7 +3,7 @@ ___INFO___
 {
   "type": "TAG",
   "id": "cvt_temp_public_id",
-  "version": 2,
+  "version": 1,
   "securityGroups": [],
   "displayName": "Fynch Event Tracking",
   "categories": [
@@ -242,9 +242,11 @@ Custom Tag template for loading Fynch (@edgeonline/fynch) via a CDN.
 
 Publishing checklist when a new Fynch version ships:
 1. Update LATEST_VERSION in the sandboxed code to the new release.
-2. Bump "version" in the ___INFO___ block.
-3. Re-run the template tests (the default-version test asserts LATEST_VERSION).
-4. Re-publish the template / open a PR to the Community Template Gallery.
+2. Re-run the template tests (the default-version test asserts LATEST_VERSION).
+3. Re-publish the template / open a PR to the Community Template Gallery.
+
+Leave the ___INFO___ "version" at 1 — it is GTM's template format version,
+not a release number, and GTM rejects any other value on import.
 
 Note: GTM's injectScript API cannot set a Subresource Integrity (SRI) hash.
 If SRI is required, use the Custom HTML snippet from the main README instead.
