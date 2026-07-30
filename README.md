@@ -13,17 +13,32 @@ picked up by a Google Tag Manager trigger.
 
 ## Installation
 
-Embed the bundled script on any page where you want tracking. Make sure your GTM snippet
-(which creates `window.dataLayer`) is present — Fynch will create the array if it is
-missing, but GTM needs it to receive events.
+There are two ways to load Fynch. If you manage the site through Google Tag Manager, the
+GTM custom template is the quickest path. If you'd rather embed the script yourself — or
+you want Subresource Integrity — use the direct embed instead.
 
-Fynch is published to npm, so you can load it straight from a CDN — no build or
-hosting required. The recommended production embed pins an exact version, uses
-`defer` so the script never blocks HTML parsing, and carries a Subresource
-Integrity hash so a compromised CDN response can't execute:
+### Google Tag Manager custom template (recommended)
+
+A GTM **Custom Tag Template** lives in [`gtm-template/`](gtm-template/). Add it once,
+drop in a **Fynch Event Tracking** tag, and fire it on _Initialization - All Pages_ —
+there's no snippet to paste and no code to maintain in the container. It gives you a
+version dropdown (defaulting to the release bundled with the template), a jsDelivr/unpkg
+switch, and GTM-enforced host permissions, and it works even in containers where Custom
+HTML tags are disabled. See the [template README](gtm-template/README.md) for install
+and usage.
+
+The one thing it can't do is attach a Subresource Integrity hash — GTM's sandboxed
+loader has no way to set one. If SRI matters to you, use the direct embed below.
+
+### Direct script embed (alternative)
+
+Fynch is published to npm, so you can load it straight from a CDN — no build or hosting
+required. This embed pins an exact version, uses `defer` so the script never blocks HTML
+parsing, and carries a Subresource Integrity hash so a compromised CDN response can't
+execute:
 
 ```html
-<!-- jsDelivr, pinned + deferred + SRI (recommended for production) -->
+<!-- jsDelivr, pinned + deferred + SRI -->
 <script
   defer
   src="https://cdn.jsdelivr.net/npm/@edgeonline/fynch@0.1.2/dist/fynch.js"
