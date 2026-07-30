@@ -23,7 +23,7 @@ describe('cta-listener', () => {
 
     expect(window.dataLayer).toContainEqual(
       expect.objectContaining({
-        event: 'fynch.event',
+        event: 'fynch.call_to_action_click',
         action: 'call_to_action_click',
         link_id: 'hero-cta',
         link_classes: 'btn primary',
@@ -43,7 +43,7 @@ describe('cta-listener', () => {
 
     expect(window.dataLayer).toContainEqual(
       expect.objectContaining({
-        event: 'fynch.event',
+        event: 'fynch.call_to_action_click',
         action: 'call_to_action_click',
       }),
     );
@@ -62,7 +62,7 @@ describe('cta-listener', () => {
 
     expect(window.dataLayer).toContainEqual(
       expect.objectContaining({
-        event: 'fynch.event',
+        event: 'fynch.call_to_action_click',
         action: 'call_to_action_click',
       }),
     );
@@ -82,7 +82,7 @@ describe('cta-listener', () => {
 
     expect(window.dataLayer).toContainEqual(
       expect.objectContaining({
-        event: 'fynch.event',
+        event: 'fynch.call_to_action_click',
         action: 'call_to_action_click',
       }),
     );
@@ -157,7 +157,7 @@ describe('cta-listener', () => {
     clickElement(button);
 
     const ctaEvents = window.dataLayer.filter(
-      (e) => e.event === 'fynch.event' && e.action === 'call_to_action_click',
+      (e) => e.event === 'fynch.call_to_action_click' && e.action === 'call_to_action_click',
     );
     expect(ctaEvents).toHaveLength(0);
   });

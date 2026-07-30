@@ -75,7 +75,7 @@ describe('form-listeners (jQuery-dependent)', () => {
 
     expect(window.dataLayer).toContainEqual(
       expect.objectContaining({
-        event: 'fynch.event',
+        event: 'fynch.form_lead',
         action: 'form_lead',
         provider: 'elementor',
         form_id: 'elem-42',
@@ -104,7 +104,7 @@ describe('form-listeners (jQuery-dependent)', () => {
 
     expect(window.dataLayer).toContainEqual(
       expect.objectContaining({
-        event: 'fynch.event',
+        event: 'fynch.form_lead',
         action: 'form_lead',
         provider: 'fluent-forms',
         form_id: 'ff-42',
@@ -124,7 +124,7 @@ describe('form-listeners (jQuery-dependent)', () => {
     triggerJQueryEvent(jQueryMock._handlers, 'fluentform_submission_success', mockEvent, mockData);
 
     const formLeads = window.dataLayer.filter(
-      (e) => e.event === 'fynch.event' && e.action === 'form_lead',
+      (e) => e.event === 'fynch.form_lead' && e.action === 'form_lead',
     );
     expect(formLeads).toHaveLength(0);
   });
@@ -137,7 +137,7 @@ describe('form-listeners (jQuery-dependent)', () => {
 
     expect(window.dataLayer).toContainEqual(
       expect.objectContaining({
-        event: 'fynch.event',
+        event: 'fynch.form_lead',
         action: 'form_lead',
         provider: 'formidable',
         form_name: 'Test Form',
@@ -157,7 +157,7 @@ describe('form-listeners (jQuery-dependent)', () => {
 
     expect(window.dataLayer).toContainEqual(
       expect.objectContaining({
-        event: 'fynch.event',
+        event: 'fynch.form_lead',
         action: 'form_lead',
         provider: 'forminator',
         form_id: 'forminator-99',
@@ -182,7 +182,7 @@ describe('form-listeners (jQuery-dependent)', () => {
 
     expect(window.dataLayer).toContainEqual(
       expect.objectContaining({
-        event: 'fynch.event',
+        event: 'fynch.form_lead',
         action: 'form_lead',
         provider: 'ninja-forms',
         form_id: 'ninja-7',
@@ -205,7 +205,7 @@ describe('form-listeners (jQuery-dependent)', () => {
 
     expect(window.dataLayer).toContainEqual(
       expect.objectContaining({
-        event: 'fynch.event',
+        event: 'fynch.form_lead',
         action: 'form_lead',
         provider: 'wp-forms',
         form_id: 'wp-55',
@@ -227,7 +227,7 @@ describe('form-listeners (jQuery-dependent)', () => {
 
     expect(window.dataLayer).toContainEqual(
       expect.objectContaining({
-        event: 'fynch.event',
+        event: 'fynch.form_lead',
         action: 'form_lead',
         provider: 'ws-form',
         form_id: 'ws-form-12',
@@ -254,7 +254,7 @@ describe('form-listeners (jQuery-dependent)', () => {
 
     expect(window.dataLayer).toContainEqual(
       expect.objectContaining({
-        event: 'fynch.event',
+        event: 'fynch.form_lead',
         action: 'form_lead',
         provider: 'divi',
       }),
@@ -332,7 +332,7 @@ describe('form-listeners (jQuery-dependent)', () => {
 
     expect(window.dataLayer).toContainEqual(
       expect.objectContaining({
-        event: 'fynch.event',
+        event: 'fynch.form_lead',
         action: 'form_lead',
         provider: 'gravity-forms',
         form_id: 'gf-33',

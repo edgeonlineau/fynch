@@ -19,7 +19,7 @@ describe('booking-listeners', () => {
 
     expect(window.dataLayer).toContainEqual(
       expect.objectContaining({
-        event: 'fynch.event',
+        event: 'fynch.schedule_booking',
         action: 'schedule_booking',
         provider: 'calendly',
       }),
@@ -68,7 +68,7 @@ describe('booking-listeners', () => {
 
     expect(window.dataLayer).toContainEqual(
       expect.objectContaining({
-        event: 'fynch.event',
+        event: 'fynch.schedule_booking',
         action: 'schedule_booking',
         provider: 'nowbookit',
         lead_id: 'NBI-67890',
@@ -117,7 +117,7 @@ describe('booking-listeners', () => {
 
     expect(window.dataLayer).toContainEqual(
       expect.objectContaining({
-        event: 'fynch.event',
+        event: 'fynch.schedule_booking',
         action: 'schedule_booking',
         provider: 'opentable',
         lead_id: 'OT-12345',
@@ -202,7 +202,7 @@ describe('booking-listeners', () => {
 
     expect(window.dataLayer).toContainEqual(
       expect.objectContaining({
-        event: 'fynch.event',
+        event: 'fynch.schedule_booking',
         action: 'schedule_booking',
         provider: 'lineleader',
         lead_id: 'lead-123',
@@ -241,7 +241,7 @@ describe('booking-listeners', () => {
 
     expect(window.dataLayer).toContainEqual(
       expect.objectContaining({
-        event: 'fynch.event',
+        event: 'fynch.schedule_booking',
         action: 'schedule_booking',
         provider: 'sevenrooms',
       }),

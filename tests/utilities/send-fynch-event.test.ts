@@ -20,13 +20,13 @@ describe('sendFynchEvent', () => {
     expect(Array.isArray(window.dataLayer)).toBe(true);
   });
 
-  it('pushes a fynch.event entry to dataLayer with page context', async () => {
+  it('names the event fynch.<action> and carries page context', async () => {
     const sendFynchEvent = await loadSendFynchEvent();
     sendFynchEvent('click_to_email', { link_url: 'mailto:test@example.com' });
 
     expect(window.dataLayer).toHaveLength(1);
     const event = window.dataLayer[0];
-    expect(event.event).toBe('fynch.event');
+    expect(event.event).toBe('fynch.click_to_email');
     expect(event.action).toBe('click_to_email');
     expect(event.link_url).toBe('mailto:test@example.com');
     expect(event.page_url).toBe(window.location.href);

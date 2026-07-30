@@ -31,7 +31,7 @@ describe('form-listeners (new platforms)', () => {
       await vi.waitFor(() => {
         expect(window.dataLayer).toContainEqual(
           expect.objectContaining({
-            event: 'fynch.event',
+            event: 'fynch.form_lead',
             action: 'form_lead',
             provider: 'squarespace',
           }),

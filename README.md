@@ -6,8 +6,8 @@ link clicks, form submissions, scroll depth, chat starts, and bookings — then 
 normalised event onto the Google Tag Manager `dataLayer`. There is no API to call: the
 script attaches its listeners on load and emits events as they happen.
 
-Every event is published as a `fynch.event` entry on `window.dataLayer`, ready to be
-picked up by a Google Tag Manager trigger.
+Every event is published on `window.dataLayer` under an event name of `fynch.<action>`
+(e.g. `fynch.form_lead`), ready to be picked up by a Google Tag Manager trigger.
 
 ---
 
@@ -113,8 +113,8 @@ Every event Fynch pushes has the same envelope:
 
 ```js
 {
-  event: 'fynch.event',   // constant — use this as your GTM trigger
-  action: '<event_name>',  // one of the 14 actions below
+  event: 'fynch.click_to_call', // `fynch.` + the action below — your GTM trigger
+  action: 'click_to_call',      // one of the 14 actions below
   // page context (always present):
   page_url:   'https://example.com/pricing?ref=x',
   page_title: 'Pricing — Example',
@@ -129,6 +129,11 @@ Every event Fynch pushes has the same envelope:
 `page_path`, `referrer`, `timestamp`. The per-event tables below list only the
 _additional_ params for each action.
 
+The `event` name always encodes the action as `fynch.<action>` (e.g.
+`fynch.form_lead`), so each event is distinct in GTM's Preview / Tag Assistant view
+and can be matched by an exact Custom Event trigger. The same action is also repeated
+in the `action` param — see [Triggering in GTM](#triggering-in-gtm).
+
 **Deduplication.** Identical events fired within **500ms** of each other are suppressed,
 so rapid double-clicks or duplicate platform callbacks won't double-count. Form leads have
 an additional dedup check to prevent the same submission being reported twice.
@@ -139,7 +144,7 @@ A click on `<a href="https://wa.me/15551234567">Chat on WhatsApp</a>` pushes:
 
 ```js
 {
-  event: 'fynch.event',
+  event: 'fynch.click_to_message',
   action: 'click_to_message',
   page_url: 'https://example.com/contact',
   page_title: 'Contact — Example',
@@ -151,6 +156,24 @@ A click on `<a href="https://wa.me/15551234567">Chat on WhatsApp</a>` pushes:
   link_text: 'Chat on WhatsApp'
 }
 ```
+
+### Triggering in GTM
+
+Because the event name carries the action, you have two ways to trigger, and they can
+be mixed freely in one container:
+
+- **One action → one tag.** Create a **Custom Event** trigger whose event name is the
+  exact action, e.g. `fynch.form_lead`. No condition or Data Layer Variable needed. This
+  is the simplest setup for wiring a specific action to a specific GA4 conversion or ad
+  pixel.
+- **All Fynch events → one tag.** Create a **Custom Event** trigger, tick **Use regex
+  matching**, and set the event name to `^fynch\.`. Pair it with a Data Layer Variable
+  reading `action` — for example, map a single GA4 event tag's name to `{{action}}` to
+  forward every Fynch event with its action as the GA4 event name.
+
+The `action` param is always present, so the older pattern of triggering on a constant
+event name and branching on `action` still works via the regex trigger plus an
+`action`-equals condition.
 
 ---
 
@@ -283,8 +306,8 @@ Completing a reservation/booking in a supported widget emits `schedule_booking`.
 
 | Param              | Meaning                                                                                                                                                                                                                                                                                                            |
 | ------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `event`            | Always `fynch.event`. Use as the GTM trigger.                                                                                                                                                                                                                                                                      |
-| `action`           | The event name — one of the 14 actions above.                                                                                                                                                                                                                                                                      |
+| `event`            | The GTM event name, always `fynch.<action>` (e.g. `fynch.form_lead`). Use as the GTM trigger — exact match for one action, or the regex `^fynch\.` for all.                                                                                                                                                        |
+| `action`           | The action — one of the 14 below. Repeated from the `event` name so it can be read as a Data Layer Variable.                                                                                                                                                                                                       |
 | `page_url`         | Full page URL (`window.location.href`) at the time of the event.                                                                                                                                                                                                                                                   |
 | `page_title`       | Document title (`document.title`).                                                                                                                                                                                                                                                                                 |
 | `page_path`        | URL path (`window.location.pathname`).                                                                                                                                                                                                                                                                             |

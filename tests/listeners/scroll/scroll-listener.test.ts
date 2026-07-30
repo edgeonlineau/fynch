@@ -38,7 +38,7 @@ describe('scroll-listener', () => {
 
     expect(window.dataLayer).toContainEqual(
       expect.objectContaining({
-        event: 'fynch.event',
+        event: 'fynch.scroll_milestone',
         action: 'scroll_milestone',
         percent_scrolled: 25,
       }),

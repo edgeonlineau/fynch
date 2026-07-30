@@ -5,8 +5,9 @@ alternative to the Custom HTML snippet in the [main README](../README.md) for te
 that want a one-click, gallery-installable tag with explicit, GTM-enforced permissions.
 
 Fynch is zero-config: the template only injects the script, and Fynch attaches its own
-listeners and pushes `fynch.event` entries to the `dataLayer` on load. There is nothing
-to call or configure after it loads.
+listeners and pushes events to the `dataLayer` on load under event names of the form
+`fynch.<action>` (e.g. `fynch.form_lead`). There is nothing to call or configure after
+it loads.
 
 ## Installing the template
 

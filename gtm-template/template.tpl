@@ -14,7 +14,7 @@ ___INFO___
     "id": "brand_dummy",
     "displayName": "Edge Online"
   },
-  "description": "Loads Fynch, a zero-config client-side event tracker. Fynch attaches its own listeners on load and pushes form, click, scroll, chat, and booking events to the dataLayer as fynch.event entries. No configuration required — fire this tag once on Initialization / All Pages.",
+  "description": "Loads Fynch, a zero-config client-side event tracker. Fynch attaches its own listeners on load and pushes form, click, scroll, chat, and booking events to the dataLayer under event names of the form fynch.<action> (e.g. fynch.form_lead). No configuration required — fire this tag once on Initialization / All Pages.",
   "containerContexts": [
     "WEB"
   ]
@@ -27,7 +27,7 @@ ___TEMPLATE_PARAMETERS___
   {
     "type": "LABEL",
     "name": "introLabel",
-    "displayName": "This tag loads the Fynch script from a public CDN. Fynch self-initialises on load and pushes events to the dataLayer under the event name \"fynch.event\". Trigger this tag once per page (Initialization - All Pages is recommended)."
+    "displayName": "This tag loads the Fynch script from a public CDN. Fynch self-initialises on load and pushes events to the dataLayer under event names of the form \"fynch.<action>\" (e.g. \"fynch.form_lead\"). Trigger this tag once per page (Initialization - All Pages is recommended)."
   },
   {
     "type": "RADIO",

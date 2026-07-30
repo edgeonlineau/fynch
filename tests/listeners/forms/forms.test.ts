@@ -21,7 +21,7 @@ describe('form-listeners', () => {
 
     expect(window.dataLayer).toContainEqual(
       expect.objectContaining({
-        event: 'fynch.event',
+        event: 'fynch.form_lead',
         action: 'form_lead',
         provider: 'contact-form-7',
         form_id: '123',
@@ -48,7 +48,7 @@ describe('form-listeners', () => {
 
     expect(window.dataLayer).toContainEqual(
       expect.objectContaining({
-        event: 'fynch.event',
+        event: 'fynch.form_lead',
         action: 'form_lead',
         provider: 'hubspot-v3',
         form_id: 'hs-form-456',
@@ -93,7 +93,7 @@ describe('form-listeners', () => {
     window.dispatchEvent(event);
 
     const formLeads = window.dataLayer.filter(
-      (e) => e.event === 'fynch.event' && e.action === 'form_lead',
+      (e) => e.event === 'fynch.form_lead' && e.action === 'form_lead',
     );
     expect(formLeads).toHaveLength(0);
   });
@@ -108,7 +108,7 @@ describe('form-listeners', () => {
     window.dispatchEvent(event);
 
     const formLeads = window.dataLayer.filter(
-      (e) => e.event === 'fynch.event' && e.action === 'form_lead',
+      (e) => e.event === 'fynch.form_lead' && e.action === 'form_lead',
     );
     expect(formLeads).toHaveLength(0);
   });
@@ -145,7 +145,7 @@ describe('form-listeners', () => {
 
     expect(window.dataLayer).toContainEqual(
       expect.objectContaining({
-        event: 'fynch.event',
+        event: 'fynch.form_lead',
         action: 'form_lead',
         provider: 'hubspot-v4',
         form_id: 'hs-v4-789',
@@ -167,7 +167,7 @@ describe('form-listeners', () => {
     window.dispatchEvent(event);
 
     const formLeads = window.dataLayer.filter(
-      (e) => e.event === 'fynch.event' && e.action === 'form_lead',
+      (e) => e.event === 'fynch.form_lead' && e.action === 'form_lead',
     );
     expect(formLeads).toHaveLength(0);
   });
@@ -188,7 +188,7 @@ describe('form-listeners', () => {
 
     expect(window.dataLayer).toContainEqual(
       expect.objectContaining({
-        event: 'fynch.event',
+        event: 'fynch.form_lead',
         action: 'form_lead',
         provider: 'duda',
       }),
@@ -210,7 +210,7 @@ describe('form-listeners', () => {
 
     expect(window.dataLayer).toContainEqual(
       expect.objectContaining({
-        event: 'fynch.event',
+        event: 'fynch.form_lead',
         action: 'form_lead',
         provider: 'typeform',
         form_id: 'tf-abc123',
@@ -236,7 +236,7 @@ describe('form-listeners', () => {
     }
 
     const formLeads = window.dataLayer.filter(
-      (e) => e.event === 'fynch.event' && e.action === 'form_lead',
+      (e) => e.event === 'fynch.form_lead' && e.action === 'form_lead',
     );
     expect(formLeads).toHaveLength(0);
   });

@@ -16,7 +16,7 @@ describe('Zoho forms listener', () => {
 
   function zohoLeads(): DataLayerEvent[] {
     return window.dataLayer.filter(
-      (e) => e.event === 'fynch.event' && e.action === 'form_lead' && e.provider === 'zoho',
+      (e) => e.event === 'fynch.form_lead' && e.action === 'form_lead' && e.provider === 'zoho',
     );
   }
 
@@ -26,7 +26,7 @@ describe('Zoho forms listener', () => {
 
     expect(zohoLeads()).toContainEqual(
       expect.objectContaining({
-        event: 'fynch.event',
+        event: 'fynch.form_lead',
         action: 'form_lead',
         provider: 'zoho',
         form_id: permalink,

@@ -71,7 +71,12 @@ export function sendFynchEvent(action: FynchEventAction, rawParams?: EventParams
   if (isDuplicate(action, params)) return;
 
   const event: DataLayerEvent = {
-    event: 'fynch.event',
+    // The dataLayer event name carries the action (e.g. `fynch.click_to_call`)
+    // so each event is distinct in GTM's Preview/Tag Assistant summary and can
+    // be triggered by an exact Custom Event name. `action` is retained below as
+    // a param so GA4 name mapping and action-condition triggers still work, and
+    // a single trigger can match every Fynch event with the regex `^fynch\.`.
+    event: `fynch.${action}`,
     action,
     ...buildPageContext(),
     ...params,
