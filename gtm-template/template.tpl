@@ -3,7 +3,7 @@ ___INFO___
 {
   "type": "TAG",
   "id": "cvt_temp_public_id",
-  "version": 1,
+  "version": 2,
   "securityGroups": [],
   "displayName": "Fynch Event Tracking",
   "categories": [
@@ -52,7 +52,7 @@ ___TEMPLATE_PARAMETERS___
     "name": "pinnedVersion",
     "displayName": "Version",
     "simpleValueType": true,
-    "valueHint": "0.1.2",
+    "valueHint": "0.2.0",
     "enablingConditions": [
       {
         "paramName": "versionMode",
@@ -69,10 +69,10 @@ ___TEMPLATE_PARAMETERS___
         "args": [
           "^\\d+\\.\\d+\\.\\d+(?:-[0-9A-Za-z.-]+)?$"
         ],
-        "errorMessage": "Enter an exact version such as 0.1.2 (no \"v\" prefix, no range)."
+        "errorMessage": "Enter an exact version such as 0.2.0 (no \"v\" prefix, no range)."
       }
     ],
-    "help": "The exact npm version of @edgeonline/fynch to load, e.g. 0.1.2."
+    "help": "The exact npm version of @edgeonline/fynch to load, e.g. 0.2.0."
   },
   {
     "type": "SELECT",
@@ -104,7 +104,7 @@ const injectScript = require('injectScript');
 // constant, so the loaded version never changes on its own: pulling in a
 // newer Fynch means updating and re-publishing this template. Users who need
 // a different release pin it explicitly via the Version field.
-const LATEST_VERSION = '0.1.2';
+const LATEST_VERSION = '0.2.0';
 
 const version = data.versionMode === 'pin' ? data.pinnedVersion : LATEST_VERSION;
 
@@ -179,7 +179,7 @@ scenarios:
     runCode(mockData);
 
     assertThat(capturedUrl).isEqualTo(
-      'https://cdn.jsdelivr.net/npm/@edgeonline/fynch@0.1.2/dist/fynch.js'
+      'https://cdn.jsdelivr.net/npm/@edgeonline/fynch@0.2.0/dist/fynch.js'
     );
     assertThat(capturedCacheToken).isEqualTo(capturedUrl);
     assertApi('gtmOnSuccess').wasCalled();
@@ -218,7 +218,7 @@ scenarios:
     runCode(mockData);
 
     assertThat(capturedUrl).isEqualTo(
-      'https://unpkg.com/@edgeonline/fynch@0.1.2/dist/fynch.js'
+      'https://unpkg.com/@edgeonline/fynch@0.2.0/dist/fynch.js'
     );
 - name: Reports failure when the script cannot load
   code: |-
