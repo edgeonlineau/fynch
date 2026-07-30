@@ -93,6 +93,51 @@ describe('scroll-listener', () => {
     expect(milestones).toHaveLength(0);
   });
 
+  it('fires already-passed milestones on load when Fynch loads scrolled', async () => {
+    // Page is already at 75% before Fynch loads, and no scroll event follows.
+    setScrollPosition(1125, 2000, 500);
+    await import('../../../src/listeners/scroll/scroll-listener');
+
+    const milestones = new Set(
+      window.dataLayer
+        .filter((e) => e.fynch?.action === 'scroll_milestone')
+        .map((e) => e.fynch?.percent_scrolled),
+    );
+    expect(milestones).toEqual(new Set([25, 50, 75]));
+  });
+
+  it('defers the initial check to the load event when Fynch loads pre-load', async () => {
+    Object.defineProperty(document, 'readyState', { configurable: true, get: () => 'loading' });
+    try {
+      setScrollPosition(1125, 2000, 500); // 75%
+      await import('../../../src/listeners/scroll/scroll-listener');
+
+      // Nothing yet — the reading is held until the page has finished loading.
+      expect(window.dataLayer.filter((e) => e.fynch?.action === 'scroll_milestone')).toHaveLength(
+        0,
+      );
+
+      window.dispatchEvent(new Event('load'));
+
+      const milestones = new Set(
+        window.dataLayer
+          .filter((e) => e.fynch?.action === 'scroll_milestone')
+          .map((e) => e.fynch?.percent_scrolled),
+      );
+      expect(milestones).toEqual(new Set([25, 50, 75]));
+    } finally {
+      delete (document as unknown as Record<string, unknown>).readyState;
+    }
+  });
+
+  it('does not fire milestones on load for a non-scrollable page', async () => {
+    // Content fits the viewport (scrollHeight < innerHeight): no scroll possible.
+    setScrollPosition(0, 400, 500);
+    await import('../../../src/listeners/scroll/scroll-listener');
+
+    expect(window.dataLayer.filter((e) => e.fynch?.action === 'scroll_milestone')).toHaveLength(0);
+  });
+
   it('unbinds the scroll listener once every milestone has fired', async () => {
     const removeSpy = vi.spyOn(window, 'removeEventListener');
     setScrollPosition(0, 2000, 500);

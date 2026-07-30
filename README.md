@@ -277,7 +277,10 @@ underlying platform exposes them.
 | `scroll_milestone` | the user scrolls past a depth milestone | `percent_scrolled` |
 
 `percent_scrolled` is one of `25`, `50`, `75`, or `90`. Each milestone fires at most once
-per page load.
+per page load. If the user is already past a milestone by the time Fynch loads — a
+deferred or late-injected script, or a reload that restores scroll position — those
+milestones fire once on load (evaluated after `load`, against the settled page height).
+Pages that fit the viewport can't be scrolled, so they emit no scroll milestones.
 
 ### Chats
 
