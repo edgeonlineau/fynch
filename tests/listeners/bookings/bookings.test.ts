@@ -20,8 +20,10 @@ describe('booking-listeners', () => {
     expect(window.dataLayer).toContainEqual(
       expect.objectContaining({
         event: 'fynch.schedule_booking',
-        action: 'schedule_booking',
-        provider: 'calendly',
+        fynch: expect.objectContaining({
+          action: 'schedule_booking',
+          provider: 'calendly',
+        }),
       }),
     );
   });
@@ -69,9 +71,11 @@ describe('booking-listeners', () => {
     expect(window.dataLayer).toContainEqual(
       expect.objectContaining({
         event: 'fynch.schedule_booking',
-        action: 'schedule_booking',
-        provider: 'nowbookit',
-        lead_id: 'NBI-67890',
+        fynch: expect.objectContaining({
+          action: 'schedule_booking',
+          provider: 'nowbookit',
+          lead_id: 'NBI-67890',
+        }),
       }),
     );
   });
@@ -118,9 +122,11 @@ describe('booking-listeners', () => {
     expect(window.dataLayer).toContainEqual(
       expect.objectContaining({
         event: 'fynch.schedule_booking',
-        action: 'schedule_booking',
-        provider: 'opentable',
-        lead_id: 'OT-12345',
+        fynch: expect.objectContaining({
+          action: 'schedule_booking',
+          provider: 'opentable',
+          lead_id: 'OT-12345',
+        }),
       }),
     );
   });
@@ -135,9 +141,9 @@ describe('booking-listeners', () => {
     });
     window.dispatchEvent(event);
 
-    const booking = window.dataLayer.find((e) => e.provider === 'opentable');
-    expect(booking?.action).toBe('schedule_booking');
-    expect(booking?.lead_id).toBeUndefined();
+    const booking = window.dataLayer.find((e) => e.fynch?.provider === 'opentable');
+    expect(booking?.fynch?.action).toBe('schedule_booking');
+    expect(booking?.fynch?.lead_id).toBeUndefined();
   });
 
   it('matches OpenTable regional origins from the allowlist', async () => {
@@ -152,9 +158,11 @@ describe('booking-listeners', () => {
 
     expect(window.dataLayer).toContainEqual(
       expect.objectContaining({
-        action: 'schedule_booking',
-        provider: 'opentable',
-        lead_id: 'OT-99999',
+        fynch: expect.objectContaining({
+          action: 'schedule_booking',
+          provider: 'opentable',
+          lead_id: 'OT-99999',
+        }),
       }),
     );
   });
@@ -203,9 +211,11 @@ describe('booking-listeners', () => {
     expect(window.dataLayer).toContainEqual(
       expect.objectContaining({
         event: 'fynch.schedule_booking',
-        action: 'schedule_booking',
-        provider: 'lineleader',
-        lead_id: 'lead-123',
+        fynch: expect.objectContaining({
+          action: 'schedule_booking',
+          provider: 'lineleader',
+          lead_id: 'lead-123',
+        }),
       }),
     );
   });
@@ -220,7 +230,7 @@ describe('booking-listeners', () => {
     window.crmForm?.callback?.('lead-456');
 
     expect(existingCallback).toHaveBeenCalledWith('lead-456');
-    expect(window.dataLayer).toHaveLength(1);
+    expect(window.dataLayer.filter((e) => e.event === 'fynch.schedule_booking')).toHaveLength(1);
   });
 
   it('does not throw when crmForm is not available', async () => {
@@ -242,8 +252,10 @@ describe('booking-listeners', () => {
     expect(window.dataLayer).toContainEqual(
       expect.objectContaining({
         event: 'fynch.schedule_booking',
-        action: 'schedule_booking',
-        provider: 'sevenrooms',
+        fynch: expect.objectContaining({
+          action: 'schedule_booking',
+          provider: 'sevenrooms',
+        }),
       }),
     );
   });

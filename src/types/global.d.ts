@@ -1,7 +1,6 @@
 /// <reference types="vite/client" />
 
-interface DataLayerEvent {
-  event: string;
+interface FynchEventData {
   action: string;
   page_url: string;
   page_title: string;
@@ -20,6 +19,17 @@ interface DataLayerEvent {
   file_name?: string;
   file_extension?: string;
   percent_scrolled?: number;
+}
+
+// A dataLayer entry. Fynch pushes `{ event: 'fynch.<action>', fynch: {...} }`
+// for real events, and `{ fynch: null }` to clear the persisted namespace
+// before each event so a prior event's params can't linger in GTM's data
+// model. The dataLayer is shared with other producers, so arbitrary extra
+// keys are allowed — only `event` and `fynch` belong to Fynch.
+interface DataLayerEvent {
+  event?: string;
+  fynch?: FynchEventData | null;
+  [key: string]: unknown;
 }
 
 interface Window {

@@ -32,8 +32,10 @@ describe('form-listeners (new platforms)', () => {
         expect(window.dataLayer).toContainEqual(
           expect.objectContaining({
             event: 'fynch.form_lead',
-            action: 'form_lead',
-            provider: 'squarespace',
+            fynch: expect.objectContaining({
+              action: 'form_lead',
+              provider: 'squarespace',
+            }),
           }),
         );
       });
@@ -55,8 +57,10 @@ describe('form-listeners (new platforms)', () => {
       await vi.waitFor(() => {
         expect(window.dataLayer).toContainEqual(
           expect.objectContaining({
-            action: 'form_lead',
-            provider: 'squarespace',
+            fynch: expect.objectContaining({
+              action: 'form_lead',
+              provider: 'squarespace',
+            }),
           }),
         );
       });

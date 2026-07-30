@@ -16,32 +16,52 @@ describe('sendFynchEvent', () => {
     return mod.sendFynchEvent;
   }
 
+  // Each event produces two pushes: a `{ fynch: null }` reset followed by the
+  // real `{ event: 'fynch.<action>', fynch: {...} }`. Tests assert on the real
+  // events, so filter to entries that carry a fynch event name.
+  function fynchEvents() {
+    return window.dataLayer.filter(
+      (e) => typeof e.event === 'string' && e.event.startsWith('fynch.'),
+    );
+  }
+
   it('initializes dataLayer if not present', () => {
     expect(Array.isArray(window.dataLayer)).toBe(true);
   });
 
-  it('names the event fynch.<action> and carries page context', async () => {
+  it('names the event fynch.<action> and carries page context under fynch', async () => {
     const sendFynchEvent = await loadSendFynchEvent();
     sendFynchEvent('click_to_email', { link_url: 'mailto:test@example.com' });
 
-    expect(window.dataLayer).toHaveLength(1);
-    const event = window.dataLayer[0];
+    expect(fynchEvents()).toHaveLength(1);
+    const event = fynchEvents()[0];
     expect(event.event).toBe('fynch.click_to_email');
-    expect(event.action).toBe('click_to_email');
-    expect(event.link_url).toBe('mailto:test@example.com');
-    expect(event.page_url).toBe(window.location.href);
-    expect(event.page_title).toBe(document.title);
-    expect(event.page_path).toBe(window.location.pathname);
-    expect(event.referrer).toBe(document.referrer);
-    expect(event.timestamp).toBeDefined();
+    expect(event.fynch?.action).toBe('click_to_email');
+    expect(event.fynch?.link_url).toBe('mailto:test@example.com');
+    expect(event.fynch?.page_url).toBe(window.location.href);
+    expect(event.fynch?.page_title).toBe(document.title);
+    expect(event.fynch?.page_path).toBe(window.location.pathname);
+    expect(event.fynch?.referrer).toBe(document.referrer);
+    expect(event.fynch?.timestamp).toBeDefined();
+  });
+
+  it('resets the fynch namespace before each event to prevent stale bleed', async () => {
+    const sendFynchEvent = await loadSendFynchEvent();
+    sendFynchEvent('click_to_email', { link_url: 'mailto:test@example.com' });
+
+    // The push immediately before the event clears the namespace so a prior
+    // event's params cannot linger in GTM's merged data model.
+    const eventIndex = window.dataLayer.findIndex((e) => e.event === 'fynch.click_to_email');
+    expect(eventIndex).toBeGreaterThan(0);
+    expect(window.dataLayer[eventIndex - 1]).toEqual({ fynch: null });
   });
 
   it('pushes event with action only when no params given', async () => {
     const sendFynchEvent = await loadSendFynchEvent();
     sendFynchEvent('scroll_milestone');
 
-    expect(window.dataLayer).toHaveLength(1);
-    expect(window.dataLayer[0].action).toBe('scroll_milestone');
+    expect(fynchEvents()).toHaveLength(1);
+    expect(fynchEvents()[0].fynch?.action).toBe('scroll_milestone');
   });
 
   it('preserves existing dataLayer entries', async () => {
@@ -58,8 +78,8 @@ describe('sendFynchEvent', () => {
     const sendFynchEvent = await loadSendFynchEvent();
     sendFynchEvent('click_to_text', { link_url: 'sms:+1234567890' });
 
-    expect(window.dataLayer).toHaveLength(2);
     expect(window.dataLayer[0].event).toBe('existing');
+    expect(fynchEvents()).toHaveLength(1);
   });
 
   it('includes event params when provided', async () => {
@@ -69,18 +89,18 @@ describe('sendFynchEvent', () => {
       form_id: '123',
     });
 
-    const event = window.dataLayer[0];
-    expect(event.provider).toBe('contact-form-7');
-    expect(event.form_id).toBe('123');
+    const event = fynchEvents()[0];
+    expect(event.fynch?.provider).toBe('contact-form-7');
+    expect(event.fynch?.form_id).toBe('123');
   });
 
   it('does not include params fields when not provided', async () => {
     const sendFynchEvent = await loadSendFynchEvent();
     sendFynchEvent('click_to_email');
 
-    const event = window.dataLayer[0];
-    expect(event.provider).toBeUndefined();
-    expect(event.form_name).toBeUndefined();
+    const event = fynchEvents()[0];
+    expect(event.fynch?.provider).toBeUndefined();
+    expect(event.fynch?.form_name).toBeUndefined();
   });
 
   it('omits form_name when not provided in params', async () => {
@@ -89,9 +109,9 @@ describe('sendFynchEvent', () => {
       provider: 'beacon',
     });
 
-    const event = window.dataLayer[0];
-    expect(event.provider).toBe('beacon');
-    expect(event.form_name).toBeUndefined();
+    const event = fynchEvents()[0];
+    expect(event.fynch?.provider).toBe('beacon');
+    expect(event.fynch?.form_name).toBeUndefined();
   });
 
   it('includes click params when provided', async () => {
@@ -103,11 +123,11 @@ describe('sendFynchEvent', () => {
       link_classes: 'btn',
     });
 
-    const event = window.dataLayer[0];
-    expect(event.link_url).toBe('mailto:click-test@example.com');
-    expect(event.link_text).toBe('Email Us');
-    expect(event.link_id).toBe('contact-cta');
-    expect(event.link_classes).toBe('btn');
+    const event = fynchEvents()[0];
+    expect(event.fynch?.link_url).toBe('mailto:click-test@example.com');
+    expect(event.fynch?.link_text).toBe('Email Us');
+    expect(event.fynch?.link_id).toBe('contact-cta');
+    expect(event.fynch?.link_classes).toBe('btn');
   });
 
   it('omits undefined params fields', async () => {
@@ -117,12 +137,12 @@ describe('sendFynchEvent', () => {
       link_domain: 'example.com',
     });
 
-    const event = window.dataLayer[0];
-    expect(event.link_url).toBe('https://example.com');
-    expect(event.link_domain).toBe('example.com');
-    expect(event.link_text).toBeUndefined();
-    expect(event.link_id).toBeUndefined();
-    expect(event.file_name).toBeUndefined();
+    const event = fynchEvents()[0];
+    expect(event.fynch?.link_url).toBe('https://example.com');
+    expect(event.fynch?.link_domain).toBe('example.com');
+    expect(event.fynch?.link_text).toBeUndefined();
+    expect(event.fynch?.link_id).toBeUndefined();
+    expect(event.fynch?.file_name).toBeUndefined();
   });
 
   it('drops params passed with an explicitly undefined value', async () => {
@@ -134,10 +154,10 @@ describe('sendFynchEvent', () => {
       form_name: undefined,
     });
 
-    const event = window.dataLayer[0];
-    expect(event.provider).toBe('test-provider');
-    expect(Object.keys(event)).not.toContain('lead_id');
-    expect(Object.keys(event)).not.toContain('form_name');
+    const event = fynchEvents()[0];
+    expect(event.fynch?.provider).toBe('test-provider');
+    expect(Object.keys(event.fynch ?? {})).not.toContain('lead_id');
+    expect(Object.keys(event.fynch ?? {})).not.toContain('form_name');
   });
 
   it('exposes nonEmptyString for param extraction', async () => {
@@ -155,7 +175,7 @@ describe('sendFynchEvent', () => {
     sendFynchEvent('click_to_email', { link_url: 'mailto:test@example.com' });
     sendFynchEvent('click_to_email', { link_url: 'mailto:test@example.com' });
 
-    expect(window.dataLayer).toHaveLength(1);
+    expect(fynchEvents()).toHaveLength(1);
   });
 
   it('allows same action after dedup window expires', async () => {
@@ -164,7 +184,7 @@ describe('sendFynchEvent', () => {
     vi.advanceTimersByTime(501);
     sendFynchEvent('click_to_email', { link_url: 'mailto:test@example.com' });
 
-    expect(window.dataLayer).toHaveLength(2);
+    expect(fynchEvents()).toHaveLength(2);
   });
 
   it('allows different params within dedup window', async () => {
@@ -172,7 +192,7 @@ describe('sendFynchEvent', () => {
     sendFynchEvent('click_to_email', { link_url: 'mailto:a@example.com' });
     sendFynchEvent('click_to_email', { link_url: 'mailto:b@example.com' });
 
-    expect(window.dataLayer).toHaveLength(2);
+    expect(fynchEvents()).toHaveLength(2);
   });
 
   it('deduplicates events with no params', async () => {
@@ -180,7 +200,7 @@ describe('sendFynchEvent', () => {
     sendFynchEvent('start_chat', { provider: 'beacon' });
     sendFynchEvent('start_chat', { provider: 'beacon' });
 
-    expect(window.dataLayer).toHaveLength(1);
+    expect(fynchEvents()).toHaveLength(1);
   });
 
   it('includes ISO 8601 timestamp', async () => {
@@ -190,6 +210,6 @@ describe('sendFynchEvent', () => {
     const sendFynchEvent = await loadSendFynchEvent();
     sendFynchEvent('click_to_email');
 
-    expect(window.dataLayer[0].timestamp).toBe('2026-04-14T10:00:00.000Z');
+    expect(fynchEvents()[0].fynch?.timestamp).toBe('2026-04-14T10:00:00.000Z');
   });
 });

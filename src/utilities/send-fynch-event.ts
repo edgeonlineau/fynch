@@ -51,7 +51,7 @@ function isDuplicate(action: FynchEventAction, params?: EventParams): boolean {
 }
 
 function buildPageContext(): Pick<
-  DataLayerEvent,
+  FynchEventData,
   'page_url' | 'page_title' | 'page_path' | 'referrer' | 'timestamp'
 > {
   return {
@@ -70,17 +70,24 @@ export function sendFynchEvent(action: FynchEventAction, rawParams?: EventParams
   if (action === FORM_LEAD && params && isFormDuplicate(params)) return;
   if (isDuplicate(action, params)) return;
 
-  const event: DataLayerEvent = {
-    // The dataLayer event name carries the action (e.g. `fynch.click_to_call`)
-    // so each event is distinct in GTM's Preview/Tag Assistant summary and can
-    // be triggered by an exact Custom Event name. `action` is retained below as
-    // a param so GA4 name mapping and action-condition triggers still work, and
-    // a single trigger can match every Fynch event with the regex `^fynch\.`.
-    event: `fynch.${action}`,
+  const fynch: FynchEventData = {
     action,
     ...buildPageContext(),
     ...params,
   };
 
-  dataLayer.push(event);
+  // Clear any persisted `fynch` object first. GTM's data model recursively
+  // merges and retains pushed values across events, so without this a prior
+  // event's params (e.g. link_url) would linger and bleed into this one when
+  // read as a Data Layer Variable. Mirrors GA4's `ecommerce: null` reset. The
+  // reset carries no `event` key, so it updates the model without firing a
+  // trigger.
+  dataLayer.push({ fynch: null });
+
+  // The event name carries the action (e.g. `fynch.click_to_call`) so each
+  // event is distinct in GTM's Preview/Tag Assistant summary and triggerable
+  // by an exact Custom Event name; `^fynch\.` matches them all. `action` lives
+  // inside the `fynch` namespace so nothing collides with other dataLayer
+  // producers at the top level.
+  dataLayer.push({ event: `fynch.${action}`, fynch });
 }

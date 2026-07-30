@@ -109,30 +109,41 @@ The build produces two bundles (`es2015` target): `fynch.js`, an IIFE (global na
 
 ## The dataLayer event shape
 
-Every event Fynch pushes has the same envelope:
+Every event Fynch pushes has the same envelope: a top-level `event` name and a single
+`fynch` object holding everything else.
 
 ```js
 {
   event: 'fynch.click_to_call', // `fynch.` + the action below — your GTM trigger
-  action: 'click_to_call',      // one of the 14 actions below
-  // page context (always present):
-  page_url:   'https://example.com/pricing?ref=x',
-  page_title: 'Pricing — Example',
-  page_path:  '/pricing',
-  referrer:   'https://google.com/',
-  timestamp:  '2026-06-18T03:21:09.482Z',  // ISO 8601
-  // ...plus event-specific params (see the tables below)
+  fynch: {
+    action: 'click_to_call', // one of the 14 actions below
+    // page context (always present):
+    page_url:   'https://example.com/pricing?ref=x',
+    page_title: 'Pricing — Example',
+    page_path:  '/pricing',
+    referrer:   'https://google.com/',
+    timestamp:  '2026-06-18T03:21:09.482Z', // ISO 8601
+    // ...plus event-specific params (see the tables below)
+  },
 }
 ```
 
-**Common fields on every event:** `event`, `action`, `page_url`, `page_title`,
-`page_path`, `referrer`, `timestamp`. The per-event tables below list only the
-_additional_ params for each action.
+**Everything except `event` lives under `fynch`.** Namespacing keeps Fynch's generic
+keys (`action`, `page_title`, `link_url`, `provider`, …) from colliding with anything
+else on the shared `dataLayer`, and read them in GTM with dot-notation Data Layer
+Variables such as `fynch.action` or `fynch.link_url`. The `fynch` object always carries
+`action`, the five page-context fields, and then the per-event params listed in the
+tables below.
 
-The `event` name always encodes the action as `fynch.<action>` (e.g.
-`fynch.form_lead`), so each event is distinct in GTM's Preview / Tag Assistant view
-and can be matched by an exact Custom Event trigger. The same action is also repeated
-in the `action` param — see [Triggering in GTM](#triggering-in-gtm).
+The `event` name always encodes the action as `fynch.<action>` (e.g. `fynch.form_lead`),
+so each event is distinct in GTM's Preview / Tag Assistant view and can be matched by an
+exact Custom Event trigger — see [Triggering in GTM](#triggering-in-gtm).
+
+**Namespace reset.** GTM's data model recursively merges and retains pushed values
+across events, so before each event Fynch first pushes `{ fynch: null }` to clear the
+namespace. Without it, a previous event's params (say `link_url` from a click) would
+linger and bleed into a later event when read as a variable. This mirrors GA4's
+`ecommerce: null` reset. The reset carries no `event` key, so it never fires a trigger.
 
 **Deduplication.** Identical events fired within **500ms** of each other are suppressed,
 so rapid double-clicks or duplicate platform callbacks won't double-count. Form leads have
@@ -145,15 +156,17 @@ A click on `<a href="https://wa.me/15551234567">Chat on WhatsApp</a>` pushes:
 ```js
 {
   event: 'fynch.click_to_message',
-  action: 'click_to_message',
-  page_url: 'https://example.com/contact',
-  page_title: 'Contact — Example',
-  page_path: '/contact',
-  referrer: '',
-  timestamp: '2026-06-18T03:21:09.482Z',
-  provider: 'whatsapp',
-  link_url: 'https://wa.me/15551234567',
-  link_text: 'Chat on WhatsApp'
+  fynch: {
+    action: 'click_to_message',
+    page_url: 'https://example.com/contact',
+    page_title: 'Contact — Example',
+    page_path: '/contact',
+    referrer: '',
+    timestamp: '2026-06-18T03:21:09.482Z',
+    provider: 'whatsapp',
+    link_url: 'https://wa.me/15551234567',
+    link_text: 'Chat on WhatsApp',
+  },
 }
 ```
 
@@ -168,19 +181,20 @@ be mixed freely in one container:
   pixel.
 - **All Fynch events → one tag.** Create a **Custom Event** trigger, tick **Use regex
   matching**, and set the event name to `^fynch\.`. Pair it with a Data Layer Variable
-  reading `action` — for example, map a single GA4 event tag's name to `{{action}}` to
-  forward every Fynch event with its action as the GA4 event name.
+  reading `fynch.action` — for example, map a single GA4 event tag's name to
+  `{{fynch.action}}` to forward every Fynch event with its action as the GA4 event name.
 
-The `action` param is always present, so the older pattern of triggering on a constant
-event name and branching on `action` still works via the regex trigger plus an
-`action`-equals condition.
+For event parameters, point each Data Layer Variable at the dot path under `fynch` (e.g.
+`fynch.provider`, `fynch.link_url`) and map it to a GA4 event parameter in the tag.
 
 ---
 
 ## Events reference
 
-There are 14 event actions, grouped into five categories below. Page-context fields
-(listed above) are present on all of them and are not repeated in the tables.
+There are 14 event actions, grouped into five categories below. Every param named in
+these tables (including `action`) lives inside the `fynch` object — read it in GTM as
+`fynch.<param>`. Page-context fields (listed above) are present on all of them and are
+not repeated in the tables.
 
 ### Clicks
 
@@ -304,10 +318,13 @@ Completing a reservation/booking in a supported widget emits `schedule_booking`.
 
 ## Parameter glossary
 
+`event` is the only top-level key; everything else lives under `fynch` and is read in
+GTM as `fynch.<param>`.
+
 | Param              | Meaning                                                                                                                                                                                                                                                                                                            |
 | ------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `event`            | The GTM event name, always `fynch.<action>` (e.g. `fynch.form_lead`). Use as the GTM trigger — exact match for one action, or the regex `^fynch\.` for all.                                                                                                                                                        |
-| `action`           | The action — one of the 14 below. Repeated from the `event` name so it can be read as a Data Layer Variable.                                                                                                                                                                                                       |
+| `event`            | The GTM event name (the only top-level key), always `fynch.<action>` (e.g. `fynch.form_lead`). Use as the GTM trigger — exact match for one action, or the regex `^fynch\.` for all.                                                                                                                               |
+| `action`           | The action — one of the 14 below. Encodes the same value as the `event` name, exposed under `fynch` as a variable.                                                                                                                                                                                                 |
 | `page_url`         | Full page URL (`window.location.href`) at the time of the event.                                                                                                                                                                                                                                                   |
 | `page_title`       | Document title (`document.title`).                                                                                                                                                                                                                                                                                 |
 | `page_path`        | URL path (`window.location.pathname`).                                                                                                                                                                                                                                                                             |

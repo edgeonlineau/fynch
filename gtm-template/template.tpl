@@ -14,7 +14,7 @@ ___INFO___
     "id": "brand_dummy",
     "displayName": "Edge Online"
   },
-  "description": "Loads Fynch, a zero-config client-side event tracker. Fynch attaches its own listeners on load and pushes form, click, scroll, chat, and booking events to the dataLayer under event names of the form fynch.<action> (e.g. fynch.form_lead). No configuration required — fire this tag once on Initialization / All Pages.",
+  "description": "Loads Fynch, a zero-config client-side event tracker. Fynch attaches its own listeners on load and pushes form, click, scroll, chat, and booking events to the dataLayer under event names of the form fynch.<action> (e.g. fynch.form_lead), with the event details under a fynch object. No configuration required — fire this tag once on Initialization / All Pages.",
   "containerContexts": [
     "WEB"
   ]

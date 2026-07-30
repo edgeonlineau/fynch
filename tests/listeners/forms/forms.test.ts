@@ -22,10 +22,12 @@ describe('form-listeners', () => {
     expect(window.dataLayer).toContainEqual(
       expect.objectContaining({
         event: 'fynch.form_lead',
-        action: 'form_lead',
-        provider: 'contact-form-7',
-        form_id: '123',
-        form_name: 'Contact Us',
+        fynch: expect.objectContaining({
+          action: 'form_lead',
+          provider: 'contact-form-7',
+          form_id: '123',
+          form_name: 'Contact Us',
+        }),
       }),
     );
 
@@ -49,10 +51,12 @@ describe('form-listeners', () => {
     expect(window.dataLayer).toContainEqual(
       expect.objectContaining({
         event: 'fynch.form_lead',
-        action: 'form_lead',
-        provider: 'hubspot-v3',
-        form_id: 'hs-form-456',
-        lead_id: 'guid-789',
+        fynch: expect.objectContaining({
+          action: 'form_lead',
+          provider: 'hubspot-v3',
+          form_id: 'hs-form-456',
+          lead_id: 'guid-789',
+        }),
       }),
     );
   });
@@ -72,9 +76,11 @@ describe('form-listeners', () => {
 
     expect(window.dataLayer).toContainEqual(
       expect.objectContaining({
-        action: 'form_lead',
-        provider: 'hubspot-v3',
-        form_id: 'hs-form-999',
+        fynch: expect.objectContaining({
+          action: 'form_lead',
+          provider: 'hubspot-v3',
+          form_id: 'hs-form-999',
+        }),
       }),
     );
   });
@@ -93,7 +99,7 @@ describe('form-listeners', () => {
     window.dispatchEvent(event);
 
     const formLeads = window.dataLayer.filter(
-      (e) => e.event === 'fynch.form_lead' && e.action === 'form_lead',
+      (e) => e.event === 'fynch.form_lead' && e.fynch?.action === 'form_lead',
     );
     expect(formLeads).toHaveLength(0);
   });
@@ -108,7 +114,7 @@ describe('form-listeners', () => {
     window.dispatchEvent(event);
 
     const formLeads = window.dataLayer.filter(
-      (e) => e.event === 'fynch.form_lead' && e.action === 'form_lead',
+      (e) => e.event === 'fynch.form_lead' && e.fynch?.action === 'form_lead',
     );
     expect(formLeads).toHaveLength(0);
   });
@@ -146,10 +152,12 @@ describe('form-listeners', () => {
     expect(window.dataLayer).toContainEqual(
       expect.objectContaining({
         event: 'fynch.form_lead',
-        action: 'form_lead',
-        provider: 'hubspot-v4',
-        form_id: 'hs-v4-789',
-        lead_id: 'v4-guid-001',
+        fynch: expect.objectContaining({
+          action: 'form_lead',
+          provider: 'hubspot-v4',
+          form_id: 'hs-v4-789',
+          lead_id: 'v4-guid-001',
+        }),
       }),
     );
   });
@@ -167,7 +175,7 @@ describe('form-listeners', () => {
     window.dispatchEvent(event);
 
     const formLeads = window.dataLayer.filter(
-      (e) => e.event === 'fynch.form_lead' && e.action === 'form_lead',
+      (e) => e.event === 'fynch.form_lead' && e.fynch?.action === 'form_lead',
     );
     expect(formLeads).toHaveLength(0);
   });
@@ -189,8 +197,10 @@ describe('form-listeners', () => {
     expect(window.dataLayer).toContainEqual(
       expect.objectContaining({
         event: 'fynch.form_lead',
-        action: 'form_lead',
-        provider: 'duda',
+        fynch: expect.objectContaining({
+          action: 'form_lead',
+          provider: 'duda',
+        }),
       }),
     );
   });
@@ -211,10 +221,12 @@ describe('form-listeners', () => {
     expect(window.dataLayer).toContainEqual(
       expect.objectContaining({
         event: 'fynch.form_lead',
-        action: 'form_lead',
-        provider: 'typeform',
-        form_id: 'tf-abc123',
-        lead_id: 'resp-xyz',
+        fynch: expect.objectContaining({
+          action: 'form_lead',
+          provider: 'typeform',
+          form_id: 'tf-abc123',
+          lead_id: 'resp-xyz',
+        }),
       }),
     );
   });
@@ -236,7 +248,7 @@ describe('form-listeners', () => {
     }
 
     const formLeads = window.dataLayer.filter(
-      (e) => e.event === 'fynch.form_lead' && e.action === 'form_lead',
+      (e) => e.event === 'fynch.form_lead' && e.fynch?.action === 'form_lead',
     );
     expect(formLeads).toHaveLength(0);
   });

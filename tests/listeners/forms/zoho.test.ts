@@ -16,7 +16,10 @@ describe('Zoho forms listener', () => {
 
   function zohoLeads(): DataLayerEvent[] {
     return window.dataLayer.filter(
-      (e) => e.event === 'fynch.form_lead' && e.action === 'form_lead' && e.provider === 'zoho',
+      (e) =>
+        e.event === 'fynch.form_lead' &&
+        e.fynch?.action === 'form_lead' &&
+        e.fynch?.provider === 'zoho',
     );
   }
 
@@ -27,9 +30,11 @@ describe('Zoho forms listener', () => {
     expect(zohoLeads()).toContainEqual(
       expect.objectContaining({
         event: 'fynch.form_lead',
-        action: 'form_lead',
-        provider: 'zoho',
-        form_id: permalink,
+        fynch: expect.objectContaining({
+          action: 'form_lead',
+          provider: 'zoho',
+          form_id: permalink,
+        }),
       }),
     );
   });
@@ -46,7 +51,7 @@ describe('Zoho forms listener', () => {
       await new Promise((resolve) => setTimeout(resolve, 2100));
     }
 
-    const matching = zohoLeads().filter((e) => e.form_id === permalink);
+    const matching = zohoLeads().filter((e) => e.fynch?.form_id === permalink);
     expect(matching).toHaveLength(heights.length);
   }, 20_000);
 
@@ -56,7 +61,7 @@ describe('Zoho forms listener', () => {
     postZoho(`${permalink}|1573`);
     postZoho(`${permalink}|1573`);
 
-    const matching = zohoLeads().filter((e) => e.form_id === permalink);
+    const matching = zohoLeads().filter((e) => e.fynch?.form_id === permalink);
     expect(matching).toHaveLength(1);
   });
 
@@ -67,16 +72,18 @@ describe('Zoho forms listener', () => {
     postZoho(`${permA}|1573.6458740234375`);
     postZoho(`${permB}|872.6875`);
 
-    const leads = zohoLeads().filter((e) => e.form_id === permA || e.form_id === permB);
+    const leads = zohoLeads().filter(
+      (e) => e.fynch?.form_id === permA || e.fynch?.form_id === permB,
+    );
     expect(leads).toHaveLength(2);
-    expect(leads.map((e) => e.form_id)).toEqual([permA, permB]);
+    expect(leads.map((e) => e.fynch?.form_id)).toEqual([permA, permB]);
   });
 
   it('ignores postMessages from non-Zoho origins', () => {
     const permalink = 'zoho-foreign-' + Math.random().toString(36).slice(2);
     postZoho(`${permalink}|1573`, 'https://evil.example.com');
 
-    expect(zohoLeads().some((e) => e.form_id === permalink)).toBe(false);
+    expect(zohoLeads().some((e) => e.fynch?.form_id === permalink)).toBe(false);
   });
 
   it('ignores malformed Zoho postMessages', () => {
@@ -104,7 +111,7 @@ describe('Zoho forms listener', () => {
     postZoho(`${permAu}|800`, 'https://forms.zohopublic.com.au');
     postZoho(`${permEu}|800`, 'https://forms.zohopublic.eu');
 
-    const formIds = new Set(zohoLeads().map((e) => e.form_id));
+    const formIds = new Set(zohoLeads().map((e) => e.fynch?.form_id));
     expect(formIds.has(permAu)).toBe(true);
     expect(formIds.has(permEu)).toBe(true);
   });

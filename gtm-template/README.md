@@ -6,8 +6,8 @@ that want a one-click, gallery-installable tag with explicit, GTM-enforced permi
 
 Fynch is zero-config: the template only injects the script, and Fynch attaches its own
 listeners and pushes events to the `dataLayer` on load under event names of the form
-`fynch.<action>` (e.g. `fynch.form_lead`). There is nothing to call or configure after
-it loads.
+`fynch.<action>` (e.g. `fynch.form_lead`), with the event details under a `fynch` object
+(read in GTM as `fynch.<param>`). There is nothing to call or configure after it loads.
 
 ## Installing the template
 

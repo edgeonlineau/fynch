@@ -76,10 +76,12 @@ describe('form-listeners (jQuery-dependent)', () => {
     expect(window.dataLayer).toContainEqual(
       expect.objectContaining({
         event: 'fynch.form_lead',
-        action: 'form_lead',
-        provider: 'elementor',
-        form_id: 'elem-42',
-        form_name: 'My Elementor Form',
+        fynch: expect.objectContaining({
+          action: 'form_lead',
+          provider: 'elementor',
+          form_id: 'elem-42',
+          form_name: 'My Elementor Form',
+        }),
       }),
     );
   });
@@ -105,11 +107,13 @@ describe('form-listeners (jQuery-dependent)', () => {
     expect(window.dataLayer).toContainEqual(
       expect.objectContaining({
         event: 'fynch.form_lead',
-        action: 'form_lead',
-        provider: 'fluent-forms',
-        form_id: 'ff-42',
-        lead_id: 'entry-101',
-        form_name: 'Newsletter Signup',
+        fynch: expect.objectContaining({
+          action: 'form_lead',
+          provider: 'fluent-forms',
+          form_id: 'ff-42',
+          lead_id: 'entry-101',
+          form_name: 'Newsletter Signup',
+        }),
       }),
     );
 
@@ -124,7 +128,7 @@ describe('form-listeners (jQuery-dependent)', () => {
     triggerJQueryEvent(jQueryMock._handlers, 'fluentform_submission_success', mockEvent, mockData);
 
     const formLeads = window.dataLayer.filter(
-      (e) => e.event === 'fynch.form_lead' && e.action === 'form_lead',
+      (e) => e.event === 'fynch.form_lead' && e.fynch?.action === 'form_lead',
     );
     expect(formLeads).toHaveLength(0);
   });
@@ -138,9 +142,11 @@ describe('form-listeners (jQuery-dependent)', () => {
     expect(window.dataLayer).toContainEqual(
       expect.objectContaining({
         event: 'fynch.form_lead',
-        action: 'form_lead',
-        provider: 'formidable',
-        form_name: 'Test Form',
+        fynch: expect.objectContaining({
+          action: 'form_lead',
+          provider: 'formidable',
+          form_name: 'Test Form',
+        }),
       }),
     );
   });
@@ -158,10 +164,12 @@ describe('form-listeners (jQuery-dependent)', () => {
     expect(window.dataLayer).toContainEqual(
       expect.objectContaining({
         event: 'fynch.form_lead',
-        action: 'form_lead',
-        provider: 'forminator',
-        form_id: 'forminator-99',
-        form_name: 'Feedback Form',
+        fynch: expect.objectContaining({
+          action: 'form_lead',
+          provider: 'forminator',
+          form_id: 'forminator-99',
+          form_name: 'Feedback Form',
+        }),
       }),
     );
   });
@@ -183,11 +191,13 @@ describe('form-listeners (jQuery-dependent)', () => {
     expect(window.dataLayer).toContainEqual(
       expect.objectContaining({
         event: 'fynch.form_lead',
-        action: 'form_lead',
-        provider: 'ninja-forms',
-        form_id: 'ninja-7',
-        lead_id: 'nf-entry-55',
-        form_name: 'Contact Ninja',
+        fynch: expect.objectContaining({
+          action: 'form_lead',
+          provider: 'ninja-forms',
+          form_id: 'ninja-7',
+          lead_id: 'nf-entry-55',
+          form_name: 'Contact Ninja',
+        }),
       }),
     );
   });
@@ -206,10 +216,12 @@ describe('form-listeners (jQuery-dependent)', () => {
     expect(window.dataLayer).toContainEqual(
       expect.objectContaining({
         event: 'fynch.form_lead',
-        action: 'form_lead',
-        provider: 'wp-forms',
-        form_id: 'wp-55',
-        form_name: 'Inquiry Form',
+        fynch: expect.objectContaining({
+          action: 'form_lead',
+          provider: 'wp-forms',
+          form_id: 'wp-55',
+          form_name: 'Inquiry Form',
+        }),
       }),
     );
   });
@@ -228,11 +240,13 @@ describe('form-listeners (jQuery-dependent)', () => {
     expect(window.dataLayer).toContainEqual(
       expect.objectContaining({
         event: 'fynch.form_lead',
-        action: 'form_lead',
-        provider: 'ws-form',
-        form_id: 'ws-form-12',
-        lead_id: 'ws-sub-77',
-        form_name: 'Booking Form',
+        fynch: expect.objectContaining({
+          action: 'form_lead',
+          provider: 'ws-form',
+          form_id: 'ws-form-12',
+          lead_id: 'ws-sub-77',
+          form_name: 'Booking Form',
+        }),
       }),
     );
   });
@@ -255,8 +269,10 @@ describe('form-listeners (jQuery-dependent)', () => {
     expect(window.dataLayer).toContainEqual(
       expect.objectContaining({
         event: 'fynch.form_lead',
-        action: 'form_lead',
-        provider: 'divi',
+        fynch: expect.objectContaining({
+          action: 'form_lead',
+          provider: 'divi',
+        }),
       }),
     );
   });
@@ -333,10 +349,12 @@ describe('form-listeners (jQuery-dependent)', () => {
     expect(window.dataLayer).toContainEqual(
       expect.objectContaining({
         event: 'fynch.form_lead',
-        action: 'form_lead',
-        provider: 'gravity-forms',
-        form_id: 'gf-33',
-        form_name: 'Request a Quote',
+        fynch: expect.objectContaining({
+          action: 'form_lead',
+          provider: 'gravity-forms',
+          form_id: 'gf-33',
+          form_name: 'Request a Quote',
+        }),
       }),
     );
 

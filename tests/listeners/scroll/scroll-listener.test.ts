@@ -39,8 +39,10 @@ describe('scroll-listener', () => {
     expect(window.dataLayer).toContainEqual(
       expect.objectContaining({
         event: 'fynch.scroll_milestone',
-        action: 'scroll_milestone',
-        percent_scrolled: 25,
+        fynch: expect.objectContaining({
+          action: 'scroll_milestone',
+          percent_scrolled: 25,
+        }),
       }),
     );
   });
@@ -54,8 +56,8 @@ describe('scroll-listener', () => {
     await nextFrame();
 
     const milestones = window.dataLayer
-      .filter((e) => e.action === 'scroll_milestone')
-      .map((e) => e.percent_scrolled);
+      .filter((e) => e.fynch?.action === 'scroll_milestone')
+      .map((e) => e.fynch?.percent_scrolled);
 
     expect(milestones).toContain(25);
     expect(milestones).toContain(50);
@@ -74,7 +76,7 @@ describe('scroll-listener', () => {
     await nextFrame();
 
     const milestones25 = window.dataLayer.filter(
-      (e) => e.action === 'scroll_milestone' && e.percent_scrolled === 25,
+      (e) => e.fynch?.action === 'scroll_milestone' && e.fynch?.percent_scrolled === 25,
     );
     expect(milestones25).toHaveLength(1);
   });
@@ -87,7 +89,7 @@ describe('scroll-listener', () => {
     window.dispatchEvent(new Event('scroll'));
     await nextFrame();
 
-    const milestones = window.dataLayer.filter((e) => e.action === 'scroll_milestone');
+    const milestones = window.dataLayer.filter((e) => e.fynch?.action === 'scroll_milestone');
     expect(milestones).toHaveLength(0);
   });
 
@@ -101,8 +103,8 @@ describe('scroll-listener', () => {
     await nextFrame();
 
     const milestones = window.dataLayer
-      .filter((e) => e.action === 'scroll_milestone')
-      .map((e) => e.percent_scrolled);
+      .filter((e) => e.fynch?.action === 'scroll_milestone')
+      .map((e) => e.fynch?.percent_scrolled);
     expect(new Set(milestones)).toEqual(new Set([25, 50, 75, 90]));
     expect(removeSpy).toHaveBeenCalledWith('scroll', expect.any(Function));
 

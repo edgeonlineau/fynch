@@ -24,9 +24,11 @@ describe('cta-listener', () => {
     expect(window.dataLayer).toContainEqual(
       expect.objectContaining({
         event: 'fynch.call_to_action_click',
-        action: 'call_to_action_click',
-        link_id: 'hero-cta',
-        link_classes: 'btn primary',
+        fynch: expect.objectContaining({
+          action: 'call_to_action_click',
+          link_id: 'hero-cta',
+          link_classes: 'btn primary',
+        }),
       }),
     );
   });
@@ -44,7 +46,9 @@ describe('cta-listener', () => {
     expect(window.dataLayer).toContainEqual(
       expect.objectContaining({
         event: 'fynch.call_to_action_click',
-        action: 'call_to_action_click',
+        fynch: expect.objectContaining({
+          action: 'call_to_action_click',
+        }),
       }),
     );
   });
@@ -63,7 +67,9 @@ describe('cta-listener', () => {
     expect(window.dataLayer).toContainEqual(
       expect.objectContaining({
         event: 'fynch.call_to_action_click',
-        action: 'call_to_action_click',
+        fynch: expect.objectContaining({
+          action: 'call_to_action_click',
+        }),
       }),
     );
   });
@@ -83,7 +89,9 @@ describe('cta-listener', () => {
     expect(window.dataLayer).toContainEqual(
       expect.objectContaining({
         event: 'fynch.call_to_action_click',
-        action: 'call_to_action_click',
+        fynch: expect.objectContaining({
+          action: 'call_to_action_click',
+        }),
       }),
     );
   });
@@ -100,8 +108,10 @@ describe('cta-listener', () => {
 
     expect(window.dataLayer).toContainEqual(
       expect.objectContaining({
-        action: 'call_to_action_click',
-        link_url: `${window.location.origin}/pricing`,
+        fynch: expect.objectContaining({
+          action: 'call_to_action_click',
+          link_url: `${window.location.origin}/pricing`,
+        }),
       }),
     );
   });
@@ -118,9 +128,11 @@ describe('cta-listener', () => {
 
     expect(window.dataLayer).toContainEqual(
       expect.objectContaining({
-        action: 'call_to_action_click',
-        link_url: 'https://partner.example.com/signup',
-        link_domain: 'partner.example.com',
+        fynch: expect.objectContaining({
+          action: 'call_to_action_click',
+          link_url: 'https://partner.example.com/signup',
+          link_domain: 'partner.example.com',
+        }),
       }),
     );
   });
@@ -140,9 +152,11 @@ describe('cta-listener', () => {
 
     expect(window.dataLayer).toContainEqual(
       expect.objectContaining({
-        action: 'call_to_action_click',
-        link_url: 'https://external.com/page',
-        link_domain: 'external.com',
+        fynch: expect.objectContaining({
+          action: 'call_to_action_click',
+          link_url: 'https://external.com/page',
+          link_domain: 'external.com',
+        }),
       }),
     );
   });
@@ -157,7 +171,7 @@ describe('cta-listener', () => {
     clickElement(button);
 
     const ctaEvents = window.dataLayer.filter(
-      (e) => e.event === 'fynch.call_to_action_click' && e.action === 'call_to_action_click',
+      (e) => e.event === 'fynch.call_to_action_click' && e.fynch?.action === 'call_to_action_click',
     );
     expect(ctaEvents).toHaveLength(0);
   });

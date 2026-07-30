@@ -38,8 +38,10 @@ describe('chat-listeners', () => {
     expect(window.dataLayer).toContainEqual(
       expect.objectContaining({
         event: 'fynch.start_chat',
-        action: 'start_chat',
-        provider: 'beacon',
+        fynch: expect.objectContaining({
+          action: 'start_chat',
+          provider: 'beacon',
+        }),
       }),
     );
   });
@@ -60,8 +62,10 @@ describe('chat-listeners', () => {
     expect(window.dataLayer).toContainEqual(
       expect.objectContaining({
         event: 'fynch.start_chat',
-        action: 'start_chat',
-        provider: 'tawk',
+        fynch: expect.objectContaining({
+          action: 'start_chat',
+          provider: 'tawk',
+        }),
       }),
     );
   });
@@ -78,8 +82,10 @@ describe('chat-listeners', () => {
     expect(existingCallback).toHaveBeenCalledOnce();
     expect(window.dataLayer).toContainEqual(
       expect.objectContaining({
-        action: 'start_chat',
-        provider: 'tawk',
+        fynch: expect.objectContaining({
+          action: 'start_chat',
+          provider: 'tawk',
+        }),
       }),
     );
   });
@@ -107,8 +113,10 @@ describe('chat-listeners', () => {
     expect(window.dataLayer).toContainEqual(
       expect.objectContaining({
         event: 'fynch.start_chat',
-        action: 'start_chat',
-        provider: 'podium',
+        fynch: expect.objectContaining({
+          action: 'start_chat',
+          provider: 'podium',
+        }),
       }),
     );
   });
@@ -124,9 +132,11 @@ describe('chat-listeners', () => {
 
     expect(window.dataLayer).toContainEqual(
       expect.objectContaining({
-        action: 'start_chat',
-        provider: 'podium',
-        lead_id: 'conv-abc-123',
+        fynch: expect.objectContaining({
+          action: 'start_chat',
+          provider: 'podium',
+          lead_id: 'conv-abc-123',
+        }),
       }),
     );
   });
@@ -139,8 +149,8 @@ describe('chat-listeners', () => {
       'customer-name': 'Jane',
     });
 
-    const event = window.dataLayer.find((e) => e.provider === 'podium');
-    expect(event?.lead_id).toBeUndefined();
+    const event = window.dataLayer.find((e) => e.fynch?.provider === 'podium');
+    expect(event?.fynch?.lead_id).toBeUndefined();
   });
 
   it('ignores non-conversation Podium events', async () => {
@@ -164,7 +174,7 @@ describe('chat-listeners', () => {
     window.PodiumEventsCallback?.('Conversation Started', props);
 
     expect(existingCallback).toHaveBeenCalledWith('Conversation Started', props);
-    expect(window.dataLayer).toHaveLength(1);
+    expect(window.dataLayer.filter((e) => e.event === 'fynch.start_chat')).toHaveLength(1);
   });
 
   it('tracks LiveChat chat started on first customer message', async () => {
@@ -189,8 +199,10 @@ describe('chat-listeners', () => {
     expect(window.dataLayer).toContainEqual(
       expect.objectContaining({
         event: 'fynch.start_chat',
-        action: 'start_chat',
-        provider: 'livechat',
+        fynch: expect.objectContaining({
+          action: 'start_chat',
+          provider: 'livechat',
+        }),
       }),
     );
   });
@@ -216,9 +228,11 @@ describe('chat-listeners', () => {
 
     expect(window.dataLayer).toContainEqual(
       expect.objectContaining({
-        action: 'start_chat',
-        provider: 'livechat',
-        lead_id: 'visitor-xyz-789',
+        fynch: expect.objectContaining({
+          action: 'start_chat',
+          provider: 'livechat',
+          lead_id: 'visitor-xyz-789',
+        }),
       }),
     );
   });
@@ -266,9 +280,12 @@ describe('chat-listeners', () => {
     capturedCallback?.({ author: { id: 'msg-2', type: 'customer' } });
     capturedCallback?.({ author: { id: 'msg-3', type: 'customer' } });
 
-    expect(window.dataLayer).toHaveLength(1);
-    expect(window.dataLayer[0]).toEqual(
-      expect.objectContaining({ provider: 'livechat', lead_id: 'msg-1' }),
+    const chats = window.dataLayer.filter((e) => e.event === 'fynch.start_chat');
+    expect(chats).toHaveLength(1);
+    expect(chats[0]).toEqual(
+      expect.objectContaining({
+        fynch: expect.objectContaining({ provider: 'livechat', lead_id: 'msg-1' }),
+      }),
     );
   });
 
