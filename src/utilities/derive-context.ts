@@ -46,7 +46,12 @@ export function deriveContext(
     case CLICK_PHONE:
     case CLICK_SMS:
       return p.link_url;
+    // Link clicks with a specific destination: the provider names the channel,
+    // the link_url identifies the actual place/app/event/handle.
     case CLICK_MESSAGING:
+    case CLICK_DIRECTIONS:
+    case CLICK_APP_STORE:
+    case CLICK_CALENDAR:
       return joinParts(p.provider, p.link_url);
     case CLICK_OUTBOUND:
       return joinParts(p.link_domain, p.link_text);
@@ -58,9 +63,7 @@ export function deriveContext(
       return joinParts(p.provider, p.form_name ?? p.form_id);
     case SCROLL_MILESTONE:
       return p.percent_scrolled !== undefined ? String(p.percent_scrolled) : undefined;
-    case CLICK_DIRECTIONS:
-    case CLICK_APP_STORE:
-    case CLICK_CALENDAR:
+    // Widget events with no link — the provider is the identifying value.
     case CHAT_STARTED:
     case BOOKING_SCHEDULED:
       return p.provider;

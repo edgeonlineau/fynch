@@ -3,6 +3,7 @@ import { deriveContext } from '../../src/utilities/derive-context';
 import {
   CHAT_STARTED,
   CLICK_CTA,
+  CLICK_DIRECTIONS,
   CLICK_DOWNLOAD,
   CLICK_EMAIL,
   CLICK_MESSAGING,
@@ -65,7 +66,16 @@ describe('deriveContext', () => {
     expect(deriveContext(SCROLL_MILESTONE, { percent_scrolled: 90 })).toBe('90');
   });
 
-  it('uses the provider for channel events', () => {
+  it('joins provider and destination for directions/app-store/calendar links', () => {
+    expect(
+      deriveContext(CLICK_DIRECTIONS, {
+        provider: 'google',
+        link_url: 'https://maps.google.com/?q=123+Main+St',
+      }),
+    ).toBe('google | https://maps.google.com/?q=123+Main+St');
+  });
+
+  it('uses the provider alone for widget events without a link', () => {
     expect(deriveContext(CHAT_STARTED, { provider: 'beacon' })).toBe('beacon');
   });
 
