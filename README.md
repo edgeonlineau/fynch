@@ -117,7 +117,7 @@ Every event Fynch pushes has the same envelope: a top-level `event` name and a s
   event: 'fynch.click_to_call', // `fynch.` + the action below — your GTM trigger
   fynch: {
     action:  'click_to_call', // one of the 14 actions below
-    context: '+61298765432',  // the event's key value, rolled up (see below)
+    context: '61298765432',   // the event's key value, rolled up (see below)
     // page context (always present):
     page_url:   'https://example.com/pricing?ref=x',
     page_title: 'Pricing — Example',
@@ -184,27 +184,43 @@ tag and you have a familiar single "what was this" column across every event.
 
 The per-action value (composite values join with `|` and drop any absent part):
 
-| action(s)                                                                    | `context`                                                                |
-| ---------------------------------------------------------------------------- | ------------------------------------------------------------------------ |
-| `click_to_email`, `click_to_call`, `click_to_text`                           | the address / number (`link_url`)                                        |
-| `click_to_message`, `get_directions`, `view_in_app_store`, `add_to_calendar` | `provider \| link_url`                                                   |
-| `outbound_click`                                                             | `link_domain \| link_text`                                               |
-| `call_to_action_click`                                                       | `link_text \| link_url`                                                  |
-| `download_file`                                                              | `file_name`                                                              |
-| `form_lead`                                                                  | `provider \| form_name` (falls back to `form_id`, then `provider` alone) |
-| `start_chat`, `schedule_booking`                                             | `provider`                                                               |
-| `scroll_milestone`                                                           | `percent_scrolled`                                                       |
+| action(s)                                                                    | `context`                                                                   |
+| ---------------------------------------------------------------------------- | --------------------------------------------------------------------------- |
+| `click_to_email`, `click_to_call`, `click_to_text`                           | the address / number, normalised (phone → digits only, email → lower-cased) |
+| `click_to_message`, `get_directions`, `view_in_app_store`, `add_to_calendar` | `provider \| link_url`                                                      |
+| `outbound_click`                                                             | `link_domain \| link_text`                                                  |
+| `call_to_action_click`                                                       | `link_text \| link_url`                                                     |
+| `download_file`                                                              | `file_name`                                                                 |
+| `form_lead`                                                                  | `provider \| form_name` (falls back to `form_id`, then `provider` alone)    |
+| `start_chat`, `schedule_booking`                                             | `provider`                                                                  |
+| `scroll_milestone`                                                           | `percent_scrolled`                                                          |
 
-> **⚠️ PII / GA4 policy.** For `click_to_email`, `click_to_call`, `click_to_text`, and the
-> `link_url` half of `click_to_message`, `context` contains a raw email address or phone
-> number. Sending email/phone-shaped values to GA4 **violates Google's no-PII policy** —
-> Google's automated detection flags them regardless of whose they are, and can disable the
-> property. **Do not map `fynch.context` straight into GA4 for these events without
-> sanitising it first.** In GTM, run `fynch.context` through a **Lookup Table** or **RegEx
-> Table** variable that redacts or replaces the address/number (e.g. hash it, strip to the
-> domain, or blank it for contact actions) and map that sanitised variable to GA4 instead.
-> There is also a hard 100-character limit on GA4 parameter values, so long composites are
-> truncated — the shorter, higher-value part is placed first for that reason.
+For `click_to_email`, `click_to_call`, and `click_to_text`, `context` is normalised so a
+plain **Lookup Table** can map it: phone numbers are reduced to digits (`07 5598 2622`,
+`(07) 5598-2622`, and `0755982622` all become `0755982622`) and emails are lower-cased and
+trimmed. `link_url` keeps the original as-authored value for auditing — only `context` is
+normalised.
+
+> **⚠️ PII / GA4 policy.** Those `context` values are still a real phone number or email,
+> and the `link_url` half of `click_to_message` still carries a number. Sending
+> email/phone-shaped values to GA4 **violates Google's no-PII policy** — its automated
+> detection flags them regardless of whose they are and can disable the property. **Do not
+> map `fynch.context` straight into GA4 for these events.** Instead, in GTM point a
+> **Lookup Table** variable at `fynch.context`, map each known value to a label, and set the
+> **default value to blank** so unmapped numbers never reach GA4 — then map that variable
+> (not raw `context`) to your GA4 tag:
+>
+> | Input (`fynch.context`) | Output       |
+> | ----------------------- | ------------ |
+> | `0755982622`            | `Main Phone` |
+> | `1800123456`            | `Sales Line` |
+> | _(default)_             | _(blank)_    |
+>
+> Because `context` is normalised, this is a standard Lookup Table — no RegEx Table needed.
+> Note that national and international forms of the same number don't normalise together
+> (`0755982622` vs `61755982622`), so add a row for each form a site uses. There is also a
+> hard 100-character limit on GA4 parameter values, so long composites are truncated — the
+> shorter, higher-value part is placed first for that reason.
 
 ### Triggering in GTM
 

@@ -24,16 +24,32 @@ function joinParts(...parts: (string | undefined)[]): string | undefined {
   return present.length ? present.join(' | ') : undefined;
 }
 
+// Reduce a phone number to digits only so every on-page formatting of one number
+// (`07 5598 2622`, `(07) 5598-2622`, `0755982622`) collapses to a single value a
+// plain GTM Lookup Table can key on. National and international forms of the same
+// number don't merge (`07…` → `0755982622` vs `+61…` → `61755982622`) — that needs
+// country-aware logic and is out of scope for a zero-config script.
+function normalisePhone(value: string | undefined): string | undefined {
+  if (value === undefined) return undefined;
+  return value.replace(/\D+/g, '') || undefined;
+}
+
+// Lower-case and trim an email so casing/whitespace variants collapse to one value.
+function normaliseEmail(value: string | undefined): string | undefined {
+  if (value === undefined) return undefined;
+  return value.trim().toLowerCase() || undefined;
+}
+
 /**
  * The single most identifying value for an event, duplicated into `fynch.context`
  * so a GA4 setup can surface every Fynch event through one custom dimension
  * instead of registering one per param. Composite values join with " | " and
  * drop absent parts.
  *
- * Contact values (email, phone, messaging handles) are included deliberately, so
- * `context` for those actions is the raw address/number. That is PII as far as
- * GA4 is concerned — see the README's context section for why, and for the GTM
- * Lookup Table / RegEx Table sanitisation to apply before it reaches GA4.
+ * For contact clicks the value is normalised (phone → digits, email → lower-cased)
+ * so a plain GTM Lookup Table can map it; `link_url` keeps the as-authored value
+ * for auditing. It is still PII as far as GA4 is concerned — see the README's
+ * context section for the Lookup Table sanitisation to apply before it reaches GA4.
  */
 export function deriveContext(
   action: FynchEventAction,
@@ -43,9 +59,10 @@ export function deriveContext(
 
   switch (action) {
     case CLICK_EMAIL:
+      return normaliseEmail(p.link_url);
     case CLICK_PHONE:
     case CLICK_SMS:
-      return p.link_url;
+      return normalisePhone(p.link_url);
     // Link clicks with a specific destination: the provider names the channel,
     // the link_url identifies the actual place/app/event/handle.
     case CLICK_MESSAGING:

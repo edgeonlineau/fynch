@@ -9,14 +9,24 @@ import {
   CLICK_MESSAGING,
   CLICK_OUTBOUND,
   CLICK_PHONE,
+  CLICK_SMS,
   FORM_LEAD,
   SCROLL_MILESTONE,
 } from '../../src/utilities/constants';
 
 describe('deriveContext', () => {
-  it('uses the raw address/number for contact clicks', () => {
-    expect(deriveContext(CLICK_EMAIL, { link_url: 'sales@example.com' })).toBe('sales@example.com');
-    expect(deriveContext(CLICK_PHONE, { link_url: '+61298765432' })).toBe('+61298765432');
+  it('normalises phone numbers to digits so every on-page format collapses to one value', () => {
+    expect(deriveContext(CLICK_PHONE, { link_url: '07 55982622' })).toBe('0755982622');
+    expect(deriveContext(CLICK_SMS, { link_url: '(07) 5598-2622' })).toBe('0755982622');
+    expect(deriveContext(CLICK_PHONE, { link_url: '0755982622' })).toBe('0755982622');
+    // National and international forms don't merge — a documented limitation.
+    expect(deriveContext(CLICK_PHONE, { link_url: '+61 7 5598 2622' })).toBe('61755982622');
+  });
+
+  it('lower-cases and trims emails for contact clicks', () => {
+    expect(deriveContext(CLICK_EMAIL, { link_url: '  Sales@Example.com ' })).toBe(
+      'sales@example.com',
+    );
   });
 
   it('joins provider and destination for messaging links', () => {
