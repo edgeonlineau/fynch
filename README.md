@@ -116,7 +116,8 @@ Every event Fynch pushes has the same envelope: a top-level `event` name and a s
 {
   event: 'fynch.click_to_call', // `fynch.` + the action below — your GTM trigger
   fynch: {
-    action: 'click_to_call', // one of the 14 actions below
+    action:  'click_to_call', // one of the 14 actions below
+    context: '+61298765432',  // the event's key value, rolled up (see below)
     // page context (always present):
     page_url:   'https://example.com/pricing?ref=x',
     page_title: 'Pricing — Example',
@@ -132,8 +133,8 @@ Every event Fynch pushes has the same envelope: a top-level `event` name and a s
 keys (`action`, `page_title`, `link_url`, `provider`, …) from colliding with anything
 else on the shared `dataLayer`, and read them in GTM with dot-notation Data Layer
 Variables such as `fynch.action` or `fynch.link_url`. The `fynch` object always carries
-`action`, the five page-context fields, and then the per-event params listed in the
-tables below.
+`action`, a [`context` roll-up](#the-context-roll-up), the five page-context fields, and
+then the per-event params listed in the tables below.
 
 The `event` name always encodes the action as `fynch.<action>` (e.g. `fynch.form_lead`),
 so each event is distinct in GTM's Preview / Tag Assistant view and can be matched by an
@@ -158,6 +159,7 @@ A click on `<a href="https://wa.me/15551234567">Chat on WhatsApp</a>` pushes:
   event: 'fynch.click_to_message',
   fynch: {
     action: 'click_to_message',
+    context: 'whatsapp | https://wa.me/15551234567',
     page_url: 'https://example.com/contact',
     page_title: 'Contact — Example',
     page_path: '/contact',
@@ -169,6 +171,40 @@ A click on `<a href="https://wa.me/15551234567">Chat on WhatsApp</a>` pushes:
   },
 }
 ```
+
+### The `context` roll-up
+
+`fynch.context` is a single, always-present field holding the one most identifying value
+for each event. It exists so a GA4 setup can surface every Fynch event through **one**
+custom dimension — point a single Data Layer Variable at `fynch.context` and map it to
+one event parameter, rather than registering a separate dimension per param (GA4 caps
+event-scoped custom dimensions at 50). It pairs naturally with a Universal-Analytics-style
+**Event Label**: map `fynch.context` to your Event Label parameter/dimension in the GTM
+tag and you have a familiar single "what was this" column across every event.
+
+The per-action value (composite values join with `|` and drop any absent part):
+
+| action(s)                                                                                  | `context`                                                                |
+| ------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------ |
+| `click_to_email`, `click_to_call`, `click_to_text`                                         | the address / number (`link_url`)                                        |
+| `click_to_message`                                                                         | `provider \| link_url`                                                   |
+| `outbound_click`                                                                           | `link_domain \| link_text`                                               |
+| `call_to_action_click`                                                                     | `link_text \| link_url`                                                  |
+| `download_file`                                                                            | `file_name`                                                              |
+| `form_lead`                                                                                | `provider \| form_name` (falls back to `form_id`, then `provider` alone) |
+| `get_directions`, `view_in_app_store`, `add_to_calendar`, `start_chat`, `schedule_booking` | `provider`                                                               |
+| `scroll_milestone`                                                                         | `percent_scrolled`                                                       |
+
+> **⚠️ PII / GA4 policy.** For `click_to_email`, `click_to_call`, `click_to_text`, and the
+> `link_url` half of `click_to_message`, `context` contains a raw email address or phone
+> number. Sending email/phone-shaped values to GA4 **violates Google's no-PII policy** —
+> Google's automated detection flags them regardless of whose they are, and can disable the
+> property. **Do not map `fynch.context` straight into GA4 for these events without
+> sanitising it first.** In GTM, run `fynch.context` through a **Lookup Table** or **RegEx
+> Table** variable that redacts or replaces the address/number (e.g. hash it, strip to the
+> domain, or blank it for contact actions) and map that sanitised variable to GA4 instead.
+> There is also a hard 100-character limit on GA4 parameter values, so long composites are
+> truncated — the shorter, higher-value part is placed first for that reason.
 
 ### Triggering in GTM
 
@@ -328,6 +364,7 @@ GTM as `fynch.<param>`.
 | ------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | `event`            | The GTM event name (the only top-level key), always `fynch.<action>` (e.g. `fynch.form_lead`). Use as the GTM trigger — exact match for one action, or the regex `^fynch\.` for all.                                                                                                                               |
 | `action`           | The action — one of the 14 below. Encodes the same value as the `event` name, exposed under `fynch` as a variable.                                                                                                                                                                                                 |
+| `context`          | A single roll-up of the event's most identifying value, for mapping one GA4 dimension. See [The `context` roll-up](#the-context-roll-up) — including the PII caveat for contact actions.                                                                                                                           |
 | `page_url`         | Full page URL (`window.location.href`) at the time of the event.                                                                                                                                                                                                                                                   |
 | `page_title`       | Document title (`document.title`).                                                                                                                                                                                                                                                                                 |
 | `page_path`        | URL path (`window.location.pathname`).                                                                                                                                                                                                                                                                             |

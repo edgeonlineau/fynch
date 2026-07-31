@@ -1,4 +1,5 @@
 import { FORM_LEAD, type FynchEventAction } from './constants';
+import { deriveContext } from './derive-context';
 import { isFormDuplicate } from './form-dedup';
 
 window.dataLayer = window.dataLayer || [];
@@ -70,8 +71,13 @@ export function sendFynchEvent(action: FynchEventAction, rawParams?: EventParams
   if (action === FORM_LEAD && params && isFormDuplicate(params)) return;
   if (isDuplicate(action, params)) return;
 
+  // A single roll-up of the event's most identifying value, so a GA4 setup can
+  // map one `fynch.context` dimension instead of one per param.
+  const context = deriveContext(action, params);
+
   const fynch: FynchEventData = {
     action,
+    ...(context !== undefined ? { context } : {}),
     ...buildPageContext(),
     ...params,
   };

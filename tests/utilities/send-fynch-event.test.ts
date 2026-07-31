@@ -160,6 +160,13 @@ describe('sendFynchEvent', () => {
     expect(Object.keys(event.fynch ?? {})).not.toContain('form_name');
   });
 
+  it('adds a context roll-up derived from the action and params', async () => {
+    const sendFynchEvent = await loadSendFynchEvent();
+    sendFynchEvent('form_lead', { provider: 'gravity-forms', form_name: 'Contact Us' });
+
+    expect(fynchEvents()[0].fynch?.context).toBe('gravity-forms | Contact Us');
+  });
+
   it('exposes nonEmptyString for param extraction', async () => {
     const { nonEmptyString } = await import('../../src/utilities/send-fynch-event');
 

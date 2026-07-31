@@ -2,6 +2,7 @@
 
 interface FynchEventData {
   action: string;
+  context?: string;
   page_url: string;
   page_title: string;
   page_path: string;
