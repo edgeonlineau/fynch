@@ -41,16 +41,16 @@ execute:
 <!-- jsDelivr, pinned + deferred + SRI -->
 <script
   defer
-  src="https://cdn.jsdelivr.net/npm/@edgeonline/fynch@0.2.1/dist/fynch.js"
-  integrity="sha384-uD/umP7xkAnMt2RPh8AMJXnmpJf5+O4vxcg0EUr1HNKcxzMUyynmMrptDSpBkd/f"
+  src="https://cdn.jsdelivr.net/npm/@edgeonline/fynch@0.3.0/dist/fynch.js"
+  integrity="sha384-vVtPv/Zvx3AnjrXoWRgwI3rKdHJ776i5WM+08MKTxBsmNO2VrRUfYg7YB3aWVAdn"
   crossorigin="anonymous"
 ></script>
 
 <!-- unpkg works too (same file, same integrity hash) -->
 <script
   defer
-  src="https://unpkg.com/@edgeonline/fynch@0.2.1/dist/fynch.js"
-  integrity="sha384-uD/umP7xkAnMt2RPh8AMJXnmpJf5+O4vxcg0EUr1HNKcxzMUyynmMrptDSpBkd/f"
+  src="https://unpkg.com/@edgeonline/fynch@0.3.0/dist/fynch.js"
+  integrity="sha384-vVtPv/Zvx3AnjrXoWRgwI3rKdHJ776i5WM+08MKTxBsmNO2VrRUfYg7YB3aWVAdn"
   crossorigin="anonymous"
 ></script>
 ```
