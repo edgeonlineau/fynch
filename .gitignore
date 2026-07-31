@@ -13,6 +13,10 @@ dist-ssr
 coverage
 *.local
 
+# Raw GTM container exports may contain real client data (phone/email/IDs).
+# The sanitised reference lives at gtm-template/example-ga4-container.json.
+/GTM-*.json
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json

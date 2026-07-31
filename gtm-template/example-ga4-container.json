@@ -1,0 +1,460 @@
+{
+    "exportFormatVersion": 2,
+    "exportTime": "2026-07-31 04:44:24",
+    "containerVersion": {
+        "path": "accounts/0000000000/containers/0000000/versions/0",
+        "accountId": "0000000000",
+        "containerId": "0000000",
+        "containerVersionId": "0",
+        "container": {
+            "path": "accounts/0000000000/containers/0000000",
+            "accountId": "0000000000",
+            "containerId": "0000000",
+            "name": "www.example.com",
+            "publicId": "GTM-XXXXXXX",
+            "usageContext": [
+                "WEB"
+            ],
+            "fingerprint": "1575858009592",
+            "tagManagerUrl": "https://tagmanager.google.com/#/container/accounts/0000000000/containers/0000000/workspaces?apiLink=container",
+            "features": {
+                "supportUserPermissions": true,
+                "supportEnvironments": true,
+                "supportWorkspaces": true,
+                "supportGtagConfigs": false,
+                "supportBuiltInVariables": true,
+                "supportClients": false,
+                "supportFolders": true,
+                "supportTags": true,
+                "supportTemplates": true,
+                "supportTriggers": true,
+                "supportVariables": true,
+                "supportVersions": true,
+                "supportZones": true,
+                "supportTransformations": false
+            },
+            "tagIds": [
+                "GTM-XXXXXXX"
+            ]
+        },
+        "tag": [
+            {
+                "accountId": "0000000000",
+                "containerId": "0000000",
+                "tagId": "54",
+                "name": "GA4 | Fynch Events Tag",
+                "type": "gaawe",
+                "parameter": [
+                    {
+                        "type": "BOOLEAN",
+                        "key": "sendEcommerceData",
+                        "value": "false"
+                    },
+                    {
+                        "type": "LIST",
+                        "key": "eventSettingsTable",
+                        "list": [
+                            {
+                                "type": "MAP",
+                                "map": [
+                                    {
+                                        "type": "TEMPLATE",
+                                        "key": "parameter",
+                                        "value": "context"
+                                    },
+                                    {
+                                        "type": "TEMPLATE",
+                                        "key": "parameterValue",
+                                        "value": "{{Fynch | Context (GA4-safe)}}"
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "type": "TEMPLATE",
+                        "key": "eventName",
+                        "value": "{{GA4 | Fynch Action Mapping Table}}"
+                    },
+                    {
+                        "type": "TEMPLATE",
+                        "key": "measurementIdOverride",
+                        "value": "{{GA4 | Measurement ID}}"
+                    }
+                ],
+                "fingerprint": "1785473022134",
+                "firingTriggerId": [
+                    "49"
+                ],
+                "parentFolderId": "50",
+                "tagFiringOption": "ONCE_PER_EVENT",
+                "monitoringMetadata": {
+                    "type": "MAP"
+                },
+                "consentSettings": {
+                    "consentStatus": "NOT_SET"
+                }
+            },
+            {
+                "accountId": "0000000000",
+                "containerId": "0000000",
+                "tagId": "55",
+                "name": "GA4 | Google Tag",
+                "type": "googtag",
+                "parameter": [
+                    {
+                        "type": "TEMPLATE",
+                        "key": "tagId",
+                        "value": "{{GA4 | Measurement ID}}"
+                    },
+                    {
+                        "type": "LIST",
+                        "key": "configSettingsTable",
+                        "list": [
+                            {
+                                "type": "MAP",
+                                "map": [
+                                    {
+                                        "type": "TEMPLATE",
+                                        "key": "parameter",
+                                        "value": "send_page_view"
+                                    },
+                                    {
+                                        "type": "TEMPLATE",
+                                        "key": "parameterValue",
+                                        "value": "true"
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                ],
+                "fingerprint": "1785374776460",
+                "firingTriggerId": [
+                    "2147479573"
+                ],
+                "parentFolderId": "50",
+                "tagFiringOption": "ONCE_PER_EVENT",
+                "monitoringMetadata": {
+                    "type": "MAP"
+                },
+                "consentSettings": {
+                    "consentStatus": "NOT_SET"
+                }
+            },
+            {
+                "accountId": "0000000000",
+                "containerId": "0000000",
+                "tagId": "56",
+                "name": "Fynch | Initialisation Tag",
+                "type": "cvt_0000000_57",
+                "parameter": [
+                    {
+                        "type": "TEMPLATE",
+                        "key": "versionMode",
+                        "value": "latest"
+                    },
+                    {
+                        "type": "TEMPLATE",
+                        "key": "cdn",
+                        "value": "jsdelivr"
+                    }
+                ],
+                "fingerprint": "1785386743285",
+                "firingTriggerId": [
+                    "2147479573"
+                ],
+                "parentFolderId": "47",
+                "tagFiringOption": "ONCE_PER_EVENT",
+                "monitoringMetadata": {
+                    "type": "MAP"
+                },
+                "consentSettings": {
+                    "consentStatus": "NOT_SET"
+                }
+            }
+        ],
+        "trigger": [
+            {
+                "accountId": "0000000000",
+                "containerId": "0000000",
+                "triggerId": "49",
+                "name": "Fynch | Events Trigger",
+                "type": "CUSTOM_EVENT",
+                "customEventFilter": [
+                    {
+                        "type": "MATCH_REGEX",
+                        "parameter": [
+                            {
+                                "type": "TEMPLATE",
+                                "key": "arg0",
+                                "value": "{{_event}}"
+                            },
+                            {
+                                "type": "TEMPLATE",
+                                "key": "arg1",
+                                "value": "^fynch\\."
+                            }
+                        ]
+                    }
+                ],
+                "fingerprint": "1785460360114",
+                "parentFolderId": "47"
+            }
+        ],
+        "variable": [
+            {
+                "accountId": "0000000000",
+                "containerId": "0000000",
+                "variableId": "48",
+                "name": "Fynch | Context Variable",
+                "type": "v",
+                "parameter": [
+                    {
+                        "type": "INTEGER",
+                        "key": "dataLayerVersion",
+                        "value": "2"
+                    },
+                    {
+                        "type": "BOOLEAN",
+                        "key": "setDefaultValue",
+                        "value": "false"
+                    },
+                    {
+                        "type": "TEMPLATE",
+                        "key": "name",
+                        "value": "fynch.context"
+                    }
+                ],
+                "fingerprint": "1785460295202",
+                "parentFolderId": "47",
+                "formatValue": {}
+            },
+            {
+                "accountId": "0000000000",
+                "containerId": "0000000",
+                "variableId": "51",
+                "name": "GA4 | Measurement ID",
+                "type": "c",
+                "parameter": [
+                    {
+                        "type": "TEMPLATE",
+                        "key": "value",
+                        "value": "G-XXXXXXXXXX"
+                    }
+                ],
+                "fingerprint": "1785461478861",
+                "parentFolderId": "50",
+                "formatValue": {}
+            },
+            {
+                "accountId": "0000000000",
+                "containerId": "0000000",
+                "variableId": "52",
+                "name": "Fynch | Action Variable",
+                "type": "v",
+                "parameter": [
+                    {
+                        "type": "INTEGER",
+                        "key": "dataLayerVersion",
+                        "value": "2"
+                    },
+                    {
+                        "type": "BOOLEAN",
+                        "key": "setDefaultValue",
+                        "value": "false"
+                    },
+                    {
+                        "type": "TEMPLATE",
+                        "key": "name",
+                        "value": "fynch.action"
+                    }
+                ],
+                "fingerprint": "1785460382782",
+                "parentFolderId": "47",
+                "formatValue": {}
+            },
+            {
+                "accountId": "0000000000",
+                "containerId": "0000000",
+                "variableId": "53",
+                "name": "GA4 | Fynch Action Mapping Table",
+                "type": "smm",
+                "parameter": [
+                    {
+                        "type": "BOOLEAN",
+                        "key": "setDefaultValue",
+                        "value": "true"
+                    },
+                    {
+                        "type": "TEMPLATE",
+                        "key": "input",
+                        "value": "{{Fynch | Action Variable}}"
+                    },
+                    {
+                        "type": "TEMPLATE",
+                        "key": "defaultValue",
+                        "value": "{{Fynch | Action Variable}}"
+                    },
+                    {
+                        "type": "LIST",
+                        "key": "map",
+                        "list": [
+                            {
+                                "type": "MAP",
+                                "map": [
+                                    {
+                                        "type": "TEMPLATE",
+                                        "key": "key",
+                                        "value": "click_to_call"
+                                    },
+                                    {
+                                        "type": "TEMPLATE",
+                                        "key": "value",
+                                        "value": "phone_click"
+                                    }
+                                ]
+                            },
+                            {
+                                "type": "MAP",
+                                "map": [
+                                    {
+                                        "type": "TEMPLATE",
+                                        "key": "key",
+                                        "value": "click_to_email"
+                                    },
+                                    {
+                                        "type": "TEMPLATE",
+                                        "key": "value",
+                                        "value": "email_click"
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                ],
+                "fingerprint": "1785460727285",
+                "parentFolderId": "50",
+                "formatValue": {}
+            },
+            {
+                "accountId": "0000000000",
+                "containerId": "0000000",
+                "variableId": "59",
+                "name": "Fynch | Context Mapping Variable",
+                "type": "smm",
+                "parameter": [
+                    {
+                        "type": "BOOLEAN",
+                        "key": "setDefaultValue",
+                        "value": "false"
+                    },
+                    {
+                        "type": "TEMPLATE",
+                        "key": "input",
+                        "value": "{{Fynch | Context Variable}}"
+                    },
+                    {
+                        "type": "LIST",
+                        "key": "map",
+                        "list": [
+                            {
+                                "type": "MAP",
+                                "map": [
+                                    {
+                                        "type": "TEMPLATE",
+                                        "key": "key",
+                                        "value": "info@example.com"
+                                    },
+                                    {
+                                        "type": "TEMPLATE",
+                                        "key": "value",
+                                        "value": "Info Email"
+                                    }
+                                ]
+                            },
+                            {
+                                "type": "MAP",
+                                "map": [
+                                    {
+                                        "type": "TEMPLATE",
+                                        "key": "key",
+                                        "value": "0712345678"
+                                    },
+                                    {
+                                        "type": "TEMPLATE",
+                                        "key": "value",
+                                        "value": "Main Phone"
+                                    }
+                                ]
+                            },
+                            {
+                                "type": "MAP",
+                                "map": [
+                                    {
+                                        "type": "TEMPLATE",
+                                        "key": "key",
+                                        "value": "whatsapp | https://wa.me/61712345678"
+                                    },
+                                    {
+                                        "type": "TEMPLATE",
+                                        "key": "value",
+                                        "value": "WhatsApp"
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                ],
+                "fingerprint": "1785472846725",
+                "parentFolderId": "47",
+                "formatValue": {}
+            },
+            {
+                "accountId": "0000000000",
+                "containerId": "0000000",
+                "variableId": "60",
+                "name": "Fynch | Context (GA4-safe)",
+                "type": "jsm",
+                "parameter": [
+                    {
+                        "type": "TEMPLATE",
+                        "key": "javascript",
+                        "value": "function () {\n  var action = {{Fynch | Action Variable}};\n  // Contact clicks carry a phone/email — only ever emit a mapped label (or\n  // nothing), never the raw value. Everything else is not PII: pass it through.\n  var isContact = /^click_to_(call|text|email|message)$/.test(action);\n  return isContact ? {{Fynch | Context Mapping Variable}} : {{Fynch | Context Variable}};\n}"
+                    }
+                ],
+                "fingerprint": "10",
+                "parentFolderId": "47",
+                "formatValue": {}
+            }
+        ],
+        "folder": [
+            {
+                "accountId": "0000000000",
+                "containerId": "0000000",
+                "folderId": "47",
+                "name": "Fynch Event Tracking Library",
+                "fingerprint": "1785386673788"
+            },
+            {
+                "accountId": "0000000000",
+                "containerId": "0000000",
+                "folderId": "50",
+                "name": "Google Analytics Tracking",
+                "fingerprint": "1785374891898"
+            }
+        ],
+        "fingerprint": "1785473064553",
+        "tagManagerUrl": "https://tagmanager.google.com/#/versions/accounts/0000000000/containers/0000000/versions/0?apiLink=version",
+        "customTemplate": [
+            {
+                "accountId": "0000000000",
+                "containerId": "0000000",
+                "templateId": "57",
+                "name": "Fynch Event Tracking",
+                "fingerprint": "1785465002648",
+                "templateData": "___TERMS_OF_SERVICE___\n\nBy creating or modifying this file you agree to Google Tag Manager's Community\nTemplate Gallery Developer Terms of Service available at\nhttps://developers.google.com/tag-manager/gallery-tos (or such other URL as\nGoogle may provide), as modified from time to time.\n\n\n___INFO___\n\n{\n  \"type\": \"TAG\",\n  \"id\": \"cvt_temp_public_id\",\n  \"version\": 1,\n  \"securityGroups\": [],\n  \"displayName\": \"Fynch Event Tracking\",\n  \"categories\": [\n    \"ANALYTICS\",\n    \"CONVERSIONS\"\n  ],\n  \"brand\": {\n    \"id\": \"brand_dummy\",\n    \"displayName\": \"Edge Online\"\n  },\n  \"description\": \"Loads Fynch, a zero-config client-side event tracker. Fynch attaches its own listeners on load and pushes form, click, scroll, chat, and booking events to the dataLayer under event names of the form fynch.\\u003caction\\u003e (e.g. fynch.form_lead), with the event details under a fynch object. No configuration required — fire this tag once on Initialization / All Pages.\",\n  \"containerContexts\": [\n    \"WEB\"\n  ]\n}\n\n\n___TEMPLATE_PARAMETERS___\n\n[\n  {\n    \"type\": \"LABEL\",\n    \"name\": \"introLabel\",\n    \"displayName\": \"This tag loads the Fynch script from a public CDN. Fynch self-initialises on load and pushes events to the dataLayer under event names of the form \\\"fynch.\\u003caction\\u003e\\\" (e.g. \\\"fynch.form_lead\\\"). Trigger this tag once per page (Initialization - All Pages is recommended).\"\n  },\n  {\n    \"type\": \"RADIO\",\n    \"name\": \"versionMode\",\n    \"displayName\": \"Version\",\n    \"radioItems\": [\n      {\n        \"value\": \"latest\",\n        \"displayValue\": \"Use the version bundled with this template (recommended)\"\n      },\n      {\n        \"value\": \"pin\",\n        \"displayValue\": \"Pin a specific version\"\n      }\n    ],\n    \"simpleValueType\": true,\n    \"defaultValue\": \"latest\",\n    \"help\": \"“Use the version bundled with this template” is fixed to the newest Fynch release at the time this template version was published. It does not change on its own — to move to a newer Fynch, update this template to its latest version. Choose “Pin a specific version” to lock to an exact release regardless of template updates.\"\n  },\n  {\n    \"type\": \"TEXT\",\n    \"name\": \"pinnedVersion\",\n    \"displayName\": \"Version\",\n    \"simpleValueType\": true,\n    \"valueHint\": \"0.3.0\",\n    \"enablingConditions\": [\n      {\n        \"paramName\": \"versionMode\",\n        \"paramValue\": \"pin\",\n        \"type\": \"EQUALS\"\n      }\n    ],\n    \"valueValidators\": [\n      {\n        \"type\": \"NON_EMPTY\"\n      },\n      {\n        \"type\": \"REGEX\",\n        \"args\": [\n          \"^\\\\d+\\\\.\\\\d+\\\\.\\\\d+(?:-[0-9A-Za-z.-]+)?$\"\n        ],\n        \"errorMessage\": \"Enter an exact version such as 0.3.0 (no \\\"v\\\" prefix, no range).\"\n      }\n    ],\n    \"help\": \"The exact npm version of @edgeonline/fynch to load, e.g. 0.3.0.\"\n  },\n  {\n    \"type\": \"SELECT\",\n    \"name\": \"cdn\",\n    \"displayName\": \"CDN\",\n    \"macrosInSelect\": false,\n    \"selectItems\": [\n      {\n        \"value\": \"jsdelivr\",\n        \"displayValue\": \"jsDelivr (cdn.jsdelivr.net)\"\n      },\n      {\n        \"value\": \"unpkg\",\n        \"displayValue\": \"unpkg (unpkg.com)\"\n      }\n    ],\n    \"simpleValueType\": true,\n    \"defaultValue\": \"jsdelivr\"\n  }\n]\n\n\n___SANDBOXED_JS_FOR_WEB_TEMPLATE___\n\nconst injectScript = require('injectScript');\n\n// The most recent Fynch release at the time this template version was\n// published. \"Use the version bundled with this template\" resolves to this\n// constant, so the loaded version never changes on its own: pulling in a\n// newer Fynch means updating and re-publishing this template. Users who need\n// a different release pin it explicitly via the Version field.\nconst LATEST_VERSION = '0.3.0';\n\nconst version = data.versionMode === 'pin' ? data.pinnedVersion : LATEST_VERSION;\n\nconst cdnBase =\n  data.cdn === 'unpkg'\n    ? 'https://unpkg.com/@edgeonline/fynch@'\n    : 'https://cdn.jsdelivr.net/npm/@edgeonline/fynch@';\n\nconst url = cdnBase + version + '/dist/fynch.js';\n\n// Fynch attaches its own listeners and creates window.dataLayer if missing,\n// so there is nothing to configure or call after load. The URL doubles as the\n// injectScript cache token so the script is only fetched once even if the tag\n// somehow fires again.\ninjectScript(url, data.gtmOnSuccess, data.gtmOnFailure, url);\n\n\n___WEB_PERMISSIONS___\n\n[\n  {\n    \"instance\": {\n      \"key\": {\n        \"publicId\": \"inject_script\",\n        \"versionId\": \"1\"\n      },\n      \"param\": [\n        {\n          \"key\": \"urls\",\n          \"value\": {\n            \"type\": 2,\n            \"listItem\": [\n              {\n                \"type\": 1,\n                \"string\": \"https://cdn.jsdelivr.net/npm/@edgeonline/fynch@*\"\n              },\n              {\n                \"type\": 1,\n                \"string\": \"https://unpkg.com/@edgeonline/fynch@*\"\n              }\n            ]\n          }\n        }\n      ]\n    },\n    \"clientAnnotations\": {\n      \"isEditedByUser\": true\n    },\n    \"isRequired\": true\n  }\n]\n\n\n___TESTS___\n\nscenarios:\n- name: Defaults to the bundled latest version on jsDelivr\n  code: |-\n    const mockData = {\n      versionMode: 'latest',\n      cdn: 'jsdelivr',\n    };\n\n    let capturedUrl;\n    let capturedCacheToken;\n    mock('injectScript', function (url, onSuccess, onFailure, cacheToken) {\n      capturedUrl = url;\n      capturedCacheToken = cacheToken;\n      onSuccess();\n    });\n\n    runCode(mockData);\n\n    assertThat(capturedUrl).isEqualTo(\n      'https://cdn.jsdelivr.net/npm/@edgeonline/fynch@0.3.0/dist/fynch.js'\n    );\n    assertThat(capturedCacheToken).isEqualTo(capturedUrl);\n    assertApi('gtmOnSuccess').wasCalled();\n- name: Pins the requested version\n  code: |-\n    const mockData = {\n      versionMode: 'pin',\n      pinnedVersion: '0.1.0',\n      cdn: 'jsdelivr',\n    };\n\n    let capturedUrl;\n    mock('injectScript', function (url, onSuccess) {\n      capturedUrl = url;\n      onSuccess();\n    });\n\n    runCode(mockData);\n\n    assertThat(capturedUrl).isEqualTo(\n      'https://cdn.jsdelivr.net/npm/@edgeonline/fynch@0.1.0/dist/fynch.js'\n    );\n- name: Builds an unpkg URL when selected\n  code: |-\n    const mockData = {\n      versionMode: 'latest',\n      cdn: 'unpkg',\n    };\n\n    let capturedUrl;\n    mock('injectScript', function (url, onSuccess) {\n      capturedUrl = url;\n      onSuccess();\n    });\n\n    runCode(mockData);\n\n    assertThat(capturedUrl).isEqualTo(\n      'https://unpkg.com/@edgeonline/fynch@0.3.0/dist/fynch.js'\n    );\n- name: Reports failure when the script cannot load\n  code: |-\n    const mockData = {\n      versionMode: 'latest',\n      cdn: 'jsdelivr',\n    };\n\n    mock('injectScript', function (url, onSuccess, onFailure) {\n      onFailure();\n    });\n\n    runCode(mockData);\n\n    assertApi('gtmOnFailure').wasCalled();\n\n\n___NOTES___\n\nCustom Tag template for loading Fynch (@edgeonline/fynch) via a CDN.\n\nPublishing checklist when a new Fynch version ships:\n1. Update LATEST_VERSION in the sandboxed code to the new release.\n2. Re-run the template tests (the default-version test asserts LATEST_VERSION).\n3. Re-publish the template / open a PR to the Community Template Gallery.\n\nLeave the ___INFO___ \"version\" at 1 — it is GTM's template format version,\nnot a release number, and GTM rejects any other value on import.\n\nNote: GTM's injectScript API cannot set a Subresource Integrity (SRI) hash.\nIf SRI is required, use the Custom HTML snippet from the main README instead.\n\n\n"
+            }
+        ]
+    }
+}

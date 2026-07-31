@@ -222,6 +222,11 @@ normalised.
 > hard 100-character limit on GA4 parameter values, so long composites are truncated — the
 > shorter, higher-value part is placed first for that reason.
 
+For a complete, PII-safe GA4 wiring you can import — the event tag, the trigger, the
+variables, and a gated variable that keeps raw contacts out of GA4 — see the example
+container and setup guide in
+[`gtm-template/`](gtm-template/README.md#wiring-fynch-to-ga4-example-container).
+
 ### Triggering in GTM
 
 Because the event name carries the action, you have two ways to trigger, and they can

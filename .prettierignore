@@ -3,3 +3,6 @@ node_modules
 package-lock.json
 .claude
 Platforms
+
+# GTM container export — keep GTM's own format, not Prettier's
+gtm-template/example-ga4-container.json
