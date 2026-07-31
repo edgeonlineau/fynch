@@ -25,7 +25,7 @@ listeners and pushes events to the `dataLayer` on load under event names of the 
 
 1. **Tags → New →** choose **Fynch Event Tracking**.
 2. Leave **Version** on _Use the version bundled with this template_ (recommended), or
-   pick **Pin a specific version** and enter an exact release such as `0.2.0`.
+   pick **Pin a specific version** and enter an exact release such as `0.2.1`.
 3. Optionally switch the **CDN** (jsDelivr / unpkg).
 4. **Triggering →** fire on **Initialization - All Pages** (once per page is enough;
    the URL is used as the injection cache token, so a re-fire won't double-load).

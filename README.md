@@ -41,16 +41,16 @@ execute:
 <!-- jsDelivr, pinned + deferred + SRI -->
 <script
   defer
-  src="https://cdn.jsdelivr.net/npm/@edgeonline/fynch@0.2.0/dist/fynch.js"
-  integrity="sha384-30yfGOxjJDnndKHH1BqULWu7aMTzTucDS36hhdBUs9C2jeuqFxw6L2uYyLCaPOaZ"
+  src="https://cdn.jsdelivr.net/npm/@edgeonline/fynch@0.2.1/dist/fynch.js"
+  integrity="sha384-uD/umP7xkAnMt2RPh8AMJXnmpJf5+O4vxcg0EUr1HNKcxzMUyynmMrptDSpBkd/f"
   crossorigin="anonymous"
 ></script>
 
 <!-- unpkg works too (same file, same integrity hash) -->
 <script
   defer
-  src="https://unpkg.com/@edgeonline/fynch@0.2.0/dist/fynch.js"
-  integrity="sha384-30yfGOxjJDnndKHH1BqULWu7aMTzTucDS36hhdBUs9C2jeuqFxw6L2uYyLCaPOaZ"
+  src="https://unpkg.com/@edgeonline/fynch@0.2.1/dist/fynch.js"
+  integrity="sha384-uD/umP7xkAnMt2RPh8AMJXnmpJf5+O4vxcg0EUr1HNKcxzMUyynmMrptDSpBkd/f"
   crossorigin="anonymous"
 ></script>
 ```
@@ -184,16 +184,16 @@ tag and you have a familiar single "what was this" column across every event.
 
 The per-action value (composite values join with `|` and drop any absent part):
 
-| action(s)                                                                                  | `context`                                                                |
-| ------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------ |
-| `click_to_email`, `click_to_call`, `click_to_text`                                         | the address / number (`link_url`)                                        |
-| `click_to_message`                                                                         | `provider \| link_url`                                                   |
-| `outbound_click`                                                                           | `link_domain \| link_text`                                               |
-| `call_to_action_click`                                                                     | `link_text \| link_url`                                                  |
-| `download_file`                                                                            | `file_name`                                                              |
-| `form_lead`                                                                                | `provider \| form_name` (falls back to `form_id`, then `provider` alone) |
-| `get_directions`, `view_in_app_store`, `add_to_calendar`, `start_chat`, `schedule_booking` | `provider`                                                               |
-| `scroll_milestone`                                                                         | `percent_scrolled`                                                       |
+| action(s)                                                                    | `context`                                                                |
+| ---------------------------------------------------------------------------- | ------------------------------------------------------------------------ |
+| `click_to_email`, `click_to_call`, `click_to_text`                           | the address / number (`link_url`)                                        |
+| `click_to_message`, `get_directions`, `view_in_app_store`, `add_to_calendar` | `provider \| link_url`                                                   |
+| `outbound_click`                                                             | `link_domain \| link_text`                                               |
+| `call_to_action_click`                                                       | `link_text \| link_url`                                                  |
+| `download_file`                                                              | `file_name`                                                              |
+| `form_lead`                                                                  | `provider \| form_name` (falls back to `form_id`, then `provider` alone) |
+| `start_chat`, `schedule_booking`                                             | `provider`                                                               |
+| `scroll_milestone`                                                           | `percent_scrolled`                                                       |
 
 > **⚠️ PII / GA4 policy.** For `click_to_email`, `click_to_call`, `click_to_text`, and the
 > `link_url` half of `click_to_message`, `context` contains a raw email address or phone
