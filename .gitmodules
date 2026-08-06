@@ -1,0 +1,3 @@
+[submodule "gtm-template"]
+	path = gtm-template
+	url = https://github.com/edgeonlineau/fynch-gtm-template.git

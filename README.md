@@ -19,13 +19,16 @@ you want Subresource Integrity — use the direct embed instead.
 
 ### Google Tag Manager custom template (recommended)
 
-A GTM **Custom Tag Template** lives in [`gtm-template/`](gtm-template/). Add it once,
-drop in a **Fynch Event Tracking** tag, and fire it on _Initialization - All Pages_ —
-there's no snippet to paste and no code to maintain in the container. It gives you a
-version dropdown (defaulting to the release bundled with the template), a jsDelivr/unpkg
-switch, and GTM-enforced host permissions, and it works even in containers where Custom
-HTML tags are disabled. See the [template README](gtm-template/README.md) for install
-and usage.
+A GTM **Custom Tag Template** lives in its own repo,
+[edgeonlineau/fynch-gtm-template](https://github.com/edgeonlineau/fynch-gtm-template)
+(vendored here as the `gtm-template/` submodule) and is on the Community Template Gallery.
+Add it once, drop in a **Fynch Event Tracking** tag, and fire it on
+_Initialization - All Pages_ — there's no snippet to paste and no code to maintain in the
+container. It gives you a version dropdown (defaulting to the release bundled with the
+template), a jsDelivr/unpkg switch, and GTM-enforced host permissions, and it works even in
+containers where Custom HTML tags are disabled. See the
+[template repo](https://github.com/edgeonlineau/fynch-gtm-template#readme) for install and
+usage, and [docs/ga4-setup.md](docs/ga4-setup.md) for a complete GA4 wiring.
 
 The one thing it can't do is attach a Subresource Integrity hash — GTM's sandboxed
 loader has no way to set one. If SRI matters to you, use the direct embed below.
@@ -223,9 +226,8 @@ normalised.
 > shorter, higher-value part is placed first for that reason.
 
 For a complete, PII-safe GA4 wiring you can import — the event tag, the trigger, the
-variables, and a gated variable that keeps raw contacts out of GA4 — see the example
-container and setup guide in
-[`gtm-template/`](gtm-template/README.md#wiring-fynch-to-ga4-example-container).
+variables, and a gated variable that keeps raw contacts out of GA4 — see
+[docs/ga4-setup.md](docs/ga4-setup.md) and its example container.
 
 ### Triggering in GTM
 
