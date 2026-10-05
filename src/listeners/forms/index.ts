@@ -4,6 +4,7 @@ import { register as duda } from './duda';
 import { register as hubspotV3 } from './hubspot-v3';
 import { register as hubspotV4 } from './hubspot-v4';
 import { register as typeform } from './typeform';
+import { register as monday } from './monday';
 import { register as squarespace } from './squarespace';
 import { register as zoho } from './zoho';
 import { register as divi } from './divi';
@@ -20,6 +21,7 @@ contactForm7();
 hubspotV3();
 hubspotV4();
 typeform();
+monday();
 squarespace();
 zoho();
 

@@ -317,6 +317,7 @@ underlying platform exposes them.
 | `hubspot-v3`     | HubSpot Forms (v3) |
 | `hubspot-v4`     | HubSpot Forms (v4) |
 | `ninja-forms`    | Ninja Forms        |
+| `monday`         | Monday WorkForms   |
 | `typeform`       | Typeform           |
 | `squarespace`    | Squarespace Forms  |
 | `zoho`           | Zoho Forms         |
